@@ -1,0 +1,102 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Mail\ResetPassword;
+use App\Models\ResetCode;
+use App\Models\User;
+use Illuminate\Http\Request;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Password;
+
+
+class AuthController extends Controller
+{
+    function userLogin(Request $request)
+    {
+        $check_username = User::where(['username' => $request->wallet_address])->first();
+
+        if($check_username && !$check_username->wallet) {
+            $log = Auth::attempt(['username' => $request->wallet_address, 'password' => $request->access_pin]);
+            if (!$log) {
+                return back()->with('error', 'Invalid Credentials, Please try again');
+            }
+        }else {
+
+            Validator::make($request->all(), [
+                'wallet_address' => 'string|exists:users,wallet|required',
+                'access_pin' => 'min:5|required'
+            ])->validate();
+    
+            $log = Auth::attempt(['wallet' => $request->wallet_address, 'password' => $request->access_pin]);
+            if (!$log) {
+                return back()->with('error', 'Invalid Credentials, Please try again');
+            }
+        }
+
+      
+        return redirect('/dashboard')->with('success', 'Welcome back');
+    }
+
+    function checkUsername($username)
+    {
+        return User::where('username', $username)->limit(1)->count();
+    }
+
+    function createAccount(Request $request)
+    {
+        Validator::make($request->all(), [
+            'wallet_address' => 'string|unique:users,wallet',
+            'access_pin' => 'integer|min:6|',
+        ])->validate();
+
+        $sponsor = User::where(['ref' => $request->ref])->first();
+        
+        if(!$sponsor) {
+            $sponsor = json_decode(json_encode(['id' => 0, 'sponsor' => 0, 'sponsor_2' => 0]));
+        } 
+
+        $user = User::create([
+            'wallet' => $request->wallet_address,
+            'password' => Hash::make($request->access_pin),
+            'sponsor' =>  $sponsor->id,
+            'sponsor_2' => $sponsor->sponsor,
+            'sponsor_3' => $sponsor->sponsor_2,
+            'ref' => ''
+        ]);
+
+        $user->update([
+            'ref' => sha1($user->id)
+        ]);
+
+        return redirect('/login')->with('success', 'You have been successfuly registered, Proceed to Access account');
+    }
+
+    public function logout(Request $request): RedirectResponse
+    {
+        Auth::logout();
+
+        $request->session()->invalidate();
+
+        $request->session()->regenerateToken();
+     
+        return redirect('/access')->with('success', 'You have been logged out successfuly ');
+    }
+
+
+    function get_user()
+    {
+        $res = User::where('username', $_GET['username'])->first(['id', 'username']);
+        if ($res->id == auth()->user()->id) {
+            abort(404);
+        }
+        if (!$res) {
+            abort(404);
+        }
+        return response($res);
+    }
+}
