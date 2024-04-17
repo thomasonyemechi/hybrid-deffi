@@ -20,15 +20,9 @@
 
                         <form method="POST" action="/wallet_update" autocomplete="off">@csrf
 
-                            @if (auth()->user()->wallet)
-                                <div class="form-group">
-                                    <label class="form-label" for="email">TRX Wallet Address:</label>
-                                    <input type="text" class="form-control" name="old"
-                                        value="{{ auth()->user()->wallet }}" readonly>
-                                </div>
-                            @endif
-
-                            @if (!auth()->user()->wallet)
+                            @if (auth()->user()->wallet == null ||
+                                    strtolower(substr(auth()->user()->wallet, 0, 1)) != 't' ||
+                                    strlen(auth()->user()->wallet) < 20)
                                 <div class="form-group">
                                     <label class="form-label">TRX Wallet Address:</label>
                                     <input type="text" class="form-control" name="wallet_address"
@@ -40,7 +34,7 @@
                                 <div class="form-group">
                                     <label class="form-label">Access Pin:</label>
                                     <input type="password" class="form-control" name="access_pin" required
-                                        autocomplete="new-psword" placeholder=" 6 Digit Pin" >
+                                        autocomplete="new-psword" placeholder=" 6 Digit Pin">
                                     @error('access_pin')
                                         <i class="text-danger  ">{{ $message }} </i>
                                     @enderror
@@ -48,14 +42,20 @@
 
                                 <div class="form-group">
                                     <label class="form-label">Confirm Access Pin:</label>
-                                    <input type="password" class="form-control" name="confirm_access_pin" placeholder="Confirm Access Pin" required
-                                        autocomplete="new-psword">
+                                    <input type="password" class="form-control" name="confirm_access_pin"
+                                        placeholder="Confirm Access Pin" required autocomplete="new-psword">
                                     @error('confirm_access_pin')
                                         <i class="text-danger  ">{{ $message }} </i>
                                     @enderror
                                 </div>
                                 <div class="d-flex justify-content-end">
                                     <button type="submit" class="btn btn-primary rounded">Update</button>
+                                </div>
+                            @else
+                                <div class="form-group">
+                                    <label class="form-label" for="email">TRX Wallet Address:</label>
+                                    <input type="text" class="form-control" name="old"
+                                        value="{{ auth()->user()->wallet }}" readonly>
                                 </div>
                             @endif
 

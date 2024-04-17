@@ -15,9 +15,11 @@ class Wallet
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (auth()->user()->wallet != null) {
-            return $next($request);
+        if (auth()->user()->wallet == null || strtolower(substr(auth()->user()->wallet, 0, 1)) != 't' || strlen(auth()->user()->wallet) < 20) {
+            return redirect('/wallet')->with('error', 'Update your usdt walllet to continue');
         }
-        return redirect('/wallet')->with('error', 'Update your usdt walllet to continue');
+
+        return $next($request);
+
     }
 }

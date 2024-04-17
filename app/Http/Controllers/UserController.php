@@ -181,6 +181,10 @@ class UserController extends Controller
             return back()->with('error', 'Access pin does not match');
         }
 
+        if (strtolower(substr($request->wallet_address, 0, 1)) != 't' || strlen($request->wallet_address) < 20) {
+            return back()->with('error', 'Please enter a valid TRX wallet address');
+        }
+
         // if (!password_verify($request->access_pin, auth()->user()->password)) {
         //     return back()->with('error', 'You entered a wrong password');
         // }
@@ -195,7 +199,7 @@ class UserController extends Controller
             'password' => Hash::make($request->access_pin),
         ]);
 
-        return back()->with('success', 'You wallet address has been updated');
+        return redirect('/dashboard')->with('success', 'You wallet address has been updated');
     }
 
 
