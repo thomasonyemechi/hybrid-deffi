@@ -90,7 +90,7 @@ class AuthController extends Controller
 
     function get_user()
     {
-        $res = User::where('username', $_GET['username'])->first(['id', 'username']);
+        $res = User::where('wallet', $_GET['username'])->first(['id', 'username', 'wallet']);
         if ($res->id == auth()->user()->id) {
             abort(404);
         }

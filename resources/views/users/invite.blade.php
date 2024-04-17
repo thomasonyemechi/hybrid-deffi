@@ -20,15 +20,14 @@
                 <div class="card card-block card-stretch custom-scroll">
                     <div class="card-header d-flex flex-wrap justify-content-between align-items-center gap-3">
                         <div class="caption">
-                            <h4 class="font-weight-bold mb-2">Downlines</h4>
+                            <h4 class="font-weight-bold mb-2">Partners</h4>
                         </div>
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
-                            <table class="table data-table mb-0">
+                            <table class="table table-sm mb-0">
                                 <thead>
                                     <tr>
-                                        <th scope="col">Name</th>
                                         <th scope="col">Wallet</th>
                                         <th scope="col">Timestamp</th>
                                     </tr>
@@ -36,8 +35,7 @@
                                 <tbody>
                                     @foreach ($direct_downlines as $user)
                                         <tr class="white-space-no-wrap">
-                                            <td class="pe-2"> {{ $user->username }} </td>
-                                            <td class="pe-2"> {{ $user->wallet }} </td>
+                                            <td class="pe-2"> {{ isset($user->wallet) ? $user->wallet : $user->username; }} </td>
                                             <td> {{ $user->created_at }} </td>
                                         </tr>
                                     @endforeach

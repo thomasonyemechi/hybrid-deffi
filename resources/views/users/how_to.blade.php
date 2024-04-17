@@ -33,13 +33,17 @@
                             </div>
                             <hr>
                             <div class="data-privacy">
-                                <h4 class="mb-2"> 2. THE AIRDROP</h4>
+                                <h4 class="mb-2"> 2. AFFILIATE COMMISSION </h4>
                                 <p>
-                                    When you invite your friends, community and loved ones to the Hybrid project ecosystem, you earn 6% for 1st generation, 2% for 2nd generation and 2% for 3rd generation of their investment anytime they purchase Hybridcoin.
+                                    When you invite your friends, community and loved ones to the Hybrid project ecosystem,
+                                    you earn 6% for 1st generation, 2% for 2nd generation and 2% for 3rd generation of their
+                                    investment anytime they purchase Hybridcoin.
 
-                                    You can withdraw this reward instantly. to withdraw your commission, simply convert your SHC (Stable Hybrid Commission) to USDT and withdraw.
-                                    
-                                    A pool has been reserved for this purpose; rewarding community members who spread the good news. When the pool is exhausted.
+                                    You can withdraw this reward instantly. to withdraw your commission, simply convert your
+                                    SHC (Stable Hybrid Commission) to USDT and withdraw.
+
+                                    A pool has been reserved for this purpose; rewarding community members who
+                                    spread the good news.
                                 </p>
                             </div>
                             <hr>

@@ -16,7 +16,7 @@
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
-                            <table class="table data-table mb-0">
+                            <table class="table table-sm  mb-0">
                                 <thead>
                                     <tr>
                                         <th scope="col">Amount</th>
@@ -107,12 +107,12 @@
                                 <div class="d-2" style="display: none">
                                     <div>
                                         <div class="dd-2 badge bg-success"></div>
-                                        <p>Input your password to confirm transfer</p>
+                                        <p class="mt-2"  >Enter your access pin to completedtransaction</p>
                                     </div>
                                     <div class="form-group l2 ">
-                                        <label for="text">Password</label>
-                                        <input type="password" name="password" autocomplete="new-password"
-                                            class="form-control">
+                                        <label for="text">Access Pin</label>
+                                        <input type="password" name="access_pin" autocomplete="new-password"
+                                            class="form-control" placeholder="Enter yout six digit pin" >
                                         <input type="hidden" name="user_id">
                                     </div>
 
@@ -171,12 +171,12 @@
                 }).done(res => {
                     $('.d-1').hide('slowly')
                     $('.d-2').show('slowly')
-                    $('.dd-2').html(`Send ${amt} USDT to ${res.username}`)
+                    $('.dd-2').html(`Send ${amt} USDT to ${res.wallet}`)
                     btn.removeAttr('disabled', 'disabled');
                     $('input[name="user_id"]').val(res.id);
                     // dis.html(`<i class="text-success">Send to ${res.username}</i>`)
                 }).fail(res => {
-                    alert('This id does not exist in our database');
+                    alert('This wallet address does not exist in our database');
                     // dis.html('<i class="text-danger" >This username does not exist</i>')
                     btn.html('Continue');
                 })

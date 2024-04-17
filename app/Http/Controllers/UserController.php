@@ -127,8 +127,12 @@ class UserController extends Controller
     {
         $val = Validator::make($request->all(), [
             'amount' => 'required|integer|min:20',
-            'password' => 'required|string'
+            'access_pin' => 'required|string'
         ])->validate();
+
+        if(!password_verify($request->access_pin, auth()->user()->password)) {
+            return back()->with('error', 'Invalid access pin');
+        }
 
         if ($request->amount > usdtBalance(auth()->user()->id)) {
             return back()->with('error', 'You do not have up to this amount of USDT in your wallet, fund your wallet and try again ');
