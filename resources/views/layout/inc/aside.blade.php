@@ -133,11 +133,7 @@
 
 
                 <li class="nav-item ">
-<<<<<<< HEAD
                     <a class="nav-link " aria-current="page" href="/admin/credit">
-=======
-                    <a class="nav-link" aria-current="page" href="/admin/users">
->>>>>>> 367677a427830c1c9814485233b006af45c4ef94
                         <i class="icon">
                             <svg width="22" viewBox="0 0 30 30" fill="none"
                                 xmlns="http://www.w3.org/2000/svg">

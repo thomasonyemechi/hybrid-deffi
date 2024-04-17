@@ -8,8 +8,8 @@
                     <div class="d-flex mb-3 justify-content-lg-start">
                         <input type="text" id="input_field" readonly
                             class="form-control shadow text-danger bg-light form-control-sm fw-bold me-2"
-                            style="border: 2px solid red;" value="http://hybriddefi.com/launch?ref={{ auth()->user()->ref }}">
-                        <button class="btn bg-light fw-bold text-danger shadow " style="border: 2px solid red;"
+                            style="border: 2px solid red;" value="http://hybriddefi.com/launch?ref={{ auth()->user()->ref }}" >
+                        <button class="btn bg-light fw-bold text-danger shadow " style="border: 2px solid red;"  onclick="yourFunction()" 
                             type="submit">Copy</button>
                     </div>
                 </div>

@@ -12,7 +12,6 @@
                     </div>
                     <div class="card-body">
                         <form action="/admin/credit" method="post">
-<<<<<<< HEAD
 
                             @csrf
 
@@ -27,20 +26,12 @@
                                     <option value="usdt"> USDT (USDT) </option>
                                 </select>
                                 @error('currency')
-=======
-                            @csrf
-                            <div class="form-group">
-                                <label for="">Username</label>
-                                <input type="text" name="username" class="form-control" placeholder="">
-                                @error('username')
->>>>>>> 367677a427830c1c9814485233b006af45c4ef94
                                     <i class="text-danger fw-bold ">{{ $message }} </i>
                                 @enderror
                             </div>
 
 
                             <div class="form-group">
-<<<<<<< HEAD
                                 <label for="">Wallet Address <span class="text-danger">*</span> </label>
                                 <input type="text" name="wallet_address" class="form-control"
                                     value="{{ old('wallet_address') }}" placeholder="Enter user's wallet address">
@@ -54,10 +45,6 @@
                                 <label for="">Amount <span class="text-danger">*</span></label>
                                 <input type="number" name="amount" step="any" class="form-control"
                                     value="{{ old('amount') }}" placeholder="Amount to send ">
-=======
-                                <label for="">Amount</label>
-                                <input type="number" name="amount" class="form-control" placeholder="">
->>>>>>> 367677a427830c1c9814485233b006af45c4ef94
                                 @error('amount')
                                     <i class="text-danger fw-bold ">{{ $message }} </i>
                                 @enderror
@@ -65,7 +52,6 @@
 
 
 
-<<<<<<< HEAD
                             <div class="form-group">
                                 <div class="d-flex justify-content-between ">
                                     <label for="">Remark</label>
@@ -92,10 +78,6 @@
 
                             <div class="mt-2 d-flex justify-content-end ">
                                 <button class="btn btn-sm  btn-primary">Credit User</button>
-=======
-                            <div class="mt-2 d-flex justify-content-end ">
-                                <button class="btn btn-sm  btn-primary">Credit</button>
->>>>>>> 367677a427830c1c9814485233b006af45c4ef94
                             </div>
                         </form>
                     </div>
@@ -117,22 +99,15 @@
                                     <thead class="table-light">
                                         <tr>
                                             <th scope="col" class="border-0">Amount</th>
-<<<<<<< HEAD
                                             <th scope="col" class="border-0">Wallet Address</th>
                                             <th scope="col" class="border-0">Remark</th>
                                             <th scope="col" class="border-0">By</th>
                                             <th scope="col" class="border-0 text-end">Date</th>
-=======
-                                            <th scope="col" class="border-0">User</th>
-                                            <th scope="col" class="border-0">By</th>
-                                            <th scope="col" class="border-0">Date</th>
->>>>>>> 367677a427830c1c9814485233b006af45c4ef94
                                         </tr>
                                     </thead>
                                     <tbody>
                                         @foreach ($credits as $credit)
                                             <tr>
-<<<<<<< HEAD
                                                 <td class="align-middle text-success border-top-0">
                                                     {{ number_format($credit->amount, 2) }}
                                                     {{ $credit->currency }}
@@ -142,22 +117,11 @@
                                                 </td>
                                                 <td class="align-middle border-top-0">
                                                     {{ $credit->remark }}
-=======
-                                                <td class="align-middle border-top-0">
-                                                    {{ $credit->amount }}
-                                                </td>
-                                                <td class="align-middle border-top-0">
-                                                    {{ $credit->user->username }}
->>>>>>> 367677a427830c1c9814485233b006af45c4ef94
                                                 </td>
                                                 <td class="align-middle border-top-0">
                                                     {{ $credit->admin->username }}
                                                 </td>
-<<<<<<< HEAD
                                                 <td class="align-middle border-top-0 text-end">
-=======
-                                                <td class="align-middle border-top-0">
->>>>>>> 367677a427830c1c9814485233b006af45c4ef94
                                                     {{ $credit->created_at }}
                                                 </td>
                                             </tr>
@@ -165,22 +129,17 @@
                                     </tbody>
                                 </table>
                             </div>
-<<<<<<< HEAD
                             <div class="d-flex justify-content-end mt-3 ">
                                 {{ $credits->links('pagination::bootstrap-4') }}
                             </div>
 
                         </div>
 
-=======
-                        </div>
->>>>>>> 367677a427830c1c9814485233b006af45c4ef94
                     </div>
                 </div>
             </div>
         </div>
     @endsection
-<<<<<<< HEAD
 
 
     @push('scripts')
@@ -193,5 +152,3 @@
             })
         </script>
     @endpush
-=======
->>>>>>> 367677a427830c1c9814485233b006af45c4ef94
