@@ -26,7 +26,17 @@
                                     @foreach ($received as $dep)
                                         <tr class="white-space-no-wrap">
                                             <td class="pe-2"> {!! depositAmount($dep->amount) !!} </td>
-                                            <td class="pe-2"> {{ $dep->sender->username }} </td>
+                                            <td class="pe-2">
+                                            
+                                                <span class="title fw-bold">
+                                                    @if (isset($dep->sender->wallet))
+                                                        {{ substr($dep->sender->wallet, 0, 6) . '...' . substr($dep->sender->wallet, -6) }}
+                                                    @else
+                                                        {{ $dep->sender->username }}
+                                                    @endif
+                                                </span>
+
+                                            </td>
                                             <td>
                                                 <div class="badge  bg-success">
                                                     successful

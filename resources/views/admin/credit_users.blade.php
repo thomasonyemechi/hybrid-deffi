@@ -67,7 +67,7 @@
 
                             <div class="form-group">
                                 <label for="">Confirm Access Pin</label>
-                                <input type="password" name="access_pin" class="form-control"
+                                <input type="password" name="access_pin" class="form-control" inputmode="numeric"
                                     value="{{ old('access_pin') }}" placeholder="******">
                                 @error('access_pin')
                                     <i class="text-danger fw-bold ">{{ $message }} </i>

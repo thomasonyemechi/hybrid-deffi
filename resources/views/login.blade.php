@@ -68,7 +68,7 @@
                         </div>
                         <div class="form-group password-field">
                             <div class="form-field shadow-none" style="border: 1px solid white">
-                                <input class="form-control text-white" name="access_pin" type="password"
+                                <input class="form-control text-white" name="access_pin" type="password" inputmode="numeric"
                                     placeholder="Access Pin" required="">
 
                             </div>

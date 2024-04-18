@@ -97,14 +97,14 @@ class UserController extends Controller
     {
         $user_id = auth()->user()->id;
         $usdt_balance = usdtBalance($user_id);
-        $transfers = Transfer::with(['receiver:id,username'])->where(['sender_id' => auth()->user()->id])->orderby('id', 'desc')->get();
+        $transfers = Transfer::with(['receiver:id,username,wallet'])->where(['sender_id' => auth()->user()->id])->orderby('id', 'desc')->get();
         return view('users.transfer', compact(['transfers', 'usdt_balance']));
     }
 
     function rIndex()
     {
         $user_id = auth()->user()->id;
-        $received = Transfer::with(['sender:id,username'])->where(['receiver_id' => auth()->user()->id])->orderby('id', 'desc')->get();
+        $received = Transfer::with(['sender:id,username,wallet'])->where(['receiver_id' => auth()->user()->id])->orderby('id', 'desc')->get();
         return view('users.received', compact(['received']));
     }
 
