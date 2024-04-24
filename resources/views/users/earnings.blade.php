@@ -20,7 +20,7 @@
                 <div class="card card-block card-stretch custom-scroll">
                     <div class="card-header d-flex flex-wrap justify-content-between align-items-center gap-3">
                         <div class="caption">
-                            <h4 class="font-weight-bold mb-2">Earnings</h4>
+                            <h4 class="font-weight-bold mb-2"> Affiliate commission</h4>
                         </div>
                     </div>
                     <div class="card-body">
@@ -38,7 +38,7 @@
                                     @foreach ($earnings as $dep)
                                         <tr class="white-space-no-wrap">
                                             <td class="pe-2"> {!! depositAmount($dep->amount) !!} </td>
-                                            <td class="pe-2"> {{ $dep->downliner->username }} </td>
+                                            <td class="pe-2"> {{ $dep->downliner->wallet ?? $dep->downliner->username }} </td>
 
                                             <td> Earned </td>
                                             <td> {{ $dep->created_at }} </td>

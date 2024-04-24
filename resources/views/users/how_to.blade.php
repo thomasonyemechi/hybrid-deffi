@@ -60,6 +60,8 @@
 
                                     Every month end 5% of the total revenue generated in the entire ecosystem is
                                     automatically distributed among royalty members in proportion of their royalty strength.
+                                    <br>
+                                    <span class="text-primary " > Your current royalty strength is: <span class="fw-bold text-large" > $ {{ number_format(coinTotalPurchase(auth()->user()->id)) }} </span> </span>
                                 </p>
                             </div>
                             <hr>

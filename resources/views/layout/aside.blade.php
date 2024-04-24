@@ -201,7 +201,7 @@
                                     stroke-linejoin="round"></path>
                             </svg>
                         </i>
-                        <span class="item-name">Exit Account </span>
+                        <span class="item-name">Disconnect  </span>
                     </a>
                 </li>
 

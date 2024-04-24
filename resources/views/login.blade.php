@@ -58,7 +58,7 @@
                         @csrf
                         <div class="form-group username-field">
                             <div class="form-field shadow-none" style="border: 1px solid white">
-                                <input class="form-control text-white" type="text" placeholder="TRX Wallet Address"
+                                <input class="form-control text-white" type="text" placeholder="TRX Wallet Address (TRC20) " 
                                     required="required" name="wallet_address" value="{{ old('wallet_address') }}">
 
                             </div>
@@ -68,7 +68,7 @@
                         </div>
                         <div class="form-group password-field">
                             <div class="form-field shadow-none" style="border: 1px solid white">
-                                <input class="form-control text-white" name="access_pin" type="password" inputmode="numeric"
+                                <input class="form-control text-white" name="access_pin" type="password"
                                     placeholder="Access Pin" required="">
 
                             </div>

@@ -39,7 +39,7 @@
 
                             <div class="form-group">
                                 <label for="text"> Amount In USDT </label>
-                                <input type="number" name="amount" class="form-control" min="20"
+                                <input type="number" name="amount" class="form-control" min="10" placeholder="Minimum: 10 USDT"
                                     max="{{ $usdt_balance }}" >
                                 @error('amount')
                                     <i class="text-danger ">{{ $message }} </i>

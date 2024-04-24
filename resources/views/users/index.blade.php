@@ -156,7 +156,7 @@
                                             <div class="d-flex align-items-center gap-2">
                                                 <img src="{{ asset('assets/images/coins/02.png') }}"
                                                     class="img-fluid avatar avatar-30 avatar-rounded" style="width: 30px">
-                                                <span class="fs-6 fw-bold me-2" style="line-height: 20px">Airdrop <br>
+                                                <span class="fs-6 fw-bold me-2" style="line-height: 20px">Commission <br>
                                                     <span
                                                         style="font-weight: lighter">${{ number_format(1, 2) }}</span></span>
                                             </div>
@@ -326,21 +326,118 @@
                                 <h2 class="accordion-header" id="headingOne">
                                     <button class="accordion-button" type="button" data-bs-toggle="collapse"
                                         data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                                        Accordion Item #1
+                                        HOW DO I ACCESS MY HYBRID WALLET?
                                     </button>
                                 </h2>
                                 <div id="collapseOne" class="accordion-collapse collapse show"
                                     aria-labelledby="headingOne" data-bs-parent="#accordionExample">
                                     <div class="accordion-body">
-                                        <strong>This is the first item's accordion body.</strong> It is shown by default,
-                                        until the collapse plugin adds the appropriate classes that we use to style each
-                                        element. These classes control the overall appearance, as well as the showing and
-                                        hiding via CSS transitions. You can modify any of this with custom CSS or overriding
-                                        our default variables. It's also worth noting that just about any HTML can go within
-                                        the <code>.accordion-body</code>, though the transition does limit overflow.
+                                        <ul>
+                                            <li>Visit <a href=" www.hybriddefi.com"> www.hybriddefi.com </a> on your decentralized wallet browser</li>
+                                            <li>Click Gain Access</li>
+                                            <li>Input your wallet address and access pin and click ACCESS.</li>
+                                        </ul>
                                     </div>
                                 </div>
                             </div>
+
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="heading2">
+                                    <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                                        data-bs-target="#collapse2" aria-expanded="true" aria-controls="collapse2">
+                                        HOW TO BUY HYBRID COIN?
+                                    </button>
+                                </h2>
+                                <div id="collapse2" class="accordion-collapse collapse "
+                                    aria-labelledby="heading2" data-bs-parent="#accordionExample">
+                                    <div class="accordion-body">
+                                        <ul>
+                                            <li>Access your hybrid dashboard and click on deposit to fund your hybrid wallet. Follow the guidelines on the deposit  page to fund your Hybrid wallet with USDT using TRX.
+                                            </li>
+                                            <li>When your deposit is confirmed, click buy coin at the dashboard</li>
+                                            <li>Input the amount in USDT you want to purchase and click on buy. </li>
+                                            <li>Your USDT balance will be debited and your hybrid balance credited immediately</li>
+                                            <li></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="heading3">
+                                    <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                                        data-bs-target="#collapse3" aria-expanded="true" aria-controls="collapse3">
+                                        HOW TO WITHDRAW USDT FROM MY HYBRID WALLET?
+                                    </button>
+                                </h2>
+                                <div id="collapse3" class="accordion-collapse collapse "
+                                    aria-labelledby="heading3" data-bs-parent="#accordionExample">
+                                    <div class="accordion-body">
+                                        To withdraw USDT from your hybrid wallet:
+
+                                        <ul>
+                                            <li>Click the menu button
+                                            </li>
+                                            <li>Click Withdrawal</li>
+                                            <li>Input the amount of USDT you want to withdraw</li>
+                                            <li>The USDT will be automatically converted to TRX and sent to your personal TRX wallet</li>
+                                            <li></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+
+                            
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="heading4">
+                                    <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                                        data-bs-target="#collapse4" aria-expanded="true" aria-controls="collapse4">
+                                        HOW TO WITHDRAW MY AFFILIATE COMMISSION?
+
+                                    </button>
+                                </h2>
+                                <div id="collapse4" class="accordion-collapse collapse "
+                                    aria-labelledby="heading4" data-bs-parent="#accordionExample">
+                                    <div class="accordion-body">
+                                        Your affiliate commission is sent to your hybrid wallet  as SHC. SHC can be converted to USDT or Hybridcoin
+                                        <ul>
+                                            <li>Click the menu button
+                                            </li>
+                                            <li>Click Convert</li>
+                                            <li>Input the amount of SHC you want to convert to USDT and click trade.
+                                            </li>
+                                            <li>The SHC will be immediately converted to USDT. You can now withdraw the USDT to your external wallet address</li>
+                                   
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                                         
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="heading5">
+                                    <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                                        data-bs-target="#collapse5" aria-expanded="true" aria-controls="collapse5">
+                                        HOW DO GET MY LINK TO INVITE OTHERS? 
+
+                                    </button>
+                                </h2>
+                                <div id="collapse5" class="accordion-collapse collapse"
+                                    aria-labelledby="heading5" data-bs-parent="#accordionExample">
+                                    <div class="accordion-body">
+                                        To help the hybrid community grow fast, when participants purchase hybrid coin, 10% of the USDT is distributed as referral commission to three generations. 6%, 2%  and 2% respectively
+                                        <ul>
+                                            <li>Click the menu button
+                                            </li>
+                                            <li>Click Invite Others</li>
+                                            <li>Copy your invite link and share with family and friends</li>                                   
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+
+
                         </div>
                     </div>
                 </div>

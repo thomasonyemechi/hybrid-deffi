@@ -124,7 +124,7 @@
                                     </div>
                                     <div class="form-group l2 ">
                                         <label for="text">Access Pin</label>
-                                        <input type="password" name="access_pin" autocomplete="new-password" inputmode="numeric"
+                                        <input type="password" name="access_pin" autocomplete="new-password" 
                                             class="form-control" placeholder="Enter yout six digit pin">
                                         <input type="hidden" name="user_id">
                                     </div>

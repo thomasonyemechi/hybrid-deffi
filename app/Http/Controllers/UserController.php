@@ -286,7 +286,7 @@ class UserController extends Controller
         $user_id = auth()->user()->id;
         if($request->amount > spcBalance($user_id)) 
         {
-            return back()->with('error', 'Insuffcient SPC balance');
+            return back()->with('error', 'Insuffcient SHC balance');
         }
 
         /////////log trade
@@ -297,7 +297,7 @@ class UserController extends Controller
 
         /////// remove spc from wallet        
         Wallet::create([
-            'currency' => 'spc',
+            'currency' => 'shc',
             'amount' => -$request->amount,
             'type' => 3,
             'user_id' => $user_id,
@@ -312,12 +312,12 @@ class UserController extends Controller
             'amount' => $request->amount,
             'type' => 1,
             'user_id' => $user_id,
-            'remark' => 'spc converted',
+            'remark' => 'shc converted',
             'ref_id' => $trade->id,
             'action' => 'debit'
         ]);
 
-        return back()->with('success', 'SPC trade has been made');
+        return back()->with('success', 'SHC trade has been made');
     }
 
 

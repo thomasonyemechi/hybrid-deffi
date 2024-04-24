@@ -55,7 +55,7 @@
                         <div class="form-group username-field">
 
                             <div class="form-field shadow-none" style="border: 1px solid white">
-                                <input class="form-control text-white" type="text" placeholder="TRX Wallet Address"
+                                <input class="form-control text-white" type="text" placeholder="TRX Wallet Address (TRC20)"
                                     required="required" name="wallet_address" value="{{ old('wallet_address') }}">
 
                                     <input type="hidden" name="ref" value="{{  $_GET['ref'] ?? '' }}">
