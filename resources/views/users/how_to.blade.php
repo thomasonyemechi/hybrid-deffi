@@ -50,10 +50,10 @@
                             <div class="data-privacy">
                                 <h4 class="mb-2"> 3. THE ROYALTY</h4>
                                 <p>
-                                    Updated Information: When you purchase Hybridcoin up to a total amount of $1500 (whether
+                                    Updated Information: When you purchase Hybridcoin up to a total amount of $2000 (whether
                                     instantly or gradually) you become a Royalty Member.
 
-                                    Or if you are able to invite 50 partners to the hybrid project you qualify for royalty.
+                                    Or if you are able to invite 60 partners to the hybrid project you qualify for royalty.
 
                                     You automatically become a royalty member if you are able to attain any of the both
                                     target.

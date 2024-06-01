@@ -126,7 +126,7 @@ class UserController extends Controller
     function transfer(Request $request)
     {
         $val = Validator::make($request->all(), [
-            'amount' => 'required|integer|min:20',
+            'amount' => 'required|integer|min:10',
             'access_pin' => 'required|string'
         ])->validate();
 

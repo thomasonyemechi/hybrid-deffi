@@ -100,8 +100,10 @@
 
                                     <div class="form-group">
                                         <label for="amount">Amount <span class="text-danger">*</span> </label>
-                                        <input type="number" class="form-control amount" name="amount" min="20"
+                                        <input type="number" class="form-control amount" name="amount" min="10"
                                             placeholder="Enter Amount" required>
+                                            <i class="text-danger amt_error "></i>
+
                                         @error('amount')
                                             <i class="text-danger  ">{{ $message }} </i>
                                         @enderror
@@ -114,7 +116,7 @@
                                     </div>
 
                                     <button type="button"
-                                        class="btn btn-primary transferusdtbtn01 rounded">Continue</button>
+                                        class="btn btn-primary transferusdtbtn01 rounded" disabled>Continue</button>
                                 </div>
 
                                 <div class="d-2" style="display: none">
@@ -149,6 +151,19 @@
 @push('scripts')
     <script>
         $(function() {
+
+
+        $('input[name="amount"]').on('keyup', function() {
+            val = $(this).val();
+            console.log(val);
+            if(val < 10) {
+                $('.amt_error').html('Amount must be greated than 10 usdt !');
+                $('.transferusdtbtn01').attr('disabled', 'disabled');
+            }else {
+                $('.amt_error').html(``);
+                $('.transferusdtbtn01').removeAttr('disabled');
+            }
+        })
 
             $('#transferusdt').on('submit', function() {
                 $('.transferusdtbtn02').attr('disabled', 'disabled');

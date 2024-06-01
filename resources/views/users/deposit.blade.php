@@ -20,7 +20,7 @@
                     <div>
                         <p>
 
-                            To fund your Hybrid Wallet, kindly send a minimum of 250 TRX (TRC20) to the address below. In
+                            To fund your Hybrid Wallet, kindly send a minimum of 400 TRX (TRC20) to the address below. In
                             less
                             than 12 hours, when your deposit is confirmed, our system will automatically convert TRX
                             to
