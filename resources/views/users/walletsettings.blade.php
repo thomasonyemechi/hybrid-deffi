@@ -7,16 +7,16 @@
                 <div class="card card-block card-stretch custom-scroll">
                     <div class="card-header d-flex flex-wrap justify-content-between align-items-center gap-3">
                         <div class="caption">
-                            <h4 class="font-weight-bold mb-2">Update Wallet Address</h4>
+                            <h4 class="font-weight-bold mb-2">Wallet Address</h4>
                         </div>
                     </div>
                     <div class="card-body">
-                        <div class="alert alert-solid alert-primary d-flex align-items-center" role="alert">
+                        {{-- <div class="alert alert-solid alert-primary d-flex align-items-center" role="alert">
                             <div>
                                 <b>Note:</b> To ensure security and streamline our processes, you can only update your
                                 wallet address once.
                             </div>
-                        </div>
+                        </div> --}}
 
                         <form method="POST" action="/wallet_update" autocomplete="off">@csrf
 
@@ -60,6 +60,31 @@
                             @endif
 
                         </form>
+
+                        <hr>
+
+                        <div class="alert alert-solid alert-warning d-flex align-items-center" role="alert">
+                            <div>
+                                <b>Note:</b> If turned on, TRX deposited will be converted to USDT. If turned off, TRX
+                                deposited will be converted to HBC
+                            </div>
+                        </div>
+
+                        <form action="/update_collect_currency" method="post">
+                            @csrf
+                      <div class="alert alert-success" >
+                        <div class="form-check form-switch">
+                            <input class="form-check-input " type="checkbox" role="switch" id="flexSwitchCheckChecked"
+                                onchange="submit()" {{ auth()->user()->collect_currency == 'usdt' ? 'checked' : '' }}>
+                            <label class="form-check-label" for="flexSwitchCheckChecked">Accept Every Payment in
+                                {{ auth()->user()->collect_currency == 'usdt' ? 'HBC' : 'USDT' }}    
+                            </label>
+                        </div>
+                      </div>
+
+                        </form>
+                        <span class="badge fs-6 bg-info" style="width: 100%"> Currenct TRX deposited will be converted to <span class="fw-bold" >{{ strtoupper(auth()->user()->collect_currency) }}</span>
+                    </span>
                     </div>
                 </div>
             </div>

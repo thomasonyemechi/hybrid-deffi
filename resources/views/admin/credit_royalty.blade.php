@@ -7,7 +7,7 @@
                 <div class="card card-block card-stretch custom-scroll">
                     <div class="card-header d-flex flex-wrap justify-content-between align-items-center gap-3">
                         <div class="caption">
-                            <h6 class="font-weight-bold text-sm mb-2">Credit User</h6>
+                            <h6 class="font-weight-bold text-sm mb-2">Credit User Royalty</h6>
                         </div>
                     </div>
                     <div class="card-body">
@@ -23,11 +23,14 @@
                             <div class="form-group">
                                 <label for="">Credit Type <span class="text-danger">*</span></label>
                                 <select name="type" class="form-control" id="">
-                                    <option value="normal">Normal Credit </option>
+                                    <option value="royalty">Royalty Credit </option>
                                 </select>
                                 @error('type')
                                     <i class="text-danger fw-bold ">{{ $message }} </i>
                                 @enderror
+
+
+
                                 <div class="alert type_dis alert-info mt-2">
 
                                 </div>
@@ -73,8 +76,7 @@
                             <div class="form-group">
                                 <div class="d-flex justify-content-between ">
                                     <label for="">Remark</label>
-                                    <label for="" class="badge text-end mb-1 bg-warning fill_me">USDT
-                                        DEPOSIT</label>
+                             
                                 </div>
                                 <input type="text" name="remark" class="form-control" value="{{ old('remark') }}"
                                     placeholder="Describe this transaction">
@@ -96,7 +98,7 @@
 
 
                             <div class="mt-2 d-flex justify-content-end ">
-                                <button class="btn btn-sm  btn-primary">Credit User</button>
+                                <button class="btn btn-sm  btn-secondary">Credit Rotalty</button>
                             </div>
                         </form>
                     </div>
@@ -108,7 +110,7 @@
                     <div class="card card-block card-stretch custom-scroll">
                         <div class="card-header d-flex flex-wrap justify-content-between align-items-center gap-3">
                             <div class="caption">
-                                <h4 class="font-weight-bold mb-2">Credit History</h4>
+                                <h4 class="font-weight-bold mb-2">Royalty Payment History</h4>
                             </div>
 
                         </div>

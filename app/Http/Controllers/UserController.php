@@ -35,6 +35,8 @@ class UserController extends Controller
     {
         $deposits = AdminCredit::where(['user_id' => auth()->user()->id, 'remark' => 'usdt deposit'])->orderby('id', 'desc')->paginate(10);
         $coin = CoinInfo::first();
+
+        
         return view('users.deposit', compact(['deposits', 'coin']));
     }
 
@@ -208,71 +210,10 @@ class UserController extends Controller
         $val = Validator::make($request->all(), [
             'usdt_amount' => 'required|integer|min:5'
         ])->validate();
-
-
         if ($request->usdt_amount > usdtBalance(auth()->user()->id)) {
             return back()->with('error', 'You don have up to this ammount of USDT in your wallet, fund your wallet and try again ');
         }
-
-        
-
-        $rate = $this->coin_current_price();
-
-        ///////log purchase in purchase
-        $purchase = Purchase::create([
-            'user_id' => auth()->user()->id,
-            'amount' => $request->usdt_amount,
-            'rate' => $rate,
-            'currency' => 'hbc'
-        ]);
-
-        //debit user USDT beause of purchase
-        Wallet::create([
-            'currency' => 'usdt',
-            'amount' => -$request->usdt_amount,
-            'type' => 1,
-            'user_id' => auth()->user()->id,
-            'remark' => 'HybridCoin purchase',
-            'ref_id' => $purchase->id,
-            'action' => 'debit'
-        ]);
-
-        //credit user PC
-        Wallet::create([
-            'currency' => 'hbc',
-            'amount' => ($request->usdt_amount * $rate) * 0.9,
-            'type' => 2,
-            'user_id' => auth()->user()->id,
-            'remark' => 'HybridCoin Deposit',
-            'ref_id' => $purchase->id,
-            'action' => 'credit'
-        ]);
-
-
-        $sponsors = [ ['id' => auth()->user()->sponsor ?? 1, 'percent' => 6], ['id' => auth()->user()->sponsor_2 ?? 1, 'percent' => 2], ['id' => auth()->user()->sponsor_3 ?? 1, 'percent' => 2] ];
-    
-        foreach($sponsors as $spon) 
-        {   
-
-            $percent = ($request->usdt_amount * $spon['percent']) / 100; //caluclating percentage
-
-            // log earnings 
-            $earned = Earning::create([
-                'user_id' => $spon['id'],
-                'amount' => $percent,
-                'downline' => auth()->user()->id
-            ]);
-
-            Wallet::create([
-                'currency' => 'shc',
-                'amount' => $percent,
-                'type' => 3,
-                'user_id' => $spon['id'],
-                'remark' => 'Earning',
-                'ref_id' => $earned->id,
-                'action' => 'credit'
-            ]);
-        }
+        byCoinFunc(auth()->user()->id, $request->usdt_amount, 'usdt');
         return redirect('/dashboard')->with('success', 'Coin purchase was successful');
     }
 
@@ -352,5 +293,19 @@ class UserController extends Controller
         }
 
         return 'done';
+    }
+
+
+    function update_collect_currency(Request $request)
+    {
+        $new = 'usdt';
+        if(auth()->user()->collect_currency == 'usdt') {
+            $new = 'hbc';
+        }
+        User::where('id', auth()->user()->id)->update([
+            'collect_currency' => $new
+        ]);
+
+        return back()->with('success', 'Currency has been updated');
     }
 }

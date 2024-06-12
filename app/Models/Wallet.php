@@ -17,4 +17,14 @@ class Wallet extends Model
     }
 
 
+    function credit()
+    {
+        if($this->type == 2) 
+        {
+            return $this->belongsTo(AdminCredit::class, 'ref_id');
+        }else {
+            
+        }
+    }
+
 }

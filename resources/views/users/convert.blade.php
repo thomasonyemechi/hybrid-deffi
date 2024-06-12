@@ -117,7 +117,7 @@
                                         </div>
                                         <div>
                                             <span class="counter" style="visibility: visible;"> $
-                                                {{ number_format(1500) }} </span>
+                                                {{ number_format(2000) }} </span>
                                         </div>
                                     </div>
                                 </div>

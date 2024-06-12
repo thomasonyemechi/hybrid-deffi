@@ -52,4 +52,18 @@ class User extends Authenticatable
     {
         return $this->belongsTo(User::class, 'sponsor');
     }
+
+
+    public function royalty()
+    {
+        return coinTotalPurchase($this->id);
+    }
+
+    public function downlines()
+    {
+        return $this->hasMany(User::class, 'sponsor');
+    }
+
+
+
 }

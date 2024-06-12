@@ -34,7 +34,7 @@
                         <a href="/" class="d-flex justify-content-center">
                             <img src="{{ asset('assets/images/coins/00.png') }}" style="width: 34px; height:34px"
                                 alt="">
-                            <h4 class="text-white mt-1" style="font-size: 23px;" >{{  strtoupper(env('APP_NAME')) }}</h4>
+                            <h4 class="text-white mt-1" style="font-size: 23px;">{{ strtoupper(env('APP_NAME')) }}</h4>
                         </a>
                     </div>
                 </div>
@@ -58,8 +58,9 @@
                         @csrf
                         <div class="form-group username-field">
                             <div class="form-field shadow-none" style="border: 1px solid white">
-                                <input class="form-control text-white" type="text" placeholder="TRX Wallet Address (TRC20) " 
-                                    required="required" name="wallet_address" value="{{ old('wallet_address') }}">
+                                <input class="form-control text-white" type="text"
+                                    placeholder="TRX Wallet Address (TRC20) " required="required" name="wallet_address"
+                                    value="{{ old('wallet_address') }}">
 
                             </div>
                             @error('wallet_address')
@@ -67,9 +68,20 @@
                             @enderror
                         </div>
                         <div class="form-group password-field">
+
+                            <div class="d-flex justify-content-end ">
+                                <a href="javascript:;" class="toggle_show text-secondary ">
+                                    <i class="fa fa-eye mb-2 mr-3 ml-2" style="text-align: right !important">Show
+                                        Pin </i>
+                                </a>
+                            </div>
                             <div class="form-field shadow-none" style="border: 1px solid white">
                                 <input class="form-control text-white" name="access_pin" type="password"
                                     placeholder="Access Pin" required="">
+
+
+                                <input type="hidden" name="mode" value="password">
+
 
                             </div>
                             @error('access_pin')
@@ -79,7 +91,7 @@
                         <div class="form-group">
                             <button type="submit" class="btn">Access</button>
                         </div>
-                   
+
                     </form>
                 </div>
             </div>
@@ -110,6 +122,27 @@
             setTimeout(() => {
                 $('.refresh').hide('slow');
             }, 5000);
+
+
+            $('.toggle_show').on('click', function() {
+                input = $('input[name="access_pin"]');
+                mode = $('input[name="mode"]')
+
+                console.log(mode);
+
+                if (mode.val() == 'password') {
+                    input.removeAttr('type');
+                    input.attr('type', 'text');
+                    mode.val('text')
+                    $(this).html(`  <i class="fa fa-eye-slash mb-2 mr-3 ml-2" style="text-align: right !important">Hide Pin </i>`)
+                } else {
+                    input.removeAttr('type');
+                    input.attr('type', 'password');
+                    mode.val('password')
+                    $(this).html(`  <i class="fa fa-eye mb-2 mr-3 ml-2" style="text-align: right !important">Show Pin </i>`)
+
+                }
+            })
         })
     </script>
 

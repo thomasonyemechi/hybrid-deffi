@@ -3,8 +3,14 @@
 
 // file contains all methods cast and helper function
 
+use App\Models\AdminCredit;
+use App\Models\CoinInfo;
+use App\Models\Earning;
+use App\Models\PriceChange;
 use App\Models\Purchase;
 use App\Models\Wallet;
+use App\Models\User;
+
 
 function depositStatus($status)
 {
@@ -27,7 +33,49 @@ function spcBalance($user_id)
 function coinTotalPurchase($user_id)
 {
     $total = Purchase::where(['user_id' => $user_id])->sum('amount');
-    return $total;
+    return $total ; //+ hbctotalDepost($user_id);
+}
+
+
+
+function updateCreditRef()
+{
+    $all = Wallet::where(['type' => 2, 'action' => 'credit'])->get();
+    $rate = PriceChange::latest()->first()->price;
+
+    foreach($all as $al) 
+    {
+        if($al->ref_id == 0) {
+            $credit = AdminCredit::where(['user_id' => $al->user_id , 'amount' => $al->amount])->first();
+            $al->update([
+                'ref_id' => $credit->id
+            ]);
+        }
+    }
+}
+
+
+function hbctotalDepost($user_id)
+{
+    $all = Wallet::with(['credit'])->where(['user_id' =>  $user_id, 'type' => 2, 'action' => 'credit'])->get();
+    $total = 0;
+
+    // updateCreditRef();
+
+    // return ;
+
+    foreach($all as $al) 
+    {
+        $rate = $al->rate;
+        $total += ($al->amount/ $al->credit->rate);
+    }
+    return 3838;
+}   
+
+
+function hybridTotalPurchase()
+{
+    return ;
 }
 
 
@@ -70,4 +118,83 @@ function dropError()
 function admins()
 {
     return [1,4,7];
+}
+
+
+function byCoinFunc($user_id, $amount)
+{
+    // buy coin login here 
+    $rate = PriceChange::latest()->first()->price;
+
+    ///////log purchase in purchase
+    $purchase = Purchase::create([
+        'user_id' => $user_id,
+        'amount' => $amount,
+        'rate' => $rate,
+        'currency' => 'hbc'
+    ]);
+
+    //debit user USDT beause of purchase
+    Wallet::create([
+        'currency' => 'usdt',
+        'amount' => -$amount,
+        'type' => 1,
+        'user_id' => $user_id,
+        'remark' => 'HybridCoin purchase',
+        'ref_id' => $purchase->id,
+        'action' => 'debit'
+    ]);
+
+    //credit user with coin
+    Wallet::create([
+        'currency' => 'hbc',
+        'amount' => ($amount * $rate) * 0.9,
+        'type' => 2,
+        'user_id' => $user_id,
+        'remark' => 'HybridCoin Deposit',
+        'ref_id' => $purchase->id,
+        'action' => 'credit'
+    ]);
+
+    // i am multiplying by 0.9 because only 90 % of the money will be used to buy coin 10% will be spent of uplines
+    // this function below share the 10%;
+    shareProfit($user_id, $amount, 'usdt');
+    return;
+}
+
+
+function shareProfit($user_id, $amount, $currency='usdt')
+{
+    $user = User::find($user_id);
+
+    $rate = PriceChange::latest()->first()->price;
+    if($currency == 'usdt') {
+        $usdt_amount = $amount;
+    }else {
+        $usdt_amount = $amount / $rate;
+    }
+
+    $sponsors = [ ['id' => $user->sponsor ?? 1, 'percent' => 6], ['id' => $user->sponsor_2 ?? 1, 'percent' => 2], ['id' => $user->sponsor_3 ?? 1, 'percent' => 2] ];
+    foreach($sponsors as $spon) 
+    {   
+        $percent = ($usdt_amount * $spon['percent']) / 100; //caluclating percentage
+        // log earnings 
+        $earned = Earning::create([
+            'user_id' => $spon['id'],
+            'amount' => $percent,
+            'downline' => auth()->user()->id
+        ]);
+
+        Wallet::create([
+            'currency' => 'shc',
+            'amount' => $percent,
+            'type' => 3,
+            'user_id' => $spon['id'],
+            'remark' => 'Earning',
+            'ref_id' => $earned->id,
+            'action' => 'credit'
+        ]);
+    }
+
+    return;
 }

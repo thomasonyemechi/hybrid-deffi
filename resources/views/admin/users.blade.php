@@ -45,7 +45,7 @@
                                         @foreach ($users as $user)
                                             <tr>
                                                 <td> <a class=" fw-bold text-white  " href="#"  > <span>{{$user->wallet}} </span> </a> </td>
-                                                <td> <a class=" fw-bold text-white " href="#"  > <span>{{$user->username}} </span> </a> </td>
+                                                <td> <a class=" fw-bold text-white " href="#"  > <span>{{$user->username}}   </span> </a> </td>
                                                 <td> 
                                                     <span class="badge bg-warning" > {{number_format(pcBalance($user->id),)}} HBC </span>
                                                 </td>

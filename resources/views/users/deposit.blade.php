@@ -29,14 +29,15 @@
 
                         </p>
 
-             
-                        <div>
-                            <span class="badge mb-2 bg-danger"> {{ $coin->wallet_address }} </span>
 
-                            <div class="d-flex mb-3 justify-content-lg-start">
-                                <input type="text" id="input_field" readonly class="form-control shadow text-danger bg-light form-control-sm fw-bold me-2" style="border: 2px solid red;"
-                                    value="{{ $coin->wallet_address }}">
-                                <button class="btn bg-light fw-bold text-danger shadow " onclick="yourFunction()" style="border: 2px solid red;" type="submit">Copy</button>
+                        <div class="wallet_area">
+
+                            <div class="wallet_loader mb-3">
+                                <span class="spinner-border spinner-border-sm" aria-hidden="true"></span> <i
+                                    class="">Loading Deposit Wallet Address ... </i>
+                            </div>
+                            <div class="wallet_copy">
+
                             </div>
                         </div>
 
@@ -74,8 +75,8 @@
                                     @foreach ($deposits as $dep)
                                         <tr class="white-space-no-wrap">
                                             <td class="pe-2"> {!! depositAmount($dep->amount) !!} </td>
-                                            <td> 
-                                                <div class="badge bg-success" >
+                                            <td>
+                                                <div class="badge bg-success">
                                                     Successful
                                                 </div>
                                             </td>
@@ -221,6 +222,63 @@
                 $('#dep_2').hide('slowly');
                 $('#dep_3').hide('slowly');
             })
+        })
+    </script>
+
+
+    <script>
+        $(function() {
+
+
+
+
+            function loadWallet() {
+                old_wallet = localStorage.getItem('d_wallet');
+
+
+
+                $.ajax({
+                    method: 'get',
+                    url: `/validate_wallet/${old_wallet}`
+                }).done(function(res) {
+                    if (res.old_wallet_is_valid) {
+                        console.log('old is gold');
+                    } else {
+                        // set expiry time for wallet address
+                        localStorage.setItem('d_wallet', res.new_wallet);
+                    }
+
+                    loadString();
+
+                }).fail(function(res) {
+                    console.log(res);
+                })
+            }
+
+
+            function loadString() {
+                old_wallet = localStorage.getItem('d_wallet');
+
+                wallet_area = $('.wallet_area');
+
+                wallet_loader = $(wallet_area).find('.wallet_loader');
+                wallet_loader.hide();
+
+
+                wallet_copy = $(wallet_area).find('.wallet_copy');
+                wallet_copy.html(`
+                    <span class="badge mb-2 bg-danger"> ${old_wallet} </span>
+                    <div class="d-flex mb-3 justify-content-lg-start">
+                        <input type="text" id="input_field" readonly
+                            class="form-control shadow text-danger bg-light form-control-sm fw-bold me-2"
+                            style="border: 2px solid red;" value="${old_wallet}">
+                        <button class="btn bg-light fw-bold text-danger shadow " onclick="yourFunction()"
+                            style="border: 2px solid red;" type="submit">Copy</button>
+                    </div>
+                `)
+            }
+
+            loadWallet();
         })
     </script>
 

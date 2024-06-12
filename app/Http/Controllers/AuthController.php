@@ -73,7 +73,7 @@ class AuthController extends Controller
             'ref' => sha1($user->id)
         ]);
 
-        return redirect('/login')->with('success', 'You have been successfuly registered, Proceed to Access account');
+        return redirect('/access')->with('success', 'You have been successfuly registered, Enter credentials to Access account');
     }
 
     public function logout(Request $request): RedirectResponse

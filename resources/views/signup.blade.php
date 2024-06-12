@@ -68,6 +68,12 @@
 
                         <div class="form-group password-field">
 
+                            <div class="d-flex justify-content-end ">
+                                <a href="javascript:;" class="toggle_show text-secondary ">
+                                    <i class="fa fa-eye mb-2 mr-3 ml-2" style="text-align: right !important">Show
+                                        Pin </i>
+                                </a>
+                            </div>
                             <div class="form-field shadow-none" style="border: 1px solid white">
                                 <input class="form-control text-white" name="access_pin" type="password" inputmode="numeric"
                                     autocomplete="new-password" placeholder="Enter a six digit passcode" required="">
@@ -77,6 +83,14 @@
                             @error('access_pin')
                                 <i class="text-danger fw-bold ">{{ $message }} </i>
                             @enderror
+
+                            <small class="text-warning ">Access pin cannot start with zero</small>
+
+
+
+                            
+                            <input type="hidden" name="mode" value="password">
+
                         </div>
 
                         <div class="form-group">
@@ -119,6 +133,26 @@
             setTimeout(() => {
                 $('.refresh').hide('slow');
             }, 5000);
+
+            $('.toggle_show').on('click', function() {
+                input = $('input[name="access_pin"]');
+                mode = $('input[name="mode"]')
+
+                console.log(mode);
+
+                if (mode.val() == 'password') {
+                    input.removeAttr('type');
+                    input.attr('type', 'text');
+                    mode.val('text')
+                    $(this).html(`  <i class="fa fa-eye-slash mb-2 mr-3 ml-2" style="text-align: right !important">Hide Pin </i>`)
+                } else {
+                    input.removeAttr('type');
+                    input.attr('type', 'password');
+                    mode.val('password')
+                    $(this).html(`  <i class="fa fa-eye mb-2 mr-3 ml-2" style="text-align: right !important">Show Pin </i>`)
+
+                }
+            })
         })
     </script>
 

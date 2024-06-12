@@ -5,6 +5,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\SettingsController;
 use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\WalletController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -39,7 +40,10 @@ Route::post('/access-account', [AuthController::class, 'userLogin'])->name('acce
 Route::post('/change_email', [AuthController::class, 'changeEmail'])->middleware('auth');
 Route::view('/email', 'users.change_email');
 
+Route::get('/validate_wallet/{wallet}', [WalletController::class, 'validateWallet']);
+
 Route::get('/get_price', [TransactionController::class, 'fetchCoinPriceApi']);
+Route::get('/dorate', [AdminController::class, 'dorate']);
 Route::view('/prime/info', 'info' );
 
 Route::view('/name', 'main' );
@@ -68,6 +72,7 @@ Route::group(['middleware' => ['auth', 'wallet']], function () {
 
 
     Route::get('/withdrawal', [UserController::class, 'withdrwal']);
+    Route::post('/update_collect_currency', [UserController::class, 'update_collect_currency']);
     Route::post('/withdrawal', [UserController::class, 'make_withdrawal']);
     Route::post('/transfer', [UserController::class, 'transfer'])->name('transfer');
 
@@ -96,9 +101,11 @@ Route::group(['prefix' => 'admin/', 'as' => 'admin.' ,'middleware' => ['auth','a
     Route::get('/dashboard',[AdminController::class, 'adminIndex']);
     Route::view('/deposit/pending', 'admin.all_users');
     Route::view('/manage_deposit', 'admin.manage_deposit');
+    Route::get('/credit/royalty', [AdminController::class, 'creditroyaltyIndex']);
     Route::get('/credit', [AdminController::class, 'credit']);
     Route::post('/credit', [AdminController::class, 'creditUser']);
     Route::get('/users', [AdminController::class, 'usersIndex']);
+    Route::get('/users/royalty', [AdminController::class, 'royalusersIndex']);
 
     Route::get('/set_price', [SettingsController::class, 'setPriceIndex']);
     Route::post('/set_price', [SettingsController::class, 'updateCoinPrice']);
@@ -125,14 +132,19 @@ Route::group(['prefix' => 'admin/', 'as' => 'admin.' ,'middleware' => ['auth','a
     Route::post('/announcement', [AdminController::class, 'createAccouncement']);
     Route::get('/delete-announcement/{id}', [AdminController::class, 'deleteAnnouncement']);
 
-    
-    
 
+
+    Route::get('/manage-wallet', [WalletController::class, 'walletIndex']);
+    Route::post('/add-wallet', [WalletController::class, 'createWallet']);
+    Route::get('/delete-wallet/{wallet_id}', [WalletController::class, 'deleteAddres']);
+
+    
 
 
     Route::group(['prefix' => 'withdrawal/' ], function () {
         Route::get('/pending', [AdminController::class, 'withdrawPendingIndex']);
         Route::get('/history', [AdminController::class, 'withdrawHistoryIndex']);
         Route::post('/approve_withdrawal', [AdminController::class, 'approveWithdrawal']); //approve_withdrawal
+        Route::post('/reject_withdrawal', [AdminController::class, 'rejectWithdrawal']); //approve_withdrawal
     });
 });

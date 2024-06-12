@@ -15,6 +15,26 @@ use Illuminate\Support\Facades\Validator;
 class AdminController extends Controller
 {
 
+
+    function dorate()
+    {
+        $adminCredits = AdminCredit::where(['currency' => 'hbc' ])->get();
+
+
+        foreach($adminCredits as $credit) 
+        {
+            if(!$credit->rate) {
+                $rate = PriceChange::latest()->first()->price;
+                AdminCredit::where('id', $credit->id)->update([
+                    'rate' => $rate
+                ]);
+            }
+
+        }
+
+        return 'done';
+    }
+
     function adminIndex()
     {
         $pc_balance = Wallet::where(['type' => '2' ])->sum('amount');
@@ -41,6 +61,7 @@ class AdminController extends Controller
         return view('admin.pending_deposit', compact('deposits'));
     }
 
+
     function usersIndex(Request $request)
     {
         if ($request->user) {
@@ -49,6 +70,14 @@ class AdminController extends Controller
             $users = User::with(['spon:id,username'])->where('id', '>', 1)->orderby('id', 'desc')->paginate(50);
         }
         return view('admin.users', compact('users'));
+    }
+
+
+    function royalusersIndex(Request $request)
+    {
+        $users = User::with(['spon:id,username'])->get();
+
+        return view('admin.royaty', compact(['users']));
     }
 
 
@@ -174,6 +203,29 @@ class AdminController extends Controller
     }
 
 
+
+    function rejectWithdrawal(Request $request)
+    {
+        $val = Validator::make($request->all(), [
+            'id' => 'required|integer|exists:withdrawals,id',
+        ])->validate();
+
+        $with = Withdrawal::find($request->id);
+
+        /////check if any action has once been take on this deposit
+        if ($with->status != 'pending') {
+            return back()->with('error', 'This withdrawal request cannot be approved');
+        }
+
+        $with->update([
+            'processed_by' => auth()->user()->id,
+            'status' => 'rejected'
+        ]);
+
+        return back()->with('success', 'Withdrwal has been sucessfuly rejected');
+    }
+
+
     public function createAccouncement(Request $request)
     {
         $res  = Validator::make($request->all(), [
@@ -220,8 +272,15 @@ class AdminController extends Controller
 
     function credit()
     {
-        $credits = AdminCredit::with(['user', 'admin'])->orderby('id', 'desc')->paginate(25);
+        $credits = AdminCredit::where(['type' => 'normal'])->with(['user', 'admin'])->orderby('id', 'desc')->paginate(25);
         return view('admin.credit_users', compact('credits'));
+    }
+
+
+    function creditroyaltyIndex()
+    {
+        $credits = AdminCredit::where(['type' => 'royalty'])->with(['user', 'admin'])->orderby('id', 'desc')->paginate(25);
+        return view('admin.credit_royalty', compact(['credits']));
     }
 
 
@@ -251,6 +310,8 @@ class AdminController extends Controller
             'user_id' => $user->id,
             'currency' => $request->currency,
             'remark' => $request->remark ?? 'Admin Deposit',
+            'type' => $request->type,
+            'rate' => PriceChange::latest()->first()->price,
             'by' => auth()->user()->id
         ]);
 
@@ -260,7 +321,6 @@ class AdminController extends Controller
             'amount' => $request->amount,
             'user_id' => $user->id,
             'remark' => $request->remark ?? 'Admin Deposit',
-            'ref_id' => 0000,
             'action' => 'credit',
             'type' => 0, 
         ]);
@@ -269,11 +329,27 @@ class AdminController extends Controller
             $wallet->update([
                 'type' => 1, 
             ]);
+
+            // if credit action is a royalty credit do not buy coin and con not share profit
+            if($request->action == 'normal') {
+                if($user->collect_currency == 'hbc') {
+                    //////// run buy function and but the crypto for the user else stop and credit
+                    byCoinFunc($user->id, $request->amount);
+                }    
+            }
+         
         }else {
             $wallet->update([
                 'type' => 2, 
             ]);
+
+            if($request->action == 'normal') {
+                // since credit users woth coin means they buy, also do the sharing percent to downline
+                shareProfit($user->id, $request->amount, 'hbc');
+            }
         }
+
+        
 
         return back()->with('success', 'Wallet has been sucessfuly credited');
     }

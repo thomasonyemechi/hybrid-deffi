@@ -99,7 +99,7 @@
             <div class="modal-content">
 
                 <div class="modal-body">
-                    <form method="POST" action="/admin/deposit/reject_deposit"> @csrf
+                    <form method="POST" action="/admin/withdrawal/reject_withdrawal"> @csrf
                         <h3>Reject Deposit</h3>
                         <p class="text-danger"></p>
                         <div class="form-group">
