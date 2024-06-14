@@ -56,9 +56,6 @@
                                                     <td>
                                                         <span class="badge bg-success">
                                                             {{ number_format($user->royalty(), 2)}} </span>
-
-
-                                                            {{ number_format(hbctotalDepost($user->id), 2)}} 
                                                     </td>
 
                                                     <td>

@@ -104,6 +104,8 @@ Route::group(['prefix' => 'admin/', 'as' => 'admin.' ,'middleware' => ['auth','a
     Route::get('/credit/royalty', [AdminController::class, 'creditroyaltyIndex']);
     Route::get('/credit', [AdminController::class, 'credit']);
     Route::post('/credit', [AdminController::class, 'creditUser']);
+    Route::post('/debit', [AdminController::class, 'debitUser']);
+    Route::get('/debit', [AdminController::class, 'debit']);
     Route::get('/users', [AdminController::class, 'usersIndex']);
     Route::get('/users/royalty', [AdminController::class, 'royalusersIndex']);
 
@@ -137,9 +139,6 @@ Route::group(['prefix' => 'admin/', 'as' => 'admin.' ,'middleware' => ['auth','a
     Route::get('/manage-wallet', [WalletController::class, 'walletIndex']);
     Route::post('/add-wallet', [WalletController::class, 'createWallet']);
     Route::get('/delete-wallet/{wallet_id}', [WalletController::class, 'deleteAddres']);
-
-    
-
 
     Route::group(['prefix' => 'withdrawal/' ], function () {
         Route::get('/pending', [AdminController::class, 'withdrawPendingIndex']);

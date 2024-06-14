@@ -120,9 +120,22 @@ class UserController extends Controller
     function inviteIndex()
     {
         $user_id = auth()->user()->id;
-        $direct_downlines = User::where(['sponsor' => $user_id])->orwhere(['sponsor_2' => $user_id])->orwhere(['sponsor_2' => $user_id])->orderby('id', 'desc')->get();
-        // $indirect_downlines = User::where(['sponsor_2' => $user_id])->orwhere(['sponsor_2' => $user_id])->orderby('id', 'desc')->get();
-        return view('users.invite', compact(['direct_downlines']));
+        $direct_downlines = User::where(['sponsor' => $user_id])->orderby('id', 'desc')->get();
+
+        $valid_users = $royal_users = 0;
+
+        foreach($direct_downlines as $dw)
+        {
+            if($dw->hybridTotal() > 0) {
+                $valid_users += 1;
+            }
+            if($dw ->royalty() > 25) {
+                $royal_users += 1;
+            }
+        }
+
+        $total_partners = count($direct_downlines);
+        return view('users.invite', compact(['direct_downlines', 'royal_users', 'valid_users', 'total_partners']));
     }
 
     function transfer(Request $request)
@@ -236,7 +249,7 @@ class UserController extends Controller
             'amount' => $request->amount,
         ]);
 
-        /////// remove spc from wallet        
+        /////// remove shc from wallet        
         Wallet::create([
             'currency' => 'shc',
             'amount' => -$request->amount,
@@ -276,6 +289,15 @@ class UserController extends Controller
             'status' => 'pending', 
             'user_id' => auth()->user()->id,
             'wallet_address' => auth()->user()->wallet,
+        ]);
+        Wallet::create([
+            'ref_id' => $with->id,
+            'currency' => 'usdt',
+            'amount' => -$with->amount,
+            'type' => 1,
+            'remark' => 'pending withdrawal',
+            'user_id' => $with->user_id,
+            'action' => 'debit'
         ]);
         return back()->with('success', 'Your withdrawal request has been logged, and would be reviewed');
     }

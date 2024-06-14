@@ -65,5 +65,11 @@ class User extends Authenticatable
     }
 
 
+    function hybridTotal()
+    {
+        return $this->pcBalance($this->id);
+    }
+
+
 
 }

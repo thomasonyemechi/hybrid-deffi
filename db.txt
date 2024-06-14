@@ -1,3 +1,1 @@
-ALTER TABLE `admin_credits` ADD `type` VARCHAR(20) NOT NULL DEFAULT 'normal' AFTER `by`;
-
-
+ALTER TABLE `admin_debits` CHANGE `rate` `rate` DOUBLE(10,4) NOT NULL;

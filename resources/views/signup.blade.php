@@ -51,14 +51,15 @@
                             <i class="text-danger"> {{ session('error') }} </i>
                         </div>
                     @endif
-                    <form method="post" action=" {{ route('create-account') }} ">@csrf
+                    <form method="post" action=" {{ route('create-account') }} " id="signup_form">@csrf
                         <div class="form-group username-field">
 
                             <div class="form-field shadow-none" style="border: 1px solid white">
-                                <input class="form-control text-white" type="text" placeholder="TRX Wallet Address (TRC20)"
-                                    required="required" name="wallet_address" value="{{ old('wallet_address') }}">
+                                <input class="form-control text-white" type="text"
+                                    placeholder="TRX Wallet Address (TRC20)" required="required" name="wallet_address"
+                                    value="{{ old('wallet_address') }}">
 
-                                    <input type="hidden" name="ref" value="{{  $_GET['ref'] ?? '' }}">
+                                <input type="hidden" name="ref" value="{{ $_GET['ref'] ?? '' }}">
 
                             </div>
                             @error('wallet_address')
@@ -75,8 +76,9 @@
                                 </a>
                             </div>
                             <div class="form-field shadow-none" style="border: 1px solid white">
-                                <input class="form-control text-white" name="access_pin" type="password" inputmode="numeric"
-                                    autocomplete="new-password" placeholder="Enter a six digit passcode" required="">
+                                <input class="form-control text-white" name="access_pin" type="password"
+                                    inputmode="numeric" autocomplete="new-password"
+                                    placeholder="Enter a six digit passcode" required="">
 
                             </div>
 
@@ -84,11 +86,12 @@
                                 <i class="text-danger fw-bold ">{{ $message }} </i>
                             @enderror
 
-                            <small class="text-warning ">Access pin cannot start with zero</small>
+                            <small class="text-warning pinwarning " style="display: none">Access pin cannot start with
+                                zero</small>
 
 
 
-                            
+
                             <input type="hidden" name="mode" value="password">
 
                         </div>
@@ -134,6 +137,18 @@
                 $('.refresh').hide('slow');
             }, 5000);
 
+            $('#signup_form').on('submit', function(e) {
+
+                pas = $('input[name="access_pin"]').val();
+
+                if (pas.slice(0, 1) == 0 || pas.slice(0, 1) == '0') {
+                    e.preventDefault();
+
+                    $('.pinwarning').show();
+
+                }
+            })
+
             $('.toggle_show').on('click', function() {
                 input = $('input[name="access_pin"]');
                 mode = $('input[name="mode"]')
@@ -144,12 +159,16 @@
                     input.removeAttr('type');
                     input.attr('type', 'text');
                     mode.val('text')
-                    $(this).html(`  <i class="fa fa-eye-slash mb-2 mr-3 ml-2" style="text-align: right !important">Hide Pin </i>`)
+                    $(this).html(
+                        `  <i class="fa fa-eye-slash mb-2 mr-3 ml-2" style="text-align: right !important">Hide Pin </i>`
+                        )
                 } else {
                     input.removeAttr('type');
                     input.attr('type', 'password');
                     mode.val('password')
-                    $(this).html(`  <i class="fa fa-eye mb-2 mr-3 ml-2" style="text-align: right !important">Show Pin </i>`)
+                    $(this).html(
+                        `  <i class="fa fa-eye mb-2 mr-3 ml-2" style="text-align: right !important">Show Pin </i>`
+                        )
 
                 }
             })

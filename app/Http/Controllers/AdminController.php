@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\AdminCredit;
+use App\Models\AdminDebit;
 use App\Models\Announcment;
 use App\Models\Deposit;
 use App\Models\PriceChange;
@@ -189,16 +190,9 @@ class AdminController extends Controller
             'status' => 'approved'
         ]);
 
-        Wallet::create([
-            'ref_id' => $with->id,
-            'currency' => 'usdt',
-            'amount' => -$with->amount,
-            'type' => 1,
-            'remark' => 'Fund Deposit',
-            'user_id' => $with->user_id,
-            'action' => 'debit'
+        Wallet::where(['ref_id' => $with->id, 'amount' => -$with->amount])->update([
+            'remark' => 'Fund Withdrawal',
         ]);
-
         return back()->with('success', 'Withdrwal has been approved');
     }
 
@@ -221,6 +215,8 @@ class AdminController extends Controller
             'processed_by' => auth()->user()->id,
             'status' => 'rejected'
         ]);
+
+        Wallet::where(['ref_id' => $with->id, 'amount' => -$with->amount])->delete();
 
         return back()->with('success', 'Withdrwal has been sucessfuly rejected');
     }
@@ -267,6 +263,13 @@ class AdminController extends Controller
         Announcment::where('id', $id)->delete();
 
         return back()->with('success', 'Announcement has been deleted');
+    }
+
+
+    function debit()
+    {
+        $debits = AdminDebit::with(['user', 'admin'])->orderby('id', 'desc')->paginate(25);
+        return view('admin.debit_users', compact('debits'));
     }
 
 
@@ -331,7 +334,7 @@ class AdminController extends Controller
             ]);
 
             // if credit action is a royalty credit do not buy coin and con not share profit
-            if($request->action == 'normal') {
+            if($request->type == 'normal') {
                 if($user->collect_currency == 'hbc') {
                     //////// run buy function and but the crypto for the user else stop and credit
                     byCoinFunc($user->id, $request->amount);
@@ -343,10 +346,73 @@ class AdminController extends Controller
                 'type' => 2, 
             ]);
 
-            if($request->action == 'normal') {
+            if($request->type == 'normal') {
                 // since credit users woth coin means they buy, also do the sharing percent to downline
                 shareProfit($user->id, $request->amount, 'hbc');
             }
+        }
+
+        
+
+        return back()->with('success', 'Wallet has been sucessfuly credited');
+    }
+
+
+
+
+    function debitUser(Request $request)
+    {
+        Validator::make($request->all(), [
+            'wallet_address' => 'required|string|exists:users,wallet',
+            'amount' => 'required',
+            'currency' => 'required|string',
+            'access_pin' => 'required|string'
+        ])->validate();
+
+
+        
+        if (!password_verify($request->access_pin, auth()->user()->password)) {
+            return back()->with('error', 'You entered a wrong password');
+        }
+
+        $user = User::where(['wallet' => $request->wallet_address])->first();
+        if (!$user) {
+            abort(404);
+        }
+
+
+        $debit = AdminDebit::create([
+            'amount' => $request->amount,
+            'user_id' => $user->id,
+            'currency' => $request->currency,
+            'remark' => $request->remark ?? 'Admin Deposit',
+            'rate' => PriceChange::latest()->first()->price,
+            'by' => auth()->user()->id
+        ]);
+
+        $wallet = Wallet::create([
+            'ref_id' => $debit->id,
+            'currency' => $request->currency,
+            'amount' => -$request->amount,
+            'user_id' => $user->id,
+            'remark' => $request->remark ?? 'Admin Debit',
+            'action' => 'debit',
+            'type' => 0, 
+        ]);
+
+        if($request->currency == 'usdt') {
+            $wallet->update([
+                'type' => 1, 
+            ]);
+
+        }else if($request->currency == 'shc') {
+            $wallet->update([
+                'type' => 3, 
+            ]); 
+        }else {
+            $wallet->update([
+                'type' => 2, 
+            ]);
         }
 
         

@@ -50,7 +50,7 @@ class AuthController extends Controller
     function createAccount(Request $request)
     {
         Validator::make($request->all(), [
-            'wallet_address' => 'string|unique:users,wallet',
+            'wallet_address' => 'string|unique:users,wallet|starts_with:T',
             'access_pin' => 'integer|min:6|',
         ])->validate();
 

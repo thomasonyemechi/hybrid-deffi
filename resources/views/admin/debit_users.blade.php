@@ -7,41 +7,26 @@
                 <div class="card card-block card-stretch custom-scroll">
                     <div class="card-header d-flex flex-wrap justify-content-between align-items-center gap-3">
                         <div class="caption">
-                            <h6 class="font-weight-bold text-sm mb-2">Credit User</h6>
+                            <h6 class="font-weight-bold text-sm mb-2">Debit User</h6>
                         </div>
                     </div>
                     <div class="card-body">
-                        <form action="/admin/credit" method="post">
+                        <form action="/admin/debit" method="post">
 
                             @csrf
 
                             <div class="alert alert-warning">
-                                Credit user's wallet with Hybrid Coin or USDT
+                                Debit user Hybrid Coin, USDT or Commision
                             </div>
 
 
-                            <div class="form-group">
-                                <label for="">Credit Type <span class="text-danger">*</span></label>
-                                <select name="type" class="form-control" id="">
-                                    <option value="normal">Normal Credit </option>
-                                </select>
-                                @error('type')
-                                    <i class="text-danger fw-bold ">{{ $message }} </i>
-                                @enderror
-                                <div class="alert type_dis alert-info mt-2">
-
-                                </div>
-
-
-                            </div>
-
-
-
+                  
                             <div class="form-group">
                                 <label for="">Currency <span class="text-danger">*</span></label>
                                 <select name="currency" class="form-control" id="">
                                     <option value="hbc"> Hybrid Coin (HBC) </option>
                                     <option value="usdt"> USDT (USDT) </option>
+                                    <option value="shc"> Commision (SHC) </option>
                                 </select>
                                 @error('currency')
                                     <i class="text-danger fw-bold ">{{ $message }} </i>
@@ -62,7 +47,7 @@
                             <div class="form-group">
                                 <label for="">Amount <span class="text-danger">*</span></label>
                                 <input type="number" name="amount" step="any" class="form-control"
-                                    value="{{ old('amount') }}" placeholder="Amount to send ">
+                                    value="{{ old('amount') }}" placeholder="Amount to Debit ">
                                 @error('amount')
                                     <i class="text-danger fw-bold ">{{ $message }} </i>
                                 @enderror
@@ -73,7 +58,8 @@
                             <div class="form-group">
                                 <div class="d-flex justify-content-between ">
                                     <label for="">Remark</label>
-                                    <label for="" class="badge text-end mb-1 bg-warning fill_me">USDT DEPOSIT</label>
+                                    <label for="" class="badge text-end mb-1 bg-warning fill_me">USDT
+                                        DEPOSIT</label>
                                 </div>
                                 <input type="text" name="remark" class="form-control" value="{{ old('remark') }}"
                                     placeholder="Describe this transaction">
@@ -95,7 +81,7 @@
 
 
                             <div class="mt-2 d-flex justify-content-end ">
-                                <button class="btn btn-sm  btn-primary">Credit User</button>
+                                <button class="btn btn-sm  btn-primary">Debit User</button>
                             </div>
                         </form>
                     </div>
@@ -107,7 +93,7 @@
                     <div class="card card-block card-stretch custom-scroll">
                         <div class="card-header d-flex flex-wrap justify-content-between align-items-center gap-3">
                             <div class="caption">
-                                <h4 class="font-weight-bold mb-2">Credit History</h4>
+                                <h4 class="font-weight-bold mb-2">Debit History</h4>
                             </div>
 
                         </div>
@@ -124,23 +110,23 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach ($credits as $credit)
+                                        @foreach ($debits as $debit)
                                             <tr>
                                                 <td class="align-middle text-success border-top-0">
-                                                    {{ number_format($credit->amount, 2) }}
-                                                    {{ $credit->currency }}
+                                                    {{ number_format($debit->amount, 2) }}
+                                                    {{ $debit->currency }}
                                                 </td>
                                                 <td class="align-middle border-top-0">
-                                                    {{ $credit->user->wallet ?? $credit->user->username }}
+                                                    {{ $debit->user->wallet ?? $debit->user->username }}
                                                 </td>
                                                 <td class="align-middle border-top-0">
-                                                    {{ $credit->remark }}
+                                                    {{ $debit->remark }}
                                                 </td>
                                                 <td class="align-middle border-top-0">
-                                                    {{ $credit->admin->username }}
+                                                    {{ $debit->admin->username }}
                                                 </td>
                                                 <td class="align-middle border-top-0 text-end">
-                                                    {{ $credit->created_at }}
+                                                    {{ $debit->created_at }}
                                                 </td>
                                             </tr>
                                         @endforeach
@@ -148,7 +134,7 @@
                                 </table>
                             </div>
                             <div class="d-flex justify-content-end mt-3 ">
-                                {{ $credits->links('pagination::bootstrap-4') }}
+                                {{ $debits->links('pagination::bootstrap-4') }}
                             </div>
 
                         </div>
@@ -161,7 +147,7 @@
 
 
     @push('scripts')
-        <script>
+        {{-- <script>
             $(function() {
                 $('body').on('click', '.fill_me', function() {
                     text = $(this).html();
@@ -187,5 +173,5 @@
                 doType();
 
             })
-        </script>
+        </script> --}}
     @endpush

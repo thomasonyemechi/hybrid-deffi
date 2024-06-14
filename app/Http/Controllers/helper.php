@@ -33,7 +33,7 @@ function spcBalance($user_id)
 function coinTotalPurchase($user_id)
 {
     $total = Purchase::where(['user_id' => $user_id])->sum('amount');
-    return $total ; //+ hbctotalDepost($user_id);
+    return $total + hbctotalDepost($user_id);
 }
 
 
@@ -57,19 +57,22 @@ function updateCreditRef()
 
 function hbctotalDepost($user_id)
 {
-    $all = Wallet::with(['credit'])->where(['user_id' =>  $user_id, 'type' => 2, 'action' => 'credit'])->get();
+    $all = Wallet::where(['user_id' =>  $user_id, 'type' => 2, 'action' => 'credit'])->get();
     $total = 0;
-
-    // updateCreditRef();
-
-    // return ;
 
     foreach($all as $al) 
     {
         $rate = $al->rate;
-        $total += ($al->amount/ $al->credit->rate);
+        if(isset($al->credit)) {
+            if($al->credit->rate > 0) {
+                       $total += ($al->amount/ $al->credit->rate);
+            }
+     
+        }else {
+            $total += 0;
+        }
     }
-    return 3838;
+    return $total;
 }   
 
 

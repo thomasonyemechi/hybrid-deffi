@@ -64,8 +64,8 @@
                                                 <span>Total Partners </span>
                                             </div>
                                             <div>
-                                                <span class="counter" style="visibility: visible;"> $
-                                                    {{ number_format(0) }}
+                                                <span class="counter" style="visibility: visible;"> 
+                                                    {{ number_format($total_partners) }}
                                                 </span>
                                             </div>
                                         </div>
@@ -82,8 +82,8 @@
                                                 <span>Valid Partners </span>
                                             </div>
                                             <div>
-                                                <span class="counter" style="visibility: visible;"> $
-                                                    {{ number_format(0) }}
+                                                <span class="counter" style="visibility: visible;"> 
+                                                    {{ number_format($valid_users) }}
                                                 </span>
                                             </div>
                                         </div>
@@ -100,8 +100,8 @@
                                                 <span>Royalty Strength </span>
                                             </div>
                                             <div>
-                                                <span class="counter" style="visibility: visible;"> $
-                                                    {{ number_format(0) }}
+                                                <span class="counter" style="visibility: visible;"> 
+                                                    {{ number_format($royal_users) }}
                                                 </span>
                                             </div>
                                         </div>

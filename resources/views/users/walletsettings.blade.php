@@ -83,7 +83,7 @@
                       </div>
 
                         </form>
-                        <span class="badge fs-6 bg-info" style="width: 100%"> Currenct TRX deposited will be converted to <span class="fw-bold" >{{ strtoupper(auth()->user()->collect_currency) }}</span>
+                        <span class="badge fs-6 bg-info" style="width: 100%"> Current TRX deposited will be converted to <span class="fw-bold" >{{ strtoupper(auth()->user()->collect_currency) }}</span>
                     </span>
                     </div>
                 </div>
