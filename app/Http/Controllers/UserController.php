@@ -121,6 +121,8 @@ class UserController extends Controller
     {
         $user_id = auth()->user()->id;
         $direct_downlines = User::where(['sponsor' => $user_id])->orderby('id', 'desc')->get();
+        $direct_downlines_2 = User::where(['sponsor_2' => $user_id])->orderby('id', 'desc')->get();
+        $direct_downlines_3 = User::where(['sponsor_3' => $user_id])->orderby('id', 'desc')->get();
 
         $valid_users = $royal_users = 0;
 
@@ -134,8 +136,24 @@ class UserController extends Controller
             }
         }
 
-        $total_partners = count($direct_downlines);
-        return view('users.invite', compact(['direct_downlines', 'royal_users', 'valid_users', 'total_partners']));
+        $valid_2 = $valid_3 = 0;
+
+        foreach($direct_downlines_2 as $dw)
+        {
+            if($dw->hybridTotal() > 0) {
+                $valid_2 += 1;
+            }
+        }
+
+        foreach($direct_downlines_3 as $dw)
+        {
+            if($dw->hybridTotal() > 0) {
+                $valid_3 += 1;
+            }
+        }
+
+        $total_partners = count($direct_downlines) + count($direct_downlines_2) + count($direct_downlines_3);
+        return view('users.invite', compact(['direct_downlines', 'royal_users', 'valid_users', 'total_partners', 'direct_downlines_2', 'direct_downlines_3', 'valid_2', 'valid_3']));
     }
 
     function transfer(Request $request)

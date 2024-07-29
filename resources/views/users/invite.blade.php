@@ -46,7 +46,7 @@
 
 
 
-                
+
                 <div class="card card-block card-stretch custom-scroll">
                     <div class="card-header d-flex flex-wrap justify-content-between align-items-center gap-3">
                         <div class="caption">
@@ -64,11 +64,23 @@
                                                 <span>Total Partners </span>
                                             </div>
                                             <div>
-                                                <span class="counter" style="visibility: visible;"> 
+                                                <span class="counter" style="visibility: visible;">
                                                     {{ number_format($total_partners) }}
                                                 </span>
                                             </div>
                                         </div>
+                                        <div class="d-flex mt-2  justify-content-between" >
+                                            <span class="badge bg-success px-3">
+                                                1 <sup>st</sup> : {{ count($direct_downlines) }}
+                                            </span>
+                                            <span class="badge bg-primary px-3">
+                                                2 <sup>nd</sup> : {{ count($direct_downlines_2) }}
+                                            </span>
+                                            <span class="badge bg-secondary px-3">
+                                                3<sup>rd</sup> : {{ count($direct_downlines_3) }}
+                                            </span>
+                                        </div>
+
                                     </div>
                                 </div>
                             </div>
@@ -82,10 +94,22 @@
                                                 <span>Valid Partners </span>
                                             </div>
                                             <div>
-                                                <span class="counter" style="visibility: visible;"> 
-                                                    {{ number_format($valid_users) }}
+                                                <span class="counter" style="visibility: visible;">
+                                                    {{ number_format($valid_users + $valid_2 + $valid_3) }}
                                                 </span>
                                             </div>
+                                        </div>
+
+                                        <div class="d-flex mt-2  justify-content-between" >
+                                            <span class="badge bg-success px-3">
+                                                1 <sup>st</sup> : {{ ($valid_users) }}
+                                            </span>
+                                            <span class="badge bg-primary px-3">
+                                                2 <sup>nd</sup> : {{ ($valid_2) }}
+                                            </span>
+                                            <span class="badge bg-secondary px-3">
+                                                3<sup>rd</sup> : {{ ($valid_3) }}
+                                            </span>
                                         </div>
                                     </div>
                                 </div>
@@ -100,7 +124,7 @@
                                                 <span>Royalty Strength </span>
                                             </div>
                                             <div>
-                                                <span class="counter" style="visibility: visible;"> 
+                                                <span class="counter" style="visibility: visible;">
                                                     {{ number_format($royal_users) }}
                                                 </span>
                                             </div>

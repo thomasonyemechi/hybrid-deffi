@@ -116,13 +116,13 @@
                                                 <span class="fs-6 fw-bold me-2" style="line-height: 20px"><a href="/convert"
                                                         class="text-white">Hybridcoin</a> <br>
                                                     <span
-                                                        style="font-weight: lighter">${{ number_format(1 / $rate, 2) }}</span></span>
+                                                        style="font-weight: lighter">${{ number_format(1 / $rate, 4) }}</span></span>
                                             </div>
                                             <div class="d-flex align-items-center gap-2">
                                                 <span class="fs-6 fw-bold me-2"
-                                                    style="line-height: 20px">{{ number_format($pc_balance, 2) }} HBC <br>
+                                                    style="line-height: 20px">{{ number_format($pc_balance, 4) }} HBC <br>
                                                     <span style="font-weight: lighter">$
-                                                        {{ number_format($pc_total, 2) }}</span></span>
+                                                        {{ number_format($pc_total, 4) }}</span></span>
                                             </div>
                                         </div>
                                     </div>
