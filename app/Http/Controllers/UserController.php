@@ -239,7 +239,7 @@ class UserController extends Controller
     function buyPrimeCoin(Request $request)
     {
         $val = Validator::make($request->all(), [
-            'usdt_amount' => 'required|integer|min:5'
+            'usdt_amount' => 'required|integer|min:10'
         ])->validate();
         if ($request->usdt_amount > usdtBalance(auth()->user()->id)) {
             return back()->with('error', 'You don have up to this ammount of USDT in your wallet, fund your wallet and try again ');

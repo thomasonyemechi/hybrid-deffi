@@ -3,9 +3,12 @@
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\SettingsController;
+use App\Http\Controllers\SlotController;
 use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\WalletController;
+use App\Http\Controllers\ZoneController;
+use App\Models\Zone;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -29,6 +32,16 @@ Route::view('/launch', 'signup');
 Route::get('/login', function(){
     return redirect('/access');
 });
+
+
+
+Route::get('/pick_gen', function(){
+    $user = auth()->user(); 
+    $slot = Zone::find(3); 
+    return shareSpillOver(1, $slot->price, $slot, 2);
+});
+
+
 Route::get('/signup', function(){
     return redirect('/launch');
 });
@@ -91,6 +104,14 @@ Route::group(['middleware' => ['auth', 'wallet']], function () {
     Route::post('/change_password', [AuthController::class, 'changePassword']); //
 
 
+    
+    Route::group(['prefix' => 'zone/' ], function () {
+        Route::get('/landing', [SlotController::class, 'zoneIndex']);
+        Route::post('/landing', [SlotController::class, 'zoneIndex']);
+        Route::get('/purchase_slot/{id}', [SlotController::class, 'purchaseSlot']);
+    });
+
+
     Route::post('/make_deposit', [TransactionController::class, 'makeDeposit'])->name('make_deposit');    
 });
 
@@ -146,4 +167,14 @@ Route::group(['prefix' => 'admin/', 'as' => 'admin.' ,'middleware' => ['auth','a
         Route::post('/approve_withdrawal', [AdminController::class, 'approveWithdrawal']); //approve_withdrawal
         Route::post('/reject_withdrawal', [AdminController::class, 'rejectWithdrawal']); //approve_withdrawal
     });
+
+
+    Route::get('/slot_info', [ZoneController::class, 'slot_infoIndex']);
+    Route::get('/slot/{id}', [ZoneController::class, 'slotIndex']);
+    Route::get('/slot_owners/{id}', [ZoneController::class, 'ownersIndex']);
+    Route::get('/slot_earnings/{id}', [ZoneController::class, 'earningIndex']);
+    Route::get('/slot_missed_earnings/{id}', [ZoneController::class, 'missedEarningIndex']);
+    Route::get('/credit_zone', [ZoneController::class, 'creditZoneIndex']);
+    Route::post('/credit_zone_client', [ZoneController::class, 'creditZoneUser']);
+
 });

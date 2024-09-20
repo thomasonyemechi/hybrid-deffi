@@ -6,11 +6,14 @@
 use App\Models\AdminCredit;
 use App\Models\CoinInfo;
 use App\Models\Earning;
+use App\Models\MissedEarning;
+use App\Models\MySlot;
 use App\Models\PriceChange;
 use App\Models\Purchase;
 use App\Models\Wallet;
 use App\Models\User;
-
+use App\Models\ZEarning;
+use App\Models\Zwallet;
 
 function depositStatus($status)
 {
@@ -93,6 +96,8 @@ function pcBalance($user_id)
     $balance = Wallet::where(['user_id' => $user_id, 'type' => '2' ])->sum('amount');
     return $balance;
 }
+
+
 
 function depositAmount($amount)
 {
@@ -200,4 +205,220 @@ function shareProfit($user_id, $amount, $currency='usdt')
     }
 
     return;
+}
+
+
+
+
+// zone level
+
+
+function slotEarning($slot_id, $user_id)
+{
+    return ZEarning::where(['user_id' => $user_id, 'zone_id' => $slot_id])->sum('amount');
+}
+
+function slotMissedEarning($slot_id, $user_id)
+{
+    return MissedEarning::where(['user_id' => $user_id, 'zone_id' => $slot_id])->sum('amount');
+}
+
+
+function checkPackage($user_id, $slot_id)
+{
+    return MySlot::where(['user_id' => $user_id, 'zone_id' => $slot_id])->first();
+}
+
+
+function zoneUsdtBalance($user_id)
+{
+    $balance = Zwallet::where(['user_id' => $user_id, 'currency' => 'usdt' ])->sum('amount');
+    return $balance;
+}
+
+function zoneHbcBalance($user_id)
+{
+    $balance = Zwallet::where(['user_id' => $user_id, 'currency' => 'hbc' ])->sum('amount');
+    return $balance;
+}
+
+
+
+function myEnergy($user_id)
+{
+    return MySlot::where(['user_id' => $user_id])->sum('amount');
+}
+
+
+
+function pickGen($user, $gen)
+{
+    $generations = []; 
+    for ($i=1; $i <=$gen ; $i++) { 
+        if($i ==1) {
+            $generations[] = ['gen_1' => $user->sponsor, 'position' => $i, 'user_id'=> $user->sponsor];
+        }else {
+            $generations[] = ['gen_'.$i => $user['sponsor_'.$i], 'position' => $i, 'user_id'=> $user['sponsor_'.$i]];
+        }
+    }
+    
+    return $generations;
+}
+
+
+function shareSpillOver($buyer_upline, $amount, $slot, $buyer)
+{
+ 
+    $spill_count = explode(',' , $slot->spillover);
+
+    if(count($spill_count) > 1) {
+        $users = User::where(['sponsor' => $buyer_upline])->orwhere(['sponsor_2' => $buyer_upline])->orwhere(['sponsor_3' => $buyer_upline])->orwhere(['sponsor_4' => $buyer_upline])->inrandomorder()->limit($spill_count)->get(['id']);
+
+        foreach($spill_count as $index => $spil)
+        {
+            $upline_percent = ($amount * ($spil / 100));
+
+            $user_id = $users[$index]->id ?? 1;
+            $checkslot = checkPackage($user_id, $slot->id);
+
+            if($checkslot) {
+                ///credit client and regsiter the package 
+                // downline is the person that bought the slot and user_id is the person gettng the reward
+                $earn = ZEarning::create([
+                    'user_id' => $user_id, 
+                    'zone_id' => $slot->id,
+                    'downline' => $buyer,
+                    'remark' => 'spillover',
+                    'amount' => $upline_percent,
+                    'currency' => 'spc',
+                ]);
+    
+                $wallet = Zwallet::create([
+                    'ref_id' => $earn->id,
+                    'currency' => 'usdt',
+                    'amount' => $upline_percent,
+                    'user_id' => $buyer,
+                    'remark' => 'spillover',
+                    'action' => 'credit',
+                    'slot_ref' => $slot->id,
+                    'type' => 0, 
+                ]);
+    
+    
+            }else {
+                ///record missed oportunity
+                $missed = MissedEarning::create([
+                    'user_id' => $user_id,
+                    'zone_id' => $slot->id,
+                    'downline' => $buyer,
+                    'remark' => 'spillover',
+                    'amount' => $upline_percent,
+                    'currency' => 'spc',
+                ]);
+                // credit admin with missed client earning
+                $earn = Zwallet::create([
+                    'ref_id' => $missed->id,
+                    'currency' => 'usdt',
+                    'amount' => $upline_percent,
+                    'user_id' => 1,
+                    'remark' => 'spillover missed earning',
+                    'action' => 'credit',
+                    'slot_ref' => $slot->id,
+                    'type' => 0,
+                ]);
+            }
+        }
+    }
+    return;
+}
+
+
+function shareComission($user, $slot, $main_amount) {
+
+    $gens = pickGen($user, $slot->gens);
+
+
+
+    $amount = $main_amount;
+    if($slot->id > 1) {
+        $amount = ($main_amount * 0.9);
+    }
+    
+    $percents = explode(',', $slot->percent);
+
+
+    foreach($percents as $index => $per)
+    {
+        if($per) {
+            $pos = $gens[$index]; $user_id = $pos['user_id'];
+            $upline_percent = ($amount * ($per / 100));
+
+
+            $checkslot = checkPackage($user_id, $slot->id);
+
+            if($checkslot) {
+                ///credit client and regsiter the package 
+                // downline is the person that bought the slot and user_id is the person gettng the reward
+                $earn = ZEarning::create([
+                    'user_id' => $user_id, 
+                    'zone_id' => $slot->id,
+                    'downline' => $user->id,
+                    'amount' => $upline_percent,
+                    'currency' => 'spc',
+                ]);
+    
+                $wallet = Zwallet::create([
+                    'ref_id' => $earn->id,
+                    'currency' => 'usdt',
+                    'amount' => $upline_percent,
+                    'user_id' => $user_id,
+                    'remark' => 'Earning from slot',
+                    'action' => 'credit',
+                    'slot_ref' => $slot->id,
+                    'type' => 0, 
+                ]);
+    
+    
+            }else {
+                ///record missed oportunity
+                $missed = MissedEarning::create([
+                    'user_id' => $user_id,
+                    'zone_id' => $slot->id,
+                    'downline' => $user->id,
+                    'amount' => $upline_percent,
+                    'currency' => 'spc',
+                ]);
+                // credit admin with missed client earning
+                $earn = Zwallet::create([
+                    'ref_id' => $missed->id,
+                    'currency' => 'usdt',
+                    'amount' => $upline_percent,
+                    'user_id' => 1,
+                    'remark' => 'missed earning',
+                    'action' => 'credit',
+                    'slot_ref' => $slot->id,
+                    'type' => 0,
+                ]);
+            }
+        }
+    }
+
+    if($slot->spillover)
+    {
+        echo '3423';
+        shareSpillOver($gens[0]['user_id'], $amount, $slot, $user->id);
+    }
+    
+    // gives 10% of the price to the admin
+    if($slot->id > 1) {
+        $earn = Zwallet::create([
+            'ref_id' => 0,
+            'currency' => 'usdt',
+            'amount' => $main_amount * 0.1,
+            'user_id' => 1,
+            'remark' => 'admin commision',
+            'action' => 'credit',
+            'type' => 0,
+        ]);
+    }
 }

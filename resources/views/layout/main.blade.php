@@ -11,6 +11,8 @@
     <link rel="stylesheet" href="{{ asset('assets/css/coinex.mine209.css?v=1.0.0') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/custom.mine209.css?v=1.0.0') }}">
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+    <link href="{{ asset('assets/fonts/feather/feather.css') }}" rel="stylesheet" />
+
 
 </head>
 

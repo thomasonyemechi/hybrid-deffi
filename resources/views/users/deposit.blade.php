@@ -94,7 +94,7 @@
 
 
 
-        <div id="depositModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="depositModal"
+        {{-- <div id="depositModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="depositModal"
             aria-hidden="true">
             <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered" role="document">
                 <div class="modal-content">
@@ -161,12 +161,7 @@
                                 Send the exact amount of USDT (TRC20) tokens you want to deposit to the wallet address
                                 below: <br><br>
 
-                            <div class="d-flex justify-content-lg-start">
-                                <input type="text" id="input_field" readonly class="form-control"
-                                    value="{{ $coin->wallet_address }}">
-                                <button class="btn btn-primary" onclick="yourFunction()" type="submit">Copy</button>
-                            </div>
-
+            
 
                             <br><br>
                             Check back in few minutes, your account will credited as soon as your deposit is confirmed
@@ -178,7 +173,7 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> --}}
 
 
     </div>
@@ -187,42 +182,97 @@
 
 @push('scripts')
     <script>
-        $(function() {
-            er = `{{ $er }}`
-            vr = `{{ $vr }}`
-            sr = `{{ $sr }}`
-            if (er > 0) {
-                $('#depositModal').modal('show')
+        const input_field = document.getElementById('input_field')
+
+        function yourFunction() {
+            input_field.select(); // select the input field
+            input_field.setSelectionRange(0, 99999); // For mobile devices
+            navigator.clipboard.writeText(input_field.value)
+
+        }
+
+
+        function removeStorage(name) {
+            try {
+                localStorage.removeItem(name);
+                localStorage.removeItem(name + '_expiresIn');
+            } catch (e) {
+                console.log('removeStorage: Error removing key [' + key + '] from localStorage: ' + JSON.stringify(e));
+                return false;
             }
-            if (vr > 0) {
-                $('#dep_1').hide('slowly');
-                $('#dep_2').show('slowly');
+            return true;
+        }
+        /*  getStorage: retrieves a key from localStorage previously set with setStorage().
+            params:
+                key <string> : localStorage key
+            returns:
+                <string> : value of localStorage key
+                null : in case of expired key or failure
+         */
+        function getStorage(key) {
+
+            var now = Date.now(); //epoch time, lets deal only with integer
+            // set expiration for storage
+            var expiresIn = localStorage.getItem(key + '_expiresIn');
+            if (expiresIn === undefined || expiresIn === null) {
+                expiresIn = 0;
             }
-            if (sr > 0) {
-                $('#dep_1').hide('slowly');
-                $('#dep_2').hide('slowly');
-                $('#dep_3').show('slowly');
+
+            if (expiresIn < now) { // Expired
+                removeStorage(key);
+                return null;
+            } else {
+                try {
+                    var value = localStorage.getItem(key);
+                    return value;
+                } catch (e) {
+                    console.log('getStorage: Error reading key [' + key + '] from localStorage: ' + JSON.stringify(e));
+                    return null;
+                }
             }
-            console.log(er);
+        }
 
 
-            $('#depositusdt').on('submit', function() {
-                $('.depositusdtbtn').attr('disabled', 'disabled');
+        function loadNewWallet() {
+
+            $.ajax({
+                method: 'get',
+                url: `/load_new_wallet`
+            }).done(function(res) {
+                // set expiry time for wallet address
+                setStorage('dep_wallet', res.new_wallet, 350000)
+            }).fail(function(res) {
+                console.log(res);
             })
+        }
 
+        /*  setStorage: writes a key into localStorage setting a expire time
+            params:
+                key <string>     : localStorage key
+                value <string>   : localStorage value
+                expires <number> : number of seconds from now to expire the key
+            returns:
+                <boolean> : telling if operation succeeded
+         */
+        function setStorage(key, value, expires) {
 
-            $('.got02').on('click', function() {
-                $('#dep_1').hide('slowly');
-                $('#dep_2').show('slowly');
-            })
+            if (expires === undefined || expires === null) {
+                expires = (24 * 60 * 60); // default: seconds for 1 day
+            } else {
+                expires = Math.abs(expires); //make sure it's positive
+            }
 
-            $('.done').on('click', function() {
-                $('#depositModal').modal('hide')
-                $('#dep_1').show('slowly');
-                $('#dep_2').hide('slowly');
-                $('#dep_3').hide('slowly');
-            })
-        })
+            var now = Date.now(); //millisecs since epoch time, lets deal only with integer
+            var schedule = now + expires * 1000;
+            try {
+                localStorage.setItem(key, value);
+                localStorage.setItem(key + '_expiresIn', schedule);
+            } catch (e) {
+                console.log('setStorage: Error setting key [' + key + '] in localStorage: ' + JSON.stringify(e));
+                return false;
+            }
+            return true;
+        }
     </script>
 
 
@@ -233,65 +283,52 @@
 
 
             function loadWallet() {
-                old_wallet = localStorage.getItem('d_wallet');
+                // old_wallet = localStorage.getItem('d_wallet');
+
+
+                getStorage('dep_wallet')
 
 
 
-                $.ajax({
-                    method: 'get',
-                    url: `/validate_wallet/${old_wallet}`
-                }).done(function(res) {
-                    if (res.old_wallet_is_valid) {
-                        console.log('old is gold');
-                    } else {
-                        // set expiry time for wallet address
-                        localStorage.setItem('d_wallet', res.new_wallet);
-                    }
+                // $.ajax({
+                //     method: 'get',
+                //     url: `/validate_wallet/${old_wallet}`
+                // }).done(function(res) {
+                //     if (res.old_wallet_is_valid) {
+                //         console.log('old is gold');
+                //     } else {
+                //         // set expiry time for wallet address
 
-                    loadString();
+                //         setStorage('dep_wallet', res.new_wallet, 350000)
+                //     }
+                //     loadString();
 
-                }).fail(function(res) {
-                    console.log(res);
-                })
+                // }).fail(function(res) {
+                //     console.log(res);
+                // })
             }
 
 
-            function loadString() {
-                old_wallet = localStorage.getItem('d_wallet');
-
+            function loadString(old_wallet) {
                 wallet_area = $('.wallet_area');
 
                 wallet_loader = $(wallet_area).find('.wallet_loader');
                 wallet_loader.hide();
 
-
                 wallet_copy = $(wallet_area).find('.wallet_copy');
                 wallet_copy.html(`
-                    <span class="badge mb-2 bg-danger"> ${old_wallet} </span>
-                    <div class="d-flex mb-3 justify-content-lg-start">
-                        <input type="text" id="input_field" readonly
-                            class="form-control shadow text-danger bg-light form-control-sm fw-bold me-2"
-                            style="border: 2px solid red;" value="${old_wallet}">
-                        <button class="btn bg-light fw-bold text-danger shadow " onclick="yourFunction()"
-                            style="border: 2px solid red;" type="submit">Copy</button>
-                    </div>
-                `)
+                <span class="badge mb-2 bg-danger"> ${old_wallet} </span>
+                <div class="d-flex mb-3 justify-content-lg-start">
+                    <input type="text" id="input_field" readonly
+                        class="form-control shadow text-danger bg-light form-control-sm fw-bold me-2"
+                        style="border: 2px solid red;" value="${old_wallet}">
+                    <button class="btn bg-light fw-bold text-danger shadow " onclick="yourFunction()"
+                        style="border: 2px solid red;" type="submit">Copy</button>
+                </div>
+            `)
             }
 
             loadWallet();
         })
-    </script>
-
-
-
-    <script>
-        const input_field = document.getElementById('input_field')
-
-        function yourFunction() {
-            input_field.select(); // select the input field
-            input_field.setSelectionRange(0, 99999); // For mobile devices
-            navigator.clipboard.writeText(input_field.value)
-
-        }
     </script>
 @endpush

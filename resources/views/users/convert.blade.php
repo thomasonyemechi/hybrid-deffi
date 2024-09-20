@@ -56,14 +56,14 @@
                             <div class="alert alert-warning alert-">
                                 <span class="fw-bold small">Minimum Purchase</span><br>
                                 <span class="badge bg-success" >
-                                    First Time: $40
+                                    First Time: $50
                                 </span>
-                                <span class="badge bg-secondary" >Afterwards: $5</span>
+                                <span class="badge bg-secondary" >Afterwards: $10</span>
                             </div>
 
                             <div class="form-groupo">
                                 <label for="text"> Amount In USDT </label>
-                                <input type="number" name="usdt_amount" class="form-control" {{ ($price > 0) ? 'min=5' : 'min=40' }}
+                                <input type="number" name="usdt_amount" class="form-control" {{ ($price > 0) ? 'min=10' : 'min=50' }}
                                     max="{{ $usdt_balance }}" name="usdt" id="usdt" value="{{ old('wallet') }}">
                                 @error('wallet')
                                     <i class="text-danger ">{{ $message }} </i>

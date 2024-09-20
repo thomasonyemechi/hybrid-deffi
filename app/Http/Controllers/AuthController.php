@@ -57,7 +57,8 @@ class AuthController extends Controller
         $sponsor = User::where(['ref' => $request->ref])->first();
         
         if(!$sponsor) {
-            $sponsor = json_decode(json_encode(['id' => 0, 'sponsor' => 0, 'sponsor_2' => 0]));
+            $sponsor = json_decode(json_encode(['id' => 0, 'sponsor' => 0, 'sponsor_2' => 0, 'sponsor_3' => 0, 'sponsor_4' => 0, 'sponsor_5' => 0, 'sponsor_6' => 0, 'sponsor_7' => 0,
+        'sponsor_8' => 0, 'sponsor_9' => 0, 'sponsor_10' => 0, 'sponsor_11' => 0]));
         } 
 
         $user = User::create([
@@ -66,6 +67,15 @@ class AuthController extends Controller
             'sponsor' =>  $sponsor->id,
             'sponsor_2' => $sponsor->sponsor,
             'sponsor_3' => $sponsor->sponsor_2,
+            'sponsor_4' => $sponsor->sponsor_3,
+            'sponsor_5' => $sponsor->sponsor_4,
+            'sponsor_6' => $sponsor->sponsor_5,
+            'sponsor_7' => $sponsor->sponsor_6,
+            'sponsor_8' => $sponsor->sponsor_7,
+            'sponsor_9' => $sponsor->sponsor_8,
+            'sponsor_10' => $sponsor->sponsor_9,
+            'sponsor_11' => $sponsor->sponsor_10,
+            'sponsor_12' => $sponsor->sponsor_11,
             'ref' => ''
         ]);
 

@@ -23,6 +23,15 @@ class User extends Authenticatable
         'sponsor',
         'sponsor_2',
         'sponsor_3',
+        'sponsor_4',
+        'sponsor_5',
+        'sponsor_6',
+        'sponsor_7',
+        'sponsor_8',
+        'sponsor_9',
+        'sponsor_10',
+        'sponsor_11',
+        'sponsor_12',
         'wallet',
         'ref'
     ];
@@ -69,6 +78,24 @@ class User extends Authenticatable
     {
         return pcBalance($this->id);
     }
+
+
+    function zoneUsdtBalance()
+    {
+        return zoneUsdtBalance($this->id);
+    }
+
+
+    function zoneHbcBalance()
+    {
+        return zoneHbcBalance($this->id);
+    }
+
+    function myEnergy()
+    {
+        return myEnergy($this->id);
+    }
+
 
 
 
