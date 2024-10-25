@@ -36,6 +36,36 @@ class ZoneController extends Controller
     }   
 
 
+    function zoneOverviewIndex()
+    {
+        $slot_transactions = Zwallet::orderby('id', 'desc')->limit(20)->get();
+
+        $total_purchase = MySlot::sum('amount'); //energy
+        $clients = MySlot::get(['user_id']);
+        $arr = [];
+        foreach($clients as $c) { $arr[] =  $c->user_id; }
+        $clients = count(array_unique($arr));
+        $earnings = ZEarning::sum('amount');
+        $missed_earnings = MissedEarning::sum('amount');
+
+        $total_usdt = Zwallet::where(['currency' => 'usdt'])->sum('amount');
+        $total_hbc = Zwallet::where(['currency' => 'hbc'])->sum('amount');
+
+        return view('admin.zone_overview', compact(['slot_transactions', 'total_purchase', 'clients', 'missed_earnings', 'earnings', 'total_hbc', 'total_usdt']));
+    }
+
+
+
+    function zoneTransactionIndex()
+    {
+        $slot_transactions = Zwallet::orderby('id', 'desc')->paginate(30);
+        return view('admin.zone_transactions', compact(['slot_transactions']));
+    }
+
+
+
+
+
     function ownersIndex($slot)
     {
         $clients = MySlot::with(['user'])->where(['zone_id' => $slot])->paginate(50);

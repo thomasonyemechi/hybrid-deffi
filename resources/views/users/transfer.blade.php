@@ -10,6 +10,11 @@
                             <h4 class="font-weight-bold mb-2">Transfers</h4>
                         </div>
                         <div class="btn-group" role="group" aria-label="Basic checkbox toggle button group">
+                            <button type="button" class="btn btn-secondary" data-bs-toggle="modal"
+                                data-bs-target="#depositModalToZone">Internal Transfer</button>
+                        </div>
+
+                        <div class="btn-group" role="group" aria-label="Basic checkbox toggle button group">
                             <button type="button" class="btn btn-primary" data-bs-toggle="modal"
                                 data-bs-target="#depositModal">Transfer USDT</button>
                         </div>
@@ -35,7 +40,7 @@
                                                     @if (isset($dep->receiver->wallet))
                                                         {{ substr($dep->receiver->wallet, 0, 6) . '...' . substr($dep->receiver->wallet, -6) }}
                                                     @else
-                                                        {{ $dep->receiver->username }}
+                                                        {{ $dep->receiver->username ?? '' }}
                                                     @endif
                                                 </span>
                                             </td>
@@ -100,9 +105,9 @@
 
                                     <div class="form-group">
                                         <label for="amount">Amount <span class="text-danger">*</span> </label>
-                                        <input type="number" class="form-control amount" name="amount" min="10"
+                                        <input type="number" class="form-control amount" name="amount" min="6"
                                             placeholder="Enter Amount" required>
-                                            <i class="text-danger amt_error "></i>
+                                        <i class="text-danger amt_error "></i>
 
                                         @error('amount')
                                             <i class="text-danger  ">{{ $message }} </i>
@@ -115,18 +120,45 @@
                                         <div class="display_name"></div>
                                     </div>
 
-                                    <button type="button"
-                                        class="btn btn-primary transferusdtbtn01 rounded" disabled>Continue</button>
+
+
+                                    <button type="button" class="btn btn-primary transferusdtbtn01 rounded"
+                                        disabled>Continue</button>
                                 </div>
 
                                 <div class="d-2" style="display: none">
                                     <div>
                                         <div class="dd-2 badge bg-success"></div>
-                                        <p class="mt-2">Enter your access pin to completedtransaction</p>
+                                        <p class="mt-2">Enter your access pin to completed transaction</p>
                                     </div>
+
+
+
+                                    <div class="form-group">
+                                        <label for="amount">Wallet <span class="text-danger">*</span> </label>
+
+                                        <select name="wallet_type" class="form-control">
+                                            <option value="coin">Hybrid Coin Wallet</option>
+                                            <option value="zone">Hybrid Zone Wallet</option>
+                                        </select>
+
+                                        @error('wallet')
+                                            <i class="text-danger  ">{{ $message }} </i>
+                                        @enderror
+
+
+                                        <div class="wallet_message mt-3">
+                                            <div class="alert alert-primary">
+                                                USDT will be sent to receiver hybrid coin wallet 
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+
                                     <div class="form-group l2 ">
                                         <label for="text">Access Pin</label>
-                                        <input type="password" name="access_pin" autocomplete="new-password" 
+                                        <input type="password" name="access_pin" autocomplete="new-password"
                                             class="form-control" placeholder="Enter yout six digit pin">
                                         <input type="hidden" name="user_id">
                                     </div>
@@ -144,6 +176,10 @@
         </div>
 
 
+
+        @include('users.transfer_to_zone_modal')
+
+
     </div>
 @endsection
 
@@ -152,18 +188,38 @@
     <script>
         $(function() {
 
+            $('select[name="wallet_type"]').on('change', function() {
+                val = $(this).val();
+                console.log(val);
+                
+                msg = $('.wallet_message');
+                if (val == 'coin') {
+                    msg.html(`
+                        <div class="alert alert-primary">
+                            USDT will be sent to receiver hybrid coin wallet 
+                        </div>
+                    `)
+                } else {
+                    msg.html(`
+                        <div class="alert alert-info">
+                            USDT will be sent to receiver hybrid zone wallet
+                        </div>
+                    `)
+                }
+            })
 
-        $('input[name="amount"]').on('keyup', function() {
-            val = $(this).val();
-            console.log(val);
-            if(val < 10) {
-                $('.amt_error').html('Amount must be greated than 10 usdt !');
-                $('.transferusdtbtn01').attr('disabled', 'disabled');
-            }else {
-                $('.amt_error').html(``);
-                $('.transferusdtbtn01').removeAttr('disabled');
-            }
-        })
+
+            $('input[name="amount"]').on('keyup', function() {
+                val = $(this).val();
+                console.log(val);
+                if (val < 6) {
+                    $('.amt_error').html('Amount must be greated than 6 usdt !');
+                    $('.transferusdtbtn01').attr('disabled', 'disabled');
+                } else {
+                    $('.amt_error').html(``);
+                    $('.transferusdtbtn01').removeAttr('disabled');
+                }
+            })
 
             $('#transferusdt').on('submit', function() {
                 $('.transferusdtbtn02').attr('disabled', 'disabled');

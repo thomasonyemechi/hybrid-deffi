@@ -192,143 +192,84 @@
         }
 
 
-        function removeStorage(name) {
-            try {
-                localStorage.removeItem(name);
-                localStorage.removeItem(name + '_expiresIn');
-            } catch (e) {
-                console.log('removeStorage: Error removing key [' + key + '] from localStorage: ' + JSON.stringify(e));
-                return false;
-            }
-            return true;
-        }
-        /*  getStorage: retrieves a key from localStorage previously set with setStorage().
-            params:
-                key <string> : localStorage key
-            returns:
-                <string> : value of localStorage key
-                null : in case of expired key or failure
-         */
+
+
         function getStorage(key) {
 
-            var now = Date.now(); //epoch time, lets deal only with integer
-            // set expiration for storage
-            var expiresIn = localStorage.getItem(key + '_expiresIn');
-            if (expiresIn === undefined || expiresIn === null) {
-                expiresIn = 0;
-            }
+            expire_time = localStorage.getItem('dep_wallet_expire');
+            current_time = `{{ time() }}`
 
-            if (expiresIn < now) { // Expired
-                removeStorage(key);
-                return null;
+            console.log(current_time - expire_time);
+            if (current_time > expire_time) {
+                // expire time has reahed 
+                //  get new key
+                return walletnew();
             } else {
-                try {
-                    var value = localStorage.getItem(key);
-                    return value;
-                } catch (e) {
-                    console.log('getStorage: Error reading key [' + key + '] from localStorage: ' + JSON.stringify(e));
-                    return null;
-                }
+                // use old key
+                var value = localStorage.getItem(key);
+                return value;
             }
         }
 
 
-        function loadNewWallet() {
+        function walletnew() {
 
+            new_wallet = '';
+            // load wallet
             $.ajax({
                 method: 'get',
-                url: `/load_new_wallet`
+                url: `/validate_wallet`
             }).done(function(res) {
-                // set expiry time for wallet address
-                setStorage('dep_wallet', res.new_wallet, 350000)
+                new_wallet = res.new_wallet
+                console.log(res);
+                setStorage('dep_wallet', res.new_wallet);
+                loadWallet()
             }).fail(function(res) {
                 console.log(res);
             })
+            return new_wallet;
         }
 
-        /*  setStorage: writes a key into localStorage setting a expire time
-            params:
-                key <string>     : localStorage key
-                value <string>   : localStorage value
-                expires <number> : number of seconds from now to expire the key
-            returns:
-                <boolean> : telling if operation succeeded
-         */
-        function setStorage(key, value, expires) {
 
-            if (expires === undefined || expires === null) {
-                expires = (24 * 60 * 60); // default: seconds for 1 day
-            } else {
-                expires = Math.abs(expires); //make sure it's positive
-            }
-
-            var now = Date.now(); //millisecs since epoch time, lets deal only with integer
-            var schedule = now + expires * 1000;
+        function setStorage(key, value) {
             try {
                 localStorage.setItem(key, value);
-                localStorage.setItem(key + '_expiresIn', schedule);
+                localStorage.setItem('dep_wallet_expire', `{{ time() + 86400 }}`);
             } catch (e) {
                 console.log('setStorage: Error setting key [' + key + '] in localStorage: ' + JSON.stringify(e));
                 return false;
             }
             return true;
         }
-    </script>
-
-
-    <script>
-        $(function() {
 
 
 
 
-            function loadWallet() {
-                // old_wallet = localStorage.getItem('d_wallet');
+        function loadWallet() {
+            wallet = getStorage('dep_wallet')
+            loadString(wallet);
+        }
 
 
-                getStorage('dep_wallet')
+        function loadString(old_wallet) {
+            wallet_area = $('.wallet_area');
 
+            wallet_loader = $(wallet_area).find('.wallet_loader');
+            wallet_loader.hide();
 
+            wallet_copy = $(wallet_area).find('.wallet_copy');
+            wallet_copy.html(`
+                    <span class="badge mb-2 bg-danger"> ${old_wallet} </span>
+                    <div class="d-flex mb-3 justify-content-lg-start">
+                        <input type="text" id="input_field" readonly
+                            class="form-control shadow text-danger bg-light form-control-sm fw-bold me-2"
+                            style="border: 2px solid red;" value="${old_wallet}">
+                        <button class="btn bg-light fw-bold text-danger shadow " onclick="yourFunction()"
+                            style="border: 2px solid red;" type="submit">Copy</button>
+                    </div>
+                `)
+        }
 
-                // $.ajax({
-                //     method: 'get',
-                //     url: `/validate_wallet/${old_wallet}`
-                // }).done(function(res) {
-                //     if (res.old_wallet_is_valid) {
-                //         console.log('old is gold');
-                //     } else {
-                //         // set expiry time for wallet address
-
-                //         setStorage('dep_wallet', res.new_wallet, 350000)
-                //     }
-                //     loadString();
-
-                // }).fail(function(res) {
-                //     console.log(res);
-                // })
-            }
-
-
-            function loadString(old_wallet) {
-                wallet_area = $('.wallet_area');
-
-                wallet_loader = $(wallet_area).find('.wallet_loader');
-                wallet_loader.hide();
-
-                wallet_copy = $(wallet_area).find('.wallet_copy');
-                wallet_copy.html(`
-                <span class="badge mb-2 bg-danger"> ${old_wallet} </span>
-                <div class="d-flex mb-3 justify-content-lg-start">
-                    <input type="text" id="input_field" readonly
-                        class="form-control shadow text-danger bg-light form-control-sm fw-bold me-2"
-                        style="border: 2px solid red;" value="${old_wallet}">
-                    <button class="btn bg-light fw-bold text-danger shadow " onclick="yourFunction()"
-                        style="border: 2px solid red;" type="submit">Copy</button>
-                </div>
-            `)
-            }
-
-            loadWallet();
-        })
+        loadWallet();
     </script>
 @endpush

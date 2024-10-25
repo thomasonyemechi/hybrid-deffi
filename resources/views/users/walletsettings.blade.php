@@ -72,19 +72,20 @@
 
                         <form action="/update_collect_currency" method="post">
                             @csrf
-                      <div class="alert alert-success" >
-                        <div class="form-check form-switch">
-                            <input class="form-check-input " type="checkbox" role="switch" id="flexSwitchCheckChecked"
-                                onchange="submit()" {{ auth()->user()->collect_currency == 'usdt' ? 'checked' : '' }}>
-                            <label class="form-check-label" for="flexSwitchCheckChecked">Accept Every Payment in
-                                {{ auth()->user()->collect_currency == 'usdt' ? 'HBC' : 'USDT' }}    
-                            </label>
-                        </div>
-                      </div>
-
+                            <div class="alert alert-success">
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input " type="checkbox" role="switch"
+                                        id="flexSwitchCheckChecked" onchange="submit()"
+                                        {{ auth()->user()->collect_currency == 'usdt' ? 'checked' : '' }}>
+                                    <label class="form-check-label" for="flexSwitchCheckChecked">Accept Every Payment in
+                                        {{ auth()->user()->collect_currency == 'usdt' ? 'HBC' : 'USDT' }}
+                                    </label>
+                                </div>
+                            </div>
                         </form>
-                        <span class="badge fs-6 bg-info" style="width: 100%"> Current TRX deposited will be converted to <span class="fw-bold" >{{ strtoupper(auth()->user()->collect_currency) }}</span>
-                    </span>
+                        <span class="badge fs-6 bg-info" style="width: 100%"> Current TRX deposited will be converted to
+                            <span class="fw-bold">{{ strtoupper(auth()->user()->collect_currency) }}</span>
+                        </span>
                     </div>
                 </div>
             </div>

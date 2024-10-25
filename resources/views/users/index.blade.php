@@ -333,7 +333,8 @@
                                     aria-labelledby="headingOne" data-bs-parent="#accordionExample">
                                     <div class="accordion-body">
                                         <ul>
-                                            <li>Visit <a href=" www.hybriddefi.com"> www.hybriddefi.com </a> on your decentralized wallet browser</li>
+                                            <li>Visit <a href=" www.hybriddefi.com"> www.hybriddefi.com </a> on your
+                                                decentralized wallet browser</li>
                                             <li>Click Gain Access</li>
                                             <li>Input your wallet address and access pin and click ACCESS.</li>
                                         </ul>
@@ -348,15 +349,18 @@
                                         HOW TO BUY HYBRID COIN?
                                     </button>
                                 </h2>
-                                <div id="collapse2" class="accordion-collapse collapse "
-                                    aria-labelledby="heading2" data-bs-parent="#accordionExample">
+                                <div id="collapse2" class="accordion-collapse collapse " aria-labelledby="heading2"
+                                    data-bs-parent="#accordionExample">
                                     <div class="accordion-body">
                                         <ul>
-                                            <li>Access your hybrid dashboard and click on deposit to fund your hybrid wallet. Follow the guidelines on the deposit  page to fund your Hybrid wallet with USDT using TRX.
+                                            <li>Access your hybrid dashboard and click on deposit to fund your hybrid
+                                                wallet. Follow the guidelines on the deposit page to fund your Hybrid wallet
+                                                with USDT using TRX.
                                             </li>
                                             <li>When your deposit is confirmed, click buy coin at the dashboard</li>
                                             <li>Input the amount in USDT you want to purchase and click on buy. </li>
-                                            <li>Your USDT balance will be debited and your hybrid balance credited immediately</li>
+                                            <li>Your USDT balance will be debited and your hybrid balance credited
+                                                immediately</li>
                                             <li></li>
                                         </ul>
                                     </div>
@@ -370,8 +374,8 @@
                                         HOW TO WITHDRAW USDT FROM MY HYBRID WALLET?
                                     </button>
                                 </h2>
-                                <div id="collapse3" class="accordion-collapse collapse "
-                                    aria-labelledby="heading3" data-bs-parent="#accordionExample">
+                                <div id="collapse3" class="accordion-collapse collapse " aria-labelledby="heading3"
+                                    data-bs-parent="#accordionExample">
                                     <div class="accordion-body">
                                         To withdraw USDT from your hybrid wallet:
 
@@ -380,14 +384,15 @@
                                             </li>
                                             <li>Click Withdrawal</li>
                                             <li>Input the amount of USDT you want to withdraw</li>
-                                            <li>The USDT will be automatically converted to TRX and sent to your personal TRX wallet</li>
+                                            <li>The USDT will be automatically converted to TRX and sent to your personal
+                                                TRX wallet</li>
                                             <li></li>
                                         </ul>
                                     </div>
                                 </div>
                             </div>
 
-                            
+
                             <div class="accordion-item">
                                 <h2 class="accordion-header" id="heading4">
                                     <button class="accordion-button" type="button" data-bs-toggle="collapse"
@@ -396,42 +401,46 @@
 
                                     </button>
                                 </h2>
-                                <div id="collapse4" class="accordion-collapse collapse "
-                                    aria-labelledby="heading4" data-bs-parent="#accordionExample">
+                                <div id="collapse4" class="accordion-collapse collapse " aria-labelledby="heading4"
+                                    data-bs-parent="#accordionExample">
                                     <div class="accordion-body">
-                                        Your affiliate commission is sent to your hybrid wallet  as SHC. SHC can be converted to USDT or Hybridcoin
+                                        Your affiliate commission is sent to your hybrid wallet as SHC. SHC can be converted
+                                        to USDT or Hybridcoin
                                         <ul>
                                             <li>Click the menu button
                                             </li>
                                             <li>Click Convert</li>
                                             <li>Input the amount of SHC you want to convert to USDT and click trade.
                                             </li>
-                                            <li>The SHC will be immediately converted to USDT. You can now withdraw the USDT to your external wallet address</li>
-                                   
+                                            <li>The SHC will be immediately converted to USDT. You can now withdraw the USDT
+                                                to your external wallet address</li>
+
                                         </ul>
                                     </div>
                                 </div>
                             </div>
 
 
-                                         
+
                             <div class="accordion-item">
                                 <h2 class="accordion-header" id="heading5">
                                     <button class="accordion-button" type="button" data-bs-toggle="collapse"
                                         data-bs-target="#collapse5" aria-expanded="true" aria-controls="collapse5">
-                                        HOW DO GET MY LINK TO INVITE OTHERS? 
+                                        HOW DO GET MY LINK TO INVITE OTHERS?
 
                                     </button>
                                 </h2>
-                                <div id="collapse5" class="accordion-collapse collapse"
-                                    aria-labelledby="heading5" data-bs-parent="#accordionExample">
+                                <div id="collapse5" class="accordion-collapse collapse" aria-labelledby="heading5"
+                                    data-bs-parent="#accordionExample">
                                     <div class="accordion-body">
-                                        To help the hybrid community grow fast, when participants purchase hybrid coin, 10% of the USDT is distributed as referral commission to three generations. 6%, 2%  and 2% respectively
+                                        To help the hybrid community grow fast, when participants purchase hybrid coin, 10%
+                                        of the USDT is distributed as referral commission to three generations. 6%, 2% and
+                                        2% respectively
                                         <ul>
                                             <li>Click the menu button
                                             </li>
                                             <li>Click Invite Others</li>
-                                            <li>Copy your invite link and share with family and friends</li>                                   
+                                            <li>Copy your invite link and share with family and friends</li>
                                         </ul>
                                     </div>
                                 </div>
@@ -478,6 +487,50 @@
         </div>
 
     </div>
+
+
+
+
+
+    <div id="zone_modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="depositModal"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-scrollable modal-lg modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">HYBRID ZONE - COMING SOON!
+                        30-10-24
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                    </button>
+                </div>
+                <div class="modal-body">
+
+                    <div class="card shadow-lg mb-3">
+                        <div class="card-body">
+                            Hybrid zone is an automatic and strategic affiliate marketing based system where profits are
+                            generated when new or existing participants in the hybrid ecosystem purchase one or more of the
+                            digital product called zones. 100% of profits generated is distributed to participants of the
+                            system following the Entry, H4 and H6 profit formula. There are 11 zones in this program hence
+                            providing members with 11 channels of income.
+
+
+
+                            <img src="{{ asset('assets/images/hybrid2.png') }}" class="rounded shadow-lg mt-3"
+                                alt="" style="width: 100%; object-fit: cover;">
+
+                        </div>
+
+
+                    </div>
+
+                    <div class="d-flex justify-content-end ">
+                        <a href="/info/zone" class="btn btn-primary">Check More About Hybrid Zone !!!</a>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
 @endsection
 
 
@@ -498,5 +551,13 @@
             // Alert the copied text
             alert("Referral ID has been copied");
         }
+
+
+
+
+
+        $(function() {
+            $('#zone_modal').modal('show');
+        })
     </script>
 @endpush

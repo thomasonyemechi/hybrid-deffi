@@ -236,6 +236,12 @@ function zoneUsdtBalance($user_id)
     return $balance;
 }
 
+
+function zoneEarnings($user_id)
+{
+    return ZEarning::where(['user_id' => $user_id ])->sum('amount');
+}
+
 function zoneHbcBalance($user_id)
 {
     $balance = Zwallet::where(['user_id' => $user_id, 'currency' => 'hbc' ])->sum('amount');

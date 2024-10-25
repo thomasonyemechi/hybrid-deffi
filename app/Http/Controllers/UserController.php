@@ -15,6 +15,7 @@ use App\Models\User;
 use App\Models\Wallet;
 use App\Models\WalletAddress;
 use App\Models\Withdrawal;
+use App\Models\Zwallet;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
@@ -28,6 +29,11 @@ class UserController extends Controller
     public function howToIndex()
     {
         return view('users.how_to');
+    }
+
+    function zoneInfo()
+    {
+        return view('users.zone_info');
     }
 
 
@@ -156,10 +162,11 @@ class UserController extends Controller
         return view('users.invite', compact(['direct_downlines', 'royal_users', 'valid_users', 'total_partners', 'direct_downlines_2', 'direct_downlines_3', 'valid_2', 'valid_3']));
     }
 
+
     function transfer(Request $request)
     {
         $val = Validator::make($request->all(), [
-            'amount' => 'required|integer|min:10',
+            'amount' => 'required|integer|min:6',
             'access_pin' => 'required|string'
         ])->validate();
 
@@ -170,6 +177,24 @@ class UserController extends Controller
         if ($request->amount > usdtBalance(auth()->user()->id)) {
             return back()->with('error', 'You do not have up to this amount of USDT in your wallet, fund your wallet and try again ');
         }
+
+
+        if($request->wallet_type == 'coin') {
+            // transfer to normal hybrid wallet
+            $this->transferToWallet($request);
+        }else {
+            // transfer to anoother client zone account
+            $this->transferAnotherZone($request);
+        }
+
+        return back()->with('success', 'Funds have been transfered!');
+    }
+
+
+
+    function transferToWallet(Request $request)
+    {
+
 
         $tran = Transfer::create([
             'sender_id' => auth()->user()->id,
@@ -199,7 +224,44 @@ class UserController extends Controller
             'ref_id' => $tran->id,
             'action' => 'credit'
         ]);
-        return back()->with('success', 'Funds have been transfered!');
+        return;
+    }
+
+
+
+
+
+    function transferAnotherZone(Request $request)
+    {
+        $tran = Transfer::create([
+            'sender_id' => auth()->user()->id,
+            'receiver_id' => $request->user_id,
+            'amount' => $request->amount,
+            'status' => 'successful'
+        ]);
+
+        ///debit sender
+        $wallet = Wallet::create([
+            'currency' => 'usdt',
+            'amount' => -$request->amount,
+            'type' => 1,
+            'user_id' => auth()->user()->id,
+            'remark' => 'USDT Transfer to Zone',
+            'ref_id' => $tran->id,
+            'action' => 'debit'
+        ]);
+
+        ///credit receiver zone usdt wallet
+        
+        Zwallet::create([
+            'ref_id' => $wallet->id,
+            'currency' => 'usdt',
+            'amount' => $request->amount,
+            'user_id' => $request->user_id,
+            'remark' => 'external transfer to zone',
+            'action' => 'credit',
+            'type' => 0, 
+        ]);
     }
 
 
@@ -348,4 +410,68 @@ class UserController extends Controller
 
         return back()->with('success', 'Currency has been updated');
     }
+
+
+
+
+
+
+
+
+
+
+
+    //  Zone Transaction
+
+
+
+    function transfer_tozone(Request $request)
+    {
+        $val = Validator::make($request->all(), [
+            'amount' => 'required|integer|min:6',
+            'access_pin' => 'required|string'
+        ])->validate();
+
+        if(!password_verify($request->access_pin, auth()->user()->password)) {
+            return back()->with('error', 'Invalid access pin');
+        }
+
+        if ($request->amount > usdtBalance(auth()->user()->id)) {
+            return back()->with('error', 'You do not have up to this amount of USDT in your wallet, fund your wallet and try again ');
+        }
+
+        $tran = Transfer::create([
+            'sender_id' => auth()->user()->id,
+            'receiver_id' => 0,
+            'amount' => $request->amount,
+            'status' => 'successful'
+        ]);
+
+        ///debit sender
+        $wallet = Wallet::create([
+            'currency' => 'usdt',
+            'amount' => -$request->amount,
+            'type' => 1,
+            'user_id' => auth()->user()->id,
+            'remark' => 'USDT Transfer To Hybrid Zone',
+            'ref_id' => $tran->id,
+            'action' => 'debit'
+        ]);
+
+        ///credit hybrid zone wallet
+
+
+        $wallet = Zwallet::create([
+            'ref_id' => $wallet->id,
+            'currency' => 'usdt',
+            'amount' => $request->amount,
+            'user_id' => auth()->user()->id,
+            'remark' => 'transfer to zone',
+            'action' => 'credit',
+            'type' => 0, 
+        ]);
+
+        return back()->with('success', 'Funds have been transfered!');
+    }
+
 }

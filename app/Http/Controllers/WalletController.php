@@ -54,16 +54,11 @@ class WalletController extends Controller
     }
 
 
-    function validateWallet($wallet)
+    function validateWallet()
     {
-        $wallet = AdminWallet::where(['wallet_address' => $wallet, 'status' => 'active'])->first();
         $new_wallet = AdminWallet::where(['status' => 'active'])->inrandomorder()->first();
-
-        $old_valid = ($wallet) ? true : false;
-
         return response([
             'new_wallet' => $new_wallet->wallet_address,
-            'old_wallet_is_valid' => $old_valid
         ]);
     }
 }

@@ -11,7 +11,7 @@
     <link rel="shortcut icon" href="images/favi-icon.ico" type="image/x-icon" />
 
     <!-- Website Title -->
-    <title>Hybrid Coin</title>
+    <title>{{ env('APP_NAME') }}</title>
     <!-- Stylesheets Start -->
     <link rel="stylesheet" href="{{ asset('main/css/fontawesome.min.css') }}" type="text/css" />
     <link rel="stylesheet" href="{{ asset('main/css/bootstrap.css') }}" type="text/css" />

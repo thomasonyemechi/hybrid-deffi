@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\MySlot;
+use App\Models\PriceChange;
 use App\Models\Zone;
 use App\Models\Zwallet;
 use Illuminate\Http\Request;
@@ -14,7 +15,9 @@ class SlotController extends Controller
     {
         $slots = Zone::get();
         $user = Auth::user();
-        return view('users.zone_index', compact(['slots', 'user']));
+        $rate = PriceChange::latest()->first()->price;
+        $usdt_balance = usdtBalance($user->id);
+        return view('users.zone_index', compact(['slots', 'user', 'rate', 'usdt_balance']));
     }
 
 

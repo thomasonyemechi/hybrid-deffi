@@ -3,8 +3,3 @@ port 809
 
 
 
-ALTER TABLE `users` ADD `sponsor_4` INT
- NOT NULL DEFAULT '0' AFTER `sponsor_3`, ADD `sponsor_5` INT NOT NULL DEFAULT '0' AFTER `sponsor_4`, ADD `sponsor_6` INT NOT NULL DEFAULT '0' AFTER
-  `sponsor_5`, ADD `sponsor_7` INT NOT NULL DEFAULT '0' AFTER `sponsor_6`, ADD `sponsor_8` INT NOT NULL DEFAULT '0' AFTER `sponsor_7`, ADD `sponsor_9` INT NOT 
-  NULL DEFAULT '0' AFTER `sponsor_8`, ADD `sponsor_10` INT NOT NULL DEFAULT '0' AFTER `sponsor_9`, 
-ADD `sponsor_11` INT NOT NULL DEFAULT '0' AFTER `sponsor_10`, ADD `sponsor_12` INT NOT NULL DEFAULT '0' AFTER `sponsor_11`;

@@ -182,9 +182,10 @@ class AdminController extends Controller
             return back()->with('error', 'This withdrawal request cannot be approved');
         }
 
-        if ($with->amount > usdtBalance($with->user_id)) {
-            return back()->with('error', 'This deposit cannot be approved');
-        }
+        // if ($with->amount > usdtBalance($with->user_id)) {
+        //     return back()->with('error', 'This deposit cannot be approved');
+        // }
+        
         $with->update([
             'processed_by' => auth()->user()->id,
             'status' => 'approved'

@@ -53,7 +53,7 @@ Route::post('/access-account', [AuthController::class, 'userLogin'])->name('acce
 Route::post('/change_email', [AuthController::class, 'changeEmail'])->middleware('auth');
 Route::view('/email', 'users.change_email');
 
-Route::get('/validate_wallet/{wallet}', [WalletController::class, 'validateWallet']);
+Route::get('/validate_wallet', [WalletController::class, 'validateWallet']);
 
 Route::get('/get_price', [TransactionController::class, 'fetchCoinPriceApi']);
 Route::get('/dorate', [AdminController::class, 'dorate']);
@@ -65,6 +65,12 @@ Route::view('/name', 'main' );
 Route::get('/forgot-password', function () {
     return view('forgot-password');
 })->name('password.request');
+
+
+Route::get('/count_down', function () {
+    return view('users.count_down');
+});
+
 
 Route::post('/forgot-password', [AuthController::class, 'forgotPassword'] )->name('password.email');
 
@@ -81,6 +87,7 @@ Route::group(['middleware' => ['auth', 'wallet']], function () {
     Route::view('/copy', 'users.copy');
     Route::get('/dashboard', [UserController::class, 'indexU']);
     Route::get('/how-to-earn', [UserController::class, 'howToIndex']);
+    Route::get('/info/zone', [UserController::class, 'zoneInfo']);
     Route::get('/deposit', [UserController::class, 'depositIndex'])->middleware('wallet');
 
 
@@ -88,6 +95,7 @@ Route::group(['middleware' => ['auth', 'wallet']], function () {
     Route::post('/update_collect_currency', [UserController::class, 'update_collect_currency']);
     Route::post('/withdrawal', [UserController::class, 'make_withdrawal']);
     Route::post('/transfer', [UserController::class, 'transfer'])->name('transfer');
+    Route::post('/transfer_tozone', [UserController::class, 'transfer_tozone'])->name('transfer_tozone');
 
 
     Route::get('/transfer', [UserController::class, 'transferIndex']);
@@ -169,6 +177,8 @@ Route::group(['prefix' => 'admin/', 'as' => 'admin.' ,'middleware' => ['auth','a
     });
 
 
+    Route::get('/zone', [ZoneController::class, 'zoneOverviewIndex']);
+    Route::get('/zone/transactions', [ZoneController::class, 'zoneTransactionIndex']);
     Route::get('/slot_info', [ZoneController::class, 'slot_infoIndex']);
     Route::get('/slot/{id}', [ZoneController::class, 'slotIndex']);
     Route::get('/slot_owners/{id}', [ZoneController::class, 'ownersIndex']);
