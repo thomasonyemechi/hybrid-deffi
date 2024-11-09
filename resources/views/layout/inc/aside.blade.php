@@ -94,7 +94,16 @@
                                     fill="currentColor"></path>
                             </svg>
                         </i>
-                        <span class="item-name">Withdarwals</span>
+                        <span class="item-name">Withdarwals
+
+
+                            @if (pendingWithAlert() > 0)
+                                <span class="bg-soft-primary rounded p-1 px-2   ">
+                                    <b> {{ pendingWithAlert() }}</b>
+
+                                </span>
+                            @endif
+                        </span>
                         <i class="right-icon">
                             <svg xmlns="http://www.w3.org/2000/svg" width="18" fill="none"
                                 viewBox="0 0 24 24" stroke="currentColor">
@@ -156,7 +165,7 @@
                     </a>
                 </li>
 
-                
+
                 <li class="nav-item ">
                     <a class="nav-link" aria-current="page" href="/admin/users/royalty">
                         <i class="icon">
@@ -174,7 +183,7 @@
 
 
 
-                
+
                 <li class="nav-item ">
                     <a class="nav-link" aria-current="page" href="/admin/credit">
                         <i class="icon">
@@ -211,7 +220,7 @@
 
 
 
-                
+
 
                 <li class="nav-item ">
                     <a class="nav-link" aria-current="page" href="/admin/debit">
@@ -237,7 +246,7 @@
                 </li>
 
 
-                
+
                 <li>
                     <span class="fw-bold badge ps-4">Hybrid Zone</span>
                 </li>
@@ -272,7 +281,7 @@
                         <span class="item-name">Manage Slot Info </span>
                     </a>
                 </li>
-                
+
                 <li class="nav-item ">
                     <a class="nav-link " aria-current="page" href="/admin/credit_zone">
                         <i class="icon">
@@ -286,7 +295,7 @@
                         </i>
                         <span class="item-name">Fund Zone Wallet </span>
                     </a>
-                </li>       
+                </li>
 
 
                 <li class="nav-item ">
@@ -302,7 +311,7 @@
                         </i>
                         <span class="item-name">Zone Transactions </span>
                     </a>
-                </li>       
+                </li>
 
 
 
@@ -334,7 +343,7 @@
 
 
 
-       
+
                 <li class="nav-item ">
                     <a class="nav-link" aria-current="page" href="/admin/manage-wallet">
                         <i class="icon">

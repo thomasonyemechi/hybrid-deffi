@@ -12,6 +12,7 @@ use App\Models\PriceChange;
 use App\Models\Purchase;
 use App\Models\Wallet;
 use App\Models\User;
+use App\Models\Withdrawal;
 use App\Models\ZEarning;
 use App\Models\Zwallet;
 
@@ -26,6 +27,19 @@ function depositStatus($status)
     }
 }
 
+
+function putwallet($wallet)
+{
+    return substr($wallet, 0, 6) . '...' . substr($wallet, -6);
+}
+
+
+function pendingWithAlert()
+{
+    $with = Withdrawal::where(['status' => 'pending'])->count();
+
+    return $with;
+}
 
 function spcBalance($user_id)
 {
@@ -70,7 +84,7 @@ function hbctotalDepost($user_id)
             if($al->credit->rate > 0) {
                        $total += ($al->amount/ $al->credit->rate);
             }
-     
+    
         }else {
             $total += 0;
         }
@@ -339,6 +353,9 @@ function shareSpillOver($buyer_upline, $amount, $slot, $buyer)
 }
 
 
+
+
+
 function shareComission($user, $slot, $main_amount) {
 
     $gens = pickGen($user, $slot->gens);
@@ -363,7 +380,7 @@ function shareComission($user, $slot, $main_amount) {
             $checkslot = checkPackage($user_id, $slot->id);
 
             if($checkslot) {
-                ///credit client and regsiter the package 
+                // credit client and regsiter the package 
                 // downline is the person that bought the slot and user_id is the person gettng the reward
                 $earn = ZEarning::create([
                     'user_id' => $user_id, 

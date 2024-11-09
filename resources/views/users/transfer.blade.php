@@ -135,9 +135,10 @@
 
 
                                     <div class="form-group">
-                                        <label for="amount">Wallet <span class="text-danger">*</span> </label>
+                                        <label for="amount"> Receiver's wallet <span class="text-danger">*</span> </label>
 
                                         <select name="wallet_type" class="form-control">
+                                            <option selected  disabled  >... select wallet type ...</option>
                                             <option value="coin">Hybrid Coin Wallet</option>
                                             <option value="zone">Hybrid Zone Wallet</option>
                                         </select>
@@ -149,7 +150,7 @@
 
                                         <div class="wallet_message mt-3">
                                             <div class="alert alert-primary">
-                                                USDT will be sent to receiver hybrid coin wallet 
+                                                USDT will be sent to receiver hybrid coin wallet
                                             </div>
                                         </div>
                                     </div>
@@ -164,7 +165,7 @@
                                     </div>
 
 
-                                    <button type="submit" class="btn btn-primary transferusdtbtn02 rounded">Send
+                                    <button type="submit" class="btn btn-primary transferusdtbtn02 rounded" disabled>Send
                                         Funds</button>
                                 </div>
 
@@ -191,20 +192,29 @@
             $('select[name="wallet_type"]').on('change', function() {
                 val = $(this).val();
                 console.log(val);
-                
+
                 msg = $('.wallet_message');
+
                 if (val == 'coin') {
                     msg.html(`
                         <div class="alert alert-primary">
                             USDT will be sent to receiver hybrid coin wallet 
                         </div>
                     `)
-                } else {
+
+                    $('.transferusdtbtn02').removeAttr('disabled');
+
+
+                } else if (val == 'zone') {
                     msg.html(`
                         <div class="alert alert-info">
                             USDT will be sent to receiver hybrid zone wallet
                         </div>
                     `)
+                    $('.transferusdtbtn02').removeAttr('disabled');
+
+                } else {
+                    $('.transferusdtbtn02').attr('disabled', 'disabled');
                 }
             })
 

@@ -93,7 +93,7 @@ class ZoneController extends Controller
 
     function creditZoneIndex()
     {
-        $credits = ZoneDeposit::with(['user'])->paginate(30);
+        $credits = ZoneDeposit::with(['user'])->orderby('id', 'desc')->paginate(30);
         return view('admin.credit_zone', compact(['credits']));
     }
 

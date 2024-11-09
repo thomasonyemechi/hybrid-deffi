@@ -119,7 +119,7 @@ class UserController extends Controller
     function earningsIndex()
     {
         $user_id = auth()->user()->id;
-        $earnings = Earning::with(['downliner:id,username'])->where(['user_id' => auth()->user()->id])->orderby('id', 'desc')->get();
+        $earnings = Earning::with(['downliner:id,username,wallet'])->where(['user_id' => auth()->user()->id])->orderby('id', 'desc')->get();
         return view('users.earnings', compact(['earnings']));
     }
 

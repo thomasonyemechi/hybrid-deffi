@@ -9,7 +9,7 @@
                     <div class="card card-block card-stretch custom-scroll">
                         <div class="card-header d-flex flex-wrap justify-content-between align-items-center gap-3">
                             <div class="caption">
-                                <h4 class="font-weight-bold mb-2">Withdarwals History</h4>
+                                <h4 class="font-weight-bold mb-2">withdrawals History</h4>
                             </div>
 
                         </div>
@@ -20,9 +20,8 @@
                                     <thead class="table-light">
                                         <tr>
                                             <th scope="col" class="border-0">Sn</th>
-                                            <th scope="col" class="border-0">Username</th>
-                                            <th scope="col" class="border-0">Amount</th>
                                             <th scope="col" class="border-0">Wallet Address</th>
+                                            <th scope="col" class="border-0">Amount</th>
                                             <th scope="col" class="border-0">Status</th>
                                             <th scope="col" class="border-0">Timestamp</th>
                                             <th scope="col" class="border-0"></th>
@@ -32,19 +31,19 @@
                                         @foreach ($withdrawals as $dep)
                                             <tr>
                                                 <td class="align-middle border-top-0">
-                                                    <div class="d-flex align-items-center">
-                                                        <h5 class="mb-0"> {{ $loop->iteration }} </h5>
-                                                    </div>
+                                                    <span class="fw-bold"> {{ $loop->iteration }} </span>
                                                 </td>
+
                                                 <td class="align-middle border-top-0">
-                                                    {{ $dep->user->username }}
+                                                 <span class="fw-bold" >
+                                                    {{ putwallet($dep->wallet_address) }}
+                                                 </span>
                                                 </td>
+
                                                 <td class="align-middle border-top-0">
                                                     {{ depositAmount($dep->amount) }}
                                                 </td>
-                                                <td class="align-middle border-top-0">
-                                                    {{ $dep->wallet_address }}
-                                                </td>
+
                                                 <td class="align-middle border-top-0">
                                                     {!! depositStatus($dep->status) !!}
                                                 </td>
@@ -53,26 +52,11 @@
                                                     {{ $dep->created_at }}
                                                 </td>
                                                 <td class="text-muted px-4 py-3 align-middle border-top-0">
-                                                    <div class="d-flex justify-content-between">
-                                                        <div class="dropdown ms-4">
-                                                            <svg xmlns="http://www.w3.org/2000/svg" role="tablist"
-                                                                width="20" id="dropdownMenuButton{{ $loop->iteration }}"
-                                                                data-bs-toggle="dropdown" aria-expanded="false"
-                                                                fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                                <path stroke-linecap="round" stroke-linejoin="round"
-                                                                    stroke-width="2"
-                                                                    d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z" />
-                                                            </svg>
-                                                            <ul class="dropdown-menu"
-                                                                aria-labelledby="dropdownMenuButton{{ $loop->iteration }}">
-                                                                <li><a class="dropdown-item approvebtn"
-                                                                        data-data='{{ json_encode($dep) }}'
-                                                                        href="#">Approve</a></li>
-                                                                <li><a class="dropdown-item rejectbtn"
-                                                                        data-data='{{ json_encode($dep) }}'
-                                                                        href="#">Reject</a></li>
-                                                            </ul>
-                                                        </div>
+                                                    <div class="d-flex justify-content-end">
+                                                        <a class="btn btn-success btn-sm me-2 approvebtn"
+                                                            data-data='{{ json_encode($dep) }}' href="#">Approve</a>
+                                                        <a class="btn btn-outline-danger btn-sm rejectbtn"
+                                                            data-data='{{ json_encode($dep) }}' href="#">Reject</a>
                                                     </div>
                                                 </td>
                                             </tr>

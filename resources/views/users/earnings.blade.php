@@ -31,17 +31,25 @@
                                         <th scope="col">Amount</th>
                                         <th scope="col">Participant</th>
                                         <th scope="col">Description</th>
-                                        <th scope="col">Timestamp</th>
+                                        <th scope="col" class="text-end" >Timestamp</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     @foreach ($earnings as $dep)
                                         <tr class="white-space-no-wrap">
                                             <td class="pe-2"> {!! depositAmount($dep->amount) !!} </td>
-                                            <td class="pe-2"> {{ $dep->downliner->wallet ?? $dep->downliner->username }} </td>
+                                            <td class="pe-2">
+                                                <span class="title fw-bold">
+                                                    @if ($dep->downliner->wallet)
+                                                        {{ substr($dep->downliner->wallet, 0, 6) . '...' . substr($dep->downliner->wallet, -6) }}
+                                                    @else
+                                                        ...
+                                                    @endif
+                                                </span>
+                                            </td>
 
                                             <td> Earned </td>
-                                            <td> {{ $dep->created_at }} </td>
+                                            <td class="text-end">    {{ $dep->created_at }} </td>
                                         </tr>
                                     @endforeach
                                 </tbody>

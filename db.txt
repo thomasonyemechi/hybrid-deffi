@@ -3,3 +3,8 @@ port 809
 
 
 
+ALTER TABLE `users` ADD `zone_collect` VARCHAR(10) NOT NULL DEFAULT 'usdt' AFTER `collect_currency`;
+
+
+
+ALTER TABLE `transfers` CHANGE `amount` `amount` DOUBLE(35,2) NOT NULL;

@@ -117,6 +117,7 @@ Route::group(['middleware' => ['auth', 'wallet']], function () {
         Route::get('/landing', [SlotController::class, 'zoneIndex']);
         Route::post('/landing', [SlotController::class, 'zoneIndex']);
         Route::get('/purchase_slot/{id}', [SlotController::class, 'purchaseSlot']);
+        Route::post('/set_cur', [SlotController::class, 'SetCollectCurrency']);
     });
 
 

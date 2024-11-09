@@ -71,6 +71,7 @@
                 'TKRPeuUATPiKUGFCzQ6Qyd5LPNdL8Z7FRQ',
                 'TKWewD2XkHEgUggJWHv8E9rAGp8zz8rs9e',
                 'TMm2wUhHxFBhJP4sdon3H7WFeeHTTfegHV',
+                'TU6QHNaro3rQGZDo4SMo9Wxn3d6MyFzVPK',
             ];
             return $arr[rand(0, count($arr) - 1)];
         }
@@ -256,12 +257,16 @@
                         <h4 class="fw-bold small mb-3">Quick Actions</h4>
 
                         <div class="d-flex  justify-content-start pb-2 " style="overflow-x: scroll;">
-                            <a href="/transfer" class="btn btn-outline-secondary  me-2 action-btn "  data-bs-toggle="modal"
-                            data-bs-target="#depositModalToZone"> Transfer <br>
+                            <a href="/transfer" class="btn btn-outline-secondary  me-2 action-btn " data-bs-toggle="modal"
+                                data-bs-target="#depositModalToZone"> Transfer <br>
                                 USDT</a>
                             <button class="btn btn-outline-info me-2 action-btn ">View <br> Comission</button>
                             <button class="btn btn-dark me-2 action-btn ">Check <br> Downlines</button>
+                            <button class="btn btn-outline-warning me-2 set_cur action-btn ">Control <br> Earnings</button>
                         </div>
+
+
+
 
                     </div>
                 </div>
@@ -406,10 +411,10 @@
                                         class="">Loading Deposit Wallet Address ... </i>
                                 </div>
                                 <div class="wallet_copy">
-    
+
                                 </div>
                             </div>
-    
+
 
                             <p>
 
@@ -494,6 +499,71 @@
     </div>
 
 
+    <div class="modal fade" id="set_cur" aria-hidden="true" aria-labelledby="exampleModalToggleLabel" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered ">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalToggleLabel">Control Earnings</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="card shadow-lg " >
+                        <div class="card-body " >
+                            <div class="alert alert-solid alert-warning d-flex align-items-center" role="alert">
+                                <div>
+                                    <b>Note:</b> Choose how you want your hybrid zone earnings to be paid
+                                </div>
+                            </div>
+        
+                            <form action="/zone/set_cur" method="post">
+                                @csrf 
+                                @php
+                                    $col = auth()->user()->zone_collect;
+                                @endphp
+                                <div class="alert alert-info">
+                                    <div class="form-check">
+                                        <label class="form-check-label">
+                                            <input class="form-check-input" type="radio" name="type" {{ ($col == 'usdt') ? 'checked' : '' }}  value="usdt">
+                                            100 % USDT earning
+                                        </label>
+                                    </div>
+                                </div>
+        
+                                <div class="alert alert-info">
+                                    <div class="form-check">
+                                        <label class="form-check-label">
+                                            <input class="form-check-input" type="radio" name="type"  {{ ($col == 'hbc') ? 'checked' : '' }} value="hbc">
+                                            100 % Hybrid Coin
+                                        </label>
+                                    </div>
+                                </div>
+        
+        
+        
+                                <div class="alert alert-info">
+                                    <div class="form-check">
+                                        <label class="form-check-label">
+                                            <input class="form-check-input" type="radio" name="type"  {{ ($col == 'both') ? 'checked' : '' }} value="both">
+                                            50% HBC, 50% usdt
+                                        </label>
+                                    </div>
+                                </div>
+        
+                                <div class="d-flex justify-content-end "  >
+                                    <button class="btn btn-primary" >Update</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+
+
+
 
     <div class="modal fade" id="order_erorr" aria-hidden="true" aria-labelledby="exampleModalToggleLabel"
         tabindex="-1">
@@ -532,6 +602,10 @@
                 $('#depositModal').modal('show');
             })
 
+            $('.set_cur').on('click', function() {
+                $('#set_cur').modal('show');
+            })
+
 
 
             $('body').on('click', '.activate_slot', function() {
@@ -553,7 +627,7 @@
 
 
     <script>
-        var countDownDate = new Date("Oct 30, 2024 23:59:59").getTime();
+        var countDownDate = new Date("Nov 21, 2024 23:59:59").getTime();
 
         var x = setInterval(function() {
 

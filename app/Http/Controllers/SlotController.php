@@ -6,6 +6,7 @@ use App\Models\MySlot;
 use App\Models\PriceChange;
 use App\Models\Zone;
 use App\Models\Zwallet;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -18,6 +19,18 @@ class SlotController extends Controller
         $rate = PriceChange::latest()->first()->price;
         $usdt_balance = usdtBalance($user->id);
         return view('users.zone_index', compact(['slots', 'user', 'rate', 'usdt_balance']));
+    }
+
+
+
+
+    function SetCollectCurrency(Request $request)
+    {
+        User::where(['id' => auth()->user()->id])->update([
+            'zone_collect' => $request->type
+        ]);
+
+        return back()->with('success', 'Operation sucessful');
     }
 
 
@@ -65,7 +78,7 @@ class SlotController extends Controller
         }
 
 
-        return back()->with('danger', 'An error occured whil purchasing slot');
+        return back()->with('error', 'An error occured whil purchasing slot');
     }
 
 

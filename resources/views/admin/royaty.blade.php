@@ -25,7 +25,6 @@
                                     <thead class="">
                                         <tr>
                                             <th>Wallet Address</th>
-                                            <th>Username</th>
                                             <th>Strength</th>
                                             <th>HBC</th>
                                             <th>USDT</th>
@@ -51,8 +50,6 @@
                                                 <tr>
                                                     <td> <a class=" fw-bold text-white  " href="#">
                                                             <span>{{ $user->wallet }} </span> </a> </td>
-                                                    <td> <a class=" fw-bold text-white " href="#">
-                                                            <span>{{ $user->username }} </span> </a> </td>
                                                     <td>
                                                         <span class="badge bg-success">
                                                             {{ number_format($user->royalty(), 2)}} </span>
@@ -67,7 +64,7 @@
                                                     <td> {{ number_format(coinTotalPurchase($user->id)) }} USDT </td>
                                                     <td> {{ $user->downlines->count() }} </td>
                                                     <td>
-                                                        {{ $user->spon ? $user->spon->username : 'No Sponsor' }}
+                                                        {{ $user->spon ? putwallet($user->spon->wallet) : 'No Sponsor' }}
                                                     </td>
                                                     <td> {{ date('j M, Y', strtotime($user->created_at)) }} </td>
                                                 </tr>

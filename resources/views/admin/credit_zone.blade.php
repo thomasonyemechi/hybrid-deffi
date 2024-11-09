@@ -3,7 +3,7 @@
 @section('page_content')
     <div class="container-fluid content-inner pb-0">
 
-        
+
         <div class="row">
             <div class="col-lg-12 col-md-12 col-12">
                 <div class=" pb-4 mb-4 d-md-flex justify-content-between align-items-center">
@@ -18,8 +18,30 @@
 
         <div class="row mb-4">
             <div class="col-lg-4">
+
+                @if (pendingWithAlert() > 0)
+                    <div class="mb-3">
+
+                        <div class="card bg-soft-primary">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div class="bg-soft-primary rounded p-3">
+                                        <b>p</b>
+
+                                    </div>
+                                    <div class="text-end">
+                                        <h2 class="counter" style="visibility: visible;">{{ pendingWithAlert() }}</h2>
+                                        Pending Withdrawals
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                @endif
+
+
                 <div class="card card-block card-stretch custom-scroll">
-                 
+
                     <div class="card-body">
                         <form action="/admin/credit_zone_client" method="post">
                             @csrf
@@ -64,7 +86,8 @@
                             <div class="form-group">
                                 <div class="d-flex justify-content-between ">
                                     <label for="">Remark</label>
-                                    <label for="" class="badge text-end mb-1 bg-warning fill_me">USDT DEPOSIT</label>
+                                    <label for="" class="badge text-end mb-1 bg-warning fill_me">USDT
+                                        DEPOSIT</label>
                                 </div>
                                 <input type="text" name="remark" class="form-control" value="{{ old('remark') }}"
                                     placeholder="Describe this transaction">
