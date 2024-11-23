@@ -6,9 +6,12 @@ use App\Models\MySlot;
 use App\Models\PriceChange;
 use App\Models\Zone;
 use App\Models\Zwallet;
+use App\Models\ZEarning;
 use App\Models\User;
+use App\Models\Wallet;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
 
 class SlotController extends Controller
 {
@@ -18,7 +21,133 @@ class SlotController extends Controller
         $user = Auth::user();
         $rate = PriceChange::latest()->first()->price;
         $usdt_balance = usdtBalance($user->id);
-        return view('users.zone_index', compact(['slots', 'user', 'rate', 'usdt_balance']));
+
+
+        $transactions = Zwallet::where(['user_id' => $user->id])->orderby('id', 'desc')->limit(20)->get();
+
+
+        return view('users.zone_index', compact(['slots', 'user', 'rate', 'usdt_balance', 'transactions']));
+    }
+    
+    
+    function fetchSpilled()
+    {
+        
+        
+        
+        // $users = User::whereBetween('id', [1000, 1500])->orderby('id', 'asc')->get();
+        // $zone_clients = 0;
+        
+        // $total_error = [];
+        
+        // foreach($users as $user)
+        // {
+        //     $usdt_balance = $user->total_usdt_deposit = zoneUsdtDeposit($user->id);
+        //     if($usdt_balance > 0)
+        //     {
+        //         $total_purchase = MySlot::where(['user_id' => $user->id])->sum('amount');
+        //         $new_balance = $usdt_balance-$total_purchase;
+        //         $last_purchased_slot = MySlot::where(['user_id' => $user->id])->orderby('zone_id', 'desc')->first();
+                
+        //         if($last_purchased_slot) 
+        //         {
+        //             $next_slot = $last_purchased_slot->zone_id + 1;
+        //         }else {
+        //             $next_slot = 1;
+        //         }
+                
+                
+        //         if($next_slot <= 11) 
+        //         {
+        //             $slot = Zone::find($next_slot);
+                    
+        //             $str = $slot->price.'-------'. $next_slot .'--------'.$user->id;
+                           
+        //             $check = MySlot::where(['user_id' => $user->id, 'zone_id' => $slot->id])->count();
+            
+        //             if($check == 0)
+        //             {
+        //                 if($new_balance > $slot->price)
+        //                 {
+        //                     $amount = $slot->price;
+        //                     // purchase slot here, deduct money and register slot im my slot 
+        //                     Zwallet::create([
+        //                         'currency' => 'usdt',
+        //                         'amount' => -$amount,
+        //                         'type' => 1,
+        //                         'user_id' => $user->id,
+        //                         'remark' => $slot->id.' purchase',
+        //                         'slot_ref' => $slot->id,
+        //                         'ref_id' => 0,
+        //                         'action' => 'debit'
+        //                     ]);
+                    
+        //                     MySlot::create(['user_id' => $user->id, 'zone_id' => $slot->id, 'amount' => $slot->price]);
+        //                     // share money here
+        //                     shareComission($user, $slot, $slot->price);
+        //                       $total_error[] = 'success '.$str;
+        //                 }else {
+        //                           $total_error[] = 'no money to buy '.$str;
+        //                 }
+                  
+        //             }else{
+        //                 $total_error[] = 'already have slot '.$str;
+        //             }
+                     
+        //         }else{
+        //               $total_error[] = 'purchased all slot '.$str;
+        //         }
+              
+        //     }
+        // }
+        
+        
+        
+        // return $total_error;
+        
+        // return $zone_clients;
+        
+        
+        
+        
+        
+        
+        // $wallet = ZWallet::where(['remark' => 'USDT                                        DEPOSIT'])->get() ;
+        // foreach($wallet as $wall)
+        // {
+        //     $wall->update([
+        //         'remark' => 'USDT DEPOSIT'    
+        //     ]);
+        // }
+        // return $wallet;
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        // $transactions = Zwallet::where(['remark' => 'spillover'])->orderby('id', 'desc')->get();
+        // foreach($transactions as $trno)
+        // {
+        //     $earn = ZEarning::find($trno->ref_id);
+        //     echo $earn->user_id.' ---->'.$trno->user_id.'<br>';
+            
+        //     $trno->update([
+        //         'user_id' => $earn->user_id    
+        //     ]);
+        // }
+        // return $transactions;
     }
 
 
@@ -45,7 +174,7 @@ class SlotController extends Controller
         {
             return back()->with('error', 'You don\'t have enough USDT to complete this transaction');
         }
-
+    
         // check if user has bought package before
 
         $check = MySlot::where(['user_id' => $user->id, 'zone_id' => $slot->id])->count();
@@ -73,12 +202,13 @@ class SlotController extends Controller
         
         // share money here
 
-        if(shareComission($user, $slot, $slot->price)){
-            return back()->with('success', 'Slot purchase has been completed');
-        }
+        shareComission($user, $slot, $slot->price);
+        
+        return back()->with('success', 'Slot purchase has been completed');
+        
 
 
-        return back()->with('error', 'An error occured whil purchasing slot');
+        return back()->with('error', 'An error occured while purchasing slot');
     }
 
 
@@ -96,4 +226,51 @@ class SlotController extends Controller
         you cannot earn for slots you have not activated losses will be recoreded as missed_commsion
 
     */
+    
+    
+    
+    
+        function make_withdrawal(Request $request)
+        {
+            Validator::make($request->all(), [
+                'amount' => 'required|min:10',
+                'currency' => 'required'
+            ]);
+            ///logg withdrwal
+            $user = auth()->user();
+            if($request->amount > (zoneUsdtBalance($user->id, $request->currency)) ){
+                return back()->with('error', 'Insufficient fund');
+            }
+            
+            // debit z wallet 
+                
+                $wallet = Zwallet::create([
+                    'ref_id' => 0,
+                    'currency' => $request->currency,
+                    'amount' => -$request->amount,
+                    'user_id' => $user->id,
+                    'remark' => 'withdrawal',
+                    'action' => 'debit',
+                    'type' => 0, 
+                ]);
+                
+                
+        
+        
+        ///credit coin wallet
+            
+                Wallet::create([
+                    'ref_id' => $wallet->id,
+                    'currency' => $request->currency,
+                    'amount' => $request->amount,
+                    'type' => 1,
+                    'remark' => 'withdrawal from zone wallet',
+                    'user_id' => $wallet->user_id,
+                    'action' => 'credit'
+                ]);
+            
+            
+            return back()->with('success', 'funds have been sucessfully sent to your hybridcoin wallet. Proceed to fund withdrawal page to withdraw');
+        }
+
 }

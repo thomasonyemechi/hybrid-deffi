@@ -31,6 +31,8 @@
                                     <tbody>
 
 
+                                        
+
 
                                         @foreach ($withdrawal as $dep)
                                             <tr>
@@ -40,7 +42,7 @@
 
                                                 <td class="align-middle border-top-0">
                                                     <span class="fw-bold">
-                                                        {{ putwallet($dep->wallet_address) }}
+                                                        {{ $dep->wallet_address }}
                                                     </span>
                                                 </td>
 

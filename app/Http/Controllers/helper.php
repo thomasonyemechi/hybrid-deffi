@@ -227,14 +227,14 @@ function shareProfit($user_id, $amount, $currency='usdt')
 // zone level
 
 
-function slotEarning($slot_id, $user_id)
+function slotEarning($slot_id, $user_id, $currency='usdt')
 {
-    return ZEarning::where(['user_id' => $user_id, 'zone_id' => $slot_id])->sum('amount');
+    return ZEarning::where(['user_id' => $user_id, 'zone_id' => $slot_id , 'currency' => $currency])->sum('amount');
 }
 
-function slotMissedEarning($slot_id, $user_id)
+function slotMissedEarning($slot_id, $user_id, $currency='usdt')
 {
-    return MissedEarning::where(['user_id' => $user_id, 'zone_id' => $slot_id])->sum('amount');
+    return MissedEarning::where(['user_id' => $user_id, 'zone_id' => $slot_id , 'currency' => $currency])->sum('amount');
 }
 
 
@@ -244,16 +244,25 @@ function checkPackage($user_id, $slot_id)
 }
 
 
-function zoneUsdtBalance($user_id)
+function zoneUsdtBalance($user_id, $currency='usdt')
 {
-    $balance = Zwallet::where(['user_id' => $user_id, 'currency' => 'usdt' ])->sum('amount');
+    $balance = Zwallet::where(['user_id' => $user_id, 'currency' => $currency ])->sum('amount');
     return $balance;
 }
 
 
-function zoneEarnings($user_id)
+function zoneUsdtDeposit($user_id)
 {
-    return ZEarning::where(['user_id' => $user_id ])->sum('amount');
+    $deposit = Zwallet::where(['user_id' => $user_id, 'currency' => 'usdt', 'remark' => 'usdt deposit'])->sum('amount');
+    $transfer = Zwallet::where(['user_id' => $user_id, 'currency' => 'usdt', 'remark' => 'transfer to zone'])->sum('amount');
+    $e_transfer = Zwallet::where(['user_id' => $user_id, 'currency' => 'usdt', 'remark' => 'external transfer to zone'])->sum('amount');
+    return $transfer+$deposit+$e_transfer;
+}
+
+
+function zoneEarnings($user_id, $currency='usdt')
+{
+    return ZEarning::where(['user_id' => $user_id, 'currency' => $currency])->sum('amount');
 }
 
 function zoneHbcBalance($user_id)
@@ -286,6 +295,101 @@ function pickGen($user, $gen)
 }
 
 
+
+
+function checkPayType($user_id, $slot, $upline_percent, $buyer)
+{
+    $zone_collect = User::find($user_id)->zone_collect;
+
+    if($zone_collect == 'usdt' || $zone_collect == 'hbc') {
+
+        if($zone_collect == 'hbc'){
+            $rate = PriceChange::latest()->first()->price;
+            $upline_percent = $upline_percent * $rate; ///current rate
+        }
+
+        $earn = ZEarning::create([
+            'user_id' => $user_id, 
+            'zone_id' => $slot->id,
+            'downline' => $buyer,
+            'remark' => 'spillover',
+            'amount' => $upline_percent,
+            'currency' => $zone_collect,
+        ]);
+
+        $wallet = Zwallet::create([
+            'ref_id' => $earn->id,
+            'currency' => $zone_collect,
+            'amount' => $upline_percent,
+            'user_id' => $user_id,
+            'remark' => 'spillover',
+            'action' => 'credit',
+            'slot_ref' => $slot->id,
+            'type' => 0, 
+        ]);
+
+    }else if($zone_collect == 'both')  {
+        // write code for both
+        // use current rate to determin half the price
+
+        // first cut money into two 
+        $half_amount = $upline_percent / 2;
+
+        // do for usdt 
+
+        $earn = ZEarning::create([
+            'user_id' => $user_id, 
+            'zone_id' => $slot->id,
+            'downline' => $buyer,
+            'remark' => 'spillover',
+            'amount' => $half_amount,
+            'currency' => 'usdt',
+        ]);
+
+        $wallet = Zwallet::create([
+            'ref_id' => $earn->id,
+            'currency' => 'usdt',
+            'amount' => $half_amount,
+            'user_id' => $user_id,
+            'remark' => 'spillover',
+            'action' => 'credit',
+            'slot_ref' => $slot->id,
+            'type' => 0, 
+        ]);
+
+
+        // for hbc
+
+
+        $rate = PriceChange::latest()->first()->price;
+        $upline_percent = $half_amount * $rate; ///current rate
+
+
+        $earn = ZEarning::create([
+            'user_id' => $user_id, 
+            'zone_id' => $slot->id,
+            'downline' => $buyer,
+            'remark' => 'spillover',
+            'amount' => $upline_percent,
+            'currency' => 'hbc',
+        ]);
+
+        $wallet = Zwallet::create([
+            'ref_id' => $earn->id,
+            'currency' => 'hbc',
+            'amount' => $upline_percent,
+            'user_id' => $user_id,
+            'remark' => 'spillover',
+            'action' => 'credit',
+            'slot_ref' => $slot->id,
+            'type' => 0, 
+        ]);
+    }
+
+    return 'done';
+}
+
+
 function shareSpillOver($buyer_upline, $amount, $slot, $buyer)
 {
  
@@ -304,26 +408,7 @@ function shareSpillOver($buyer_upline, $amount, $slot, $buyer)
             if($checkslot) {
                 ///credit client and regsiter the package 
                 // downline is the person that bought the slot and user_id is the person gettng the reward
-                $earn = ZEarning::create([
-                    'user_id' => $user_id, 
-                    'zone_id' => $slot->id,
-                    'downline' => $buyer,
-                    'remark' => 'spillover',
-                    'amount' => $upline_percent,
-                    'currency' => 'spc',
-                ]);
-    
-                $wallet = Zwallet::create([
-                    'ref_id' => $earn->id,
-                    'currency' => 'usdt',
-                    'amount' => $upline_percent,
-                    'user_id' => $buyer,
-                    'remark' => 'spillover',
-                    'action' => 'credit',
-                    'slot_ref' => $slot->id,
-                    'type' => 0, 
-                ]);
-    
+                checkPayType($user_id, $slot, $upline_percent, $buyer);
     
             }else {
                 ///record missed oportunity
@@ -363,9 +448,10 @@ function shareComission($user, $slot, $main_amount) {
 
 
     $amount = $main_amount;
-    if($slot->id > 1) {
-        $amount = ($main_amount * 0.9);
-    }
+    // if($slot->id > 1) {
+        // $amount = ($main_amount * 0.9);
+        $amount = $main_amount;
+    // }
     
     $percents = explode(',', $slot->percent);
 
@@ -373,33 +459,26 @@ function shareComission($user, $slot, $main_amount) {
     foreach($percents as $index => $per)
     {
         if($per) {
-            $pos = $gens[$index]; $user_id = $pos['user_id'];
+            @$pos = isset($gens[$index]) ? $gens[$index] : 1; 
+            @$user_id = $pos['user_id'];
             $upline_percent = ($amount * ($per / 100));
-
 
             $checkslot = checkPackage($user_id, $slot->id);
 
             if($checkslot) {
                 // credit client and regsiter the package 
                 // downline is the person that bought the slot and user_id is the person gettng the reward
-                $earn = ZEarning::create([
-                    'user_id' => $user_id, 
-                    'zone_id' => $slot->id,
-                    'downline' => $user->id,
-                    'amount' => $upline_percent,
-                    'currency' => 'spc',
-                ]);
-    
-                $wallet = Zwallet::create([
-                    'ref_id' => $earn->id,
-                    'currency' => 'usdt',
-                    'amount' => $upline_percent,
-                    'user_id' => $user_id,
-                    'remark' => 'Earning from slot',
-                    'action' => 'credit',
-                    'slot_ref' => $slot->id,
-                    'type' => 0, 
-                ]);
+       
+                // $user->id ----- the person who bought the zone
+                // user_id -----  the upline of the person who bought the zone
+
+                // check for payment type and pay according to zoen collect function 
+                /*
+                    100 % usdt 
+                    100 % HBC 
+                    50 % usdt and 50% Hbc
+                */ 
+                checkPayType($user_id, $slot, $upline_percent, $user->id);
     
     
             }else {
@@ -428,7 +507,7 @@ function shareComission($user, $slot, $main_amount) {
 
     if($slot->spillover)
     {
-        echo '3423';
+        // echo '3423';
         shareSpillOver($gens[0]['user_id'], $amount, $slot, $user->id);
     }
     
@@ -444,4 +523,7 @@ function shareComission($user, $slot, $main_amount) {
             'type' => 0,
         ]);
     }
+
+
+    return;
 }

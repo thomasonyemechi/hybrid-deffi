@@ -38,8 +38,9 @@ Route::get('/login', function(){
 Route::get('/pick_gen', function(){
     $user = auth()->user(); 
     $slot = Zone::find(3); 
-    return shareSpillOver(1, $slot->price, $slot, 2);
+    // return checkPayType(7, $slot, 30, 141);
 });
+Route::get('/get_spilled', [SlotController::class, 'fetchSpilled']);
 
 
 Route::get('/signup', function(){
@@ -94,6 +95,7 @@ Route::group(['middleware' => ['auth', 'wallet']], function () {
     Route::get('/withdrawal', [UserController::class, 'withdrwal']);
     Route::post('/update_collect_currency', [UserController::class, 'update_collect_currency']);
     Route::post('/withdrawal', [UserController::class, 'make_withdrawal']);
+    Route::post('/zone_withdrawal', [SlotController::class, 'make_withdrawal']);
     Route::post('/transfer', [UserController::class, 'transfer'])->name('transfer');
     Route::post('/transfer_tozone', [UserController::class, 'transfer_tozone'])->name('transfer_tozone');
 

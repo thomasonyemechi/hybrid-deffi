@@ -86,8 +86,7 @@
                             <div class="form-group">
                                 <div class="d-flex justify-content-between ">
                                     <label for="">Remark</label>
-                                    <label for="" class="badge text-end mb-1 bg-warning fill_me">USDT
-                                        DEPOSIT</label>
+                                    <label for="" class="badge text-end mb-1 bg-warning fill_me">USDT DEPOSIT</label>
                                 </div>
                                 <input type="text" name="remark" class="form-control" value="{{ old('remark') }}"
                                     placeholder="Describe this transaction">
