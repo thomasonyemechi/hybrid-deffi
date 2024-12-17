@@ -19,5 +19,14 @@ class Zwallet extends Model
     }
 
 
+    function slot()
+    {
+        if($this->slot_ref > 0)
+        {
+            return $this->belongsTo(Zone::class, 'slot_ref');
+        }
+    }
+
+
 
 }

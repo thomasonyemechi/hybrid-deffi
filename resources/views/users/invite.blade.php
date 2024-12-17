@@ -101,7 +101,7 @@
                                         </div>
 
                                         <div class="d-flex mt-2  justify-content-between" >
-                                            <span class="badge bg-success px-3">
+                                            <span class="badge bg-success px-3 py-5">
                                                 1 <sup>st</sup> : {{ ($valid_users) }}
                                             </span>
                                             <span class="badge bg-primary px-3">

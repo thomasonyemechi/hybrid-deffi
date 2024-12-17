@@ -25,6 +25,7 @@ class AuthController extends Controller
             if (!$log) {
                 return back()->with('error', 'Invalid Credentials, Please try again');
             }
+
         }else {
 
             Validator::make($request->all(), [
@@ -36,9 +37,13 @@ class AuthController extends Controller
             if (!$log) {
                 return back()->with('error', 'Invalid Credentials, Please try again');
             }
-        }
 
-      
+        }
+        
+        
+        User::where('id' , auth()->user()->id)->update([
+            'last_login' => now()  
+        ]);      
         return redirect('/dashboard')->with('success', 'Welcome back');
     }
 

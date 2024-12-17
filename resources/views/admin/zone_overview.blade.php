@@ -50,7 +50,8 @@
                                             <div class="d-flex justify-content-between align-items-center">
                                                 <div class="d-flex align-items-center gap-2">
                                                     <span class="fs-6 fw-bold me-2" style="line-height: 20px"><a
-                                                            href="#" class="text-white">Zone <br>Clients </a> <br></span>
+                                                            href="#" class="text-white">Zone <br>Clients </a>
+                                                        <br></span>
                                                 </div>
                                                 <div class="d-flex align-items-center gap-2">
                                                     <span class="fw-bold">
@@ -100,24 +101,19 @@
                                 </div>
 
 
-
-
-                                <div class="col-lg-6">
+                                <div class="col-lg-3">
                                     <div class="card shining-card">
                                         <div class="card-body">
                                             <div class="d-flex justify-content-between align-items-center">
                                                 <div class="d-flex align-items-center gap-2">
-                                                    <img src="{{ asset('assets/images/coins/01.png') }}"
-                                                        class="img-fluid avatar avatar-30 avatar-rounded" style="width: 30px">
-                                                    <span class="fs-6 fw-bold me-2" style="line-height: 20px">USDT <br>
-                                                        <span
-                                                            style="font-weight: lighter">${{ number_format(1, 2) }}</span></span>
+                                                    <span class="fs-6 fw-bold me-2" style="line-height: 20px"><a
+                                                            href="#" class="text-white">USDT <br> Deposit </a>
+                                                        <br></span>
                                                 </div>
                                                 <div class="d-flex align-items-center gap-2">
-                                                    <span class="fs-6 fw-bold me-2" style="line-height: 20px">
-                                                        {{ number_format($total_usdt , 4) }} USDT <br>
-                                                        <span
-                                                            style="font-weight: lighter">${{ number_format($total_usdt, 4) }}</span></span>
+                                                    <span class="fw-bold">$
+                                                        {{ number_format($total_deposit, 2) }}
+                                                    </span></span>
                                                 </div>
                                             </div>
                                         </div>
@@ -127,31 +123,63 @@
 
 
 
-
-                                <div class="col-lg-6">
-                                    <div class="card shining-card">
-                                        <div class="card-body">
-                                            <div class="d-flex justify-content-between align-items-center">
-                                                <div class="d-flex align-items-center gap-2">
-                                                    <img src="{{ asset('assets/images/coins/00.png') }}"
-                                                        class="img-fluid avatar avatar-30 avatar-rounded" style="width: 30px">
-                                                    <span class="fs-6 fw-bold me-2" style="line-height: 20px"><a href="#"
-                                                            class="text-white">Hybridcoin</a> <br>
-                                                        <span
-                                                            style="font-weight: lighter">${{ number_format(1 / 1, 4) }}</span></span>
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <div class="card shining-card">
+                                            <div class="card-body">
+                                                <div class="d-flex justify-content-between align-items-center">
+                                                    <div class="d-flex align-items-center gap-2">
+                                                        <img src="{{ asset('assets/images/coins/01.png') }}"
+                                                            class="img-fluid avatar avatar-30 avatar-rounded"
+                                                            style="width: 30px">
+                                                        <span class="fs-6 fw-bold me-2" style="line-height: 20px">USDT
+                                                            Balance <br>
+                                                            <span
+                                                                style="font-weight: lighter">${{ number_format(1, 2) }}</span></span>
+                                                    </div>
+                                                    <div class="d-flex align-items-center gap-2">
+                                                        <span class="fs-6 fw-bold me-2" style="line-height: 20px">
+                                                            {{ number_format($total_deposit - $total_purchase, 2) }} USDT
+                                                            <br>
+                                                            <span
+                                                                style="font-weight: lighter">${{ number_format($total_deposit - $total_purchase, 2) }}</span></span>
+                                                    </div>
                                                 </div>
-                                                <div class="d-flex align-items-center gap-2">
-                                                    <span class="fs-6 fw-bold me-2"
-                                                        style="line-height: 20px">{{ number_format($total_hbc, 4) }} HBC <br>
-                                                        <span style="font-weight: lighter">$ 0.0000
-                                                        </span></span>
-                                                </div>  
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                          
 
+
+
+
+
+                                    <div class="col-lg-6">
+                                        <div class="card shining-card">
+                                            <div class="card-body">
+                                                <div class="d-flex justify-content-between align-items-center">
+                                                    <div class="d-flex align-items-center gap-2">
+                                                        <img src="{{ asset('assets/images/coins/00.png') }}"
+                                                            class="img-fluid avatar avatar-30 avatar-rounded"
+                                                            style="width: 30px">
+                                                        <span class="fs-6 fw-bold me-2" style="line-height: 20px"><a
+                                                                href="#" class="text-white">Hybridcoin</a> <br>
+                                                            <span
+                                                                style="font-weight: lighter">${{ number_format(1 / 1, 4) }}</span></span>
+                                                    </div>
+                                                    <div class="d-flex align-items-center gap-2">
+                                                        <span class="fs-6 fw-bold me-2"
+                                                            style="line-height: 20px">{{ number_format($total_hbc, 4) }}
+                                                            HBC <br>
+                                                            <span style="font-weight: lighter">$ 0.0000
+                                                            </span></span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                </div>
 
                             </div>
 
@@ -160,7 +188,7 @@
                 </div>
             </div>
 
-{{-- 
+            {{-- 
             <div class="row">
                 <div class="col-md-12">
                     <div class="card " style="box-shadow: 1px 1px #fc0;">
@@ -212,7 +240,9 @@
                                                 <td>
                                                     <span class="title fw-bold">
                                                         @if (isset($trno->user->wallet))
-                                                            {{ substr($trno->user->wallet, 0, 6) . '...' . substr($trno->user->wallet, -6) }}
+                                                            <a href="/admin/user/{{ $trno->user->wallet }}">
+                                                                {{ substr($trno->user->wallet, 0, 6) . '...' . substr($trno->user->wallet, -6) }}
+                                                            </a>
                                                         @else
                                                             {{ 'admin' }}
                                                         @endif
@@ -254,12 +284,6 @@
             </div>
         </div>
     </div>
-
-
-
-
-
-
 @endsection
 
 

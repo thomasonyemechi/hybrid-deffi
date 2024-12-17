@@ -48,10 +48,26 @@ class ZoneController extends Controller
         $earnings = ZEarning::sum('amount');
         $missed_earnings = MissedEarning::sum('amount');
 
+
+        $total_deposit = $this->totalFundIn();
+
+
         $total_usdt = Zwallet::where(['currency' => 'usdt'])->sum('amount');
         $total_hbc = Zwallet::where(['currency' => 'hbc'])->sum('amount');
 
-        return view('admin.zone_overview', compact(['slot_transactions', 'total_purchase', 'clients', 'missed_earnings', 'earnings', 'total_hbc', 'total_usdt']));
+        return view('admin.zone_overview', compact([
+            'slot_transactions', 'total_purchase', 'clients', 'missed_earnings', 'earnings', 'total_hbc', 'total_usdt',
+            'total_deposit'
+        ]));
+    }
+
+
+    function totalFundIn()
+    {
+        $deposit = Zwallet::where(['currency' => 'usdt', 'remark' => 'usdt deposit'])->sum('amount');
+        $transfer = Zwallet::where(['currency' => 'usdt', 'remark' => 'transfer to zone'])->sum('amount');
+        $e_transfer = Zwallet::where(['currency' => 'usdt', 'remark' => 'external transfer to zone'])->sum('amount');
+        return $transfer+$deposit+$e_transfer;
     }
 
 

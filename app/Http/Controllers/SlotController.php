@@ -22,11 +22,24 @@ class SlotController extends Controller
         $rate = PriceChange::latest()->first()->price;
         $usdt_balance = usdtBalance($user->id);
 
+        return view('users.zone_index', compact(['slots', 'user', 'rate', 'usdt_balance']));
+    }
 
-        $transactions = Zwallet::where(['user_id' => $user->id])->orderby('id', 'desc')->limit(20)->get();
+    function zoneIndex2()
+    {
+        $slots = Zone::get();
+        $user = Auth::user();
+        $rate = PriceChange::latest()->first()->price;
+        $usdt_balance = usdtBalance($user->id);
+
+        return view('mobile.zone_index', compact(['slots', 'user', 'rate', 'usdt_balance']));
+    }
 
 
-        return view('users.zone_index', compact(['slots', 'user', 'rate', 'usdt_balance', 'transactions']));
+    function zoneTransactions()
+    {
+        $transactions = Zwallet::where(['user_id' => auth()->user()->id])->orderby('id', 'desc')->paginate(15); 
+        return view('users.zone_transactions', compact(['transactions']));
     }
     
     
@@ -263,7 +276,7 @@ class SlotController extends Controller
                     'ref_id' => $wallet->id,
                     'currency' => $request->currency,
                     'amount' => $request->amount,
-                    'type' => 1,
+                    'type' => ($request->currency == 'usdt') ? 1 : 2,
                     'remark' => 'withdrawal from zone wallet',
                     'user_id' => $wallet->user_id,
                     'action' => 'credit'

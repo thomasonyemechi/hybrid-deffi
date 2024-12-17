@@ -487,50 +487,6 @@
         </div>
 
     </div>
-
-
-
-
-
-    <div id="zone_modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="depositModal"
-        aria-hidden="true">
-        <div class="modal-dialog modal-dialog-scrollable modal-lg modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">HYBRID ZONE - COMING SOON!
-                        30-10-24
-                    </h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
-                    </button>
-                </div>
-                <div class="modal-body">
-
-                    <div class="card shadow-lg mb-3">
-                        <div class="card-body">
-                            Hybrid zone is an automatic and strategic affiliate marketing based system where profits are
-                            generated when new or existing participants in the hybrid ecosystem purchase one or more of the
-                            digital product called zones. 100% of profits generated is distributed to participants of the
-                            system following the Entry, H4 and H6 profit formula. There are 11 zones in this program hence
-                            providing members with 11 channels of income.
-
-
-
-                            <img src="{{ asset('assets/images/hybrid2.png') }}" class="rounded shadow-lg mt-3"
-                                alt="" style="width: 100%; object-fit: cover;">
-
-                        </div>
-
-
-                    </div>
-
-                    <div class="d-flex justify-content-end ">
-                        <a href="/info/zone" class="btn btn-primary">Check More About Hybrid Zone !!!</a>
-                    </div>
-
-                </div>
-            </div>
-        </div>
-    </div>
 @endsection
 
 
@@ -551,13 +507,5 @@
             // Alert the copied text
             alert("Referral ID has been copied");
         }
-
-
-
-
-
-        $(function() {
-            $('#zone_modal').modal('show');
-        })
     </script>
 @endpush

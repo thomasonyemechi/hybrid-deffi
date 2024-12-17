@@ -43,7 +43,7 @@ class UserController extends Controller
         $coin = CoinInfo::first();
 
         
-        return view('users.deposit', compact(['deposits', 'coin']));
+        return view('mobile.deposit', compact(['deposits', 'coin']));
     }
 
     function indexU()
@@ -64,7 +64,7 @@ class UserController extends Controller
 
 
         $transactions = Wallet::where(['user_id' => auth()->user()->id])->orderby('id', 'desc')->limit(10)->get();
-        return view('users.index', compact(['transactions', 'pc_balance', 'user_id', 'rate', 'pc_total', 'total', 'usdt_balance', 'spc_balance', 'announcement']));
+        return view('mobile.index', compact(['transactions', 'pc_balance', 'user_id', 'rate', 'pc_total', 'total', 'usdt_balance', 'spc_balance', 'announcement']));
     }
 
     function convertIndex()
@@ -74,7 +74,7 @@ class UserController extends Controller
         $rate = PriceChange::latest()->first()->price;
 
         $purchases = Purchase::where(['user_id' => $user_id])->orderby('id', 'desc')->limit(25)->get();
-        return view('users.convert', compact(['usdt_balance', 'user_id', 'rate', 'purchases']));
+        return view('mobile.convert', compact(['usdt_balance', 'user_id', 'rate', 'purchases']));
     }
 
     function tradeIndex()
@@ -83,13 +83,13 @@ class UserController extends Controller
         $spc_balance = spcBalance($user_id);
 
         $trades = Trade::where(['user_id' => $user_id])->orderby('id', 'desc')->limit(25)->get();
-        return view('users.trade', compact(['spc_balance', 'user_id', 'trades']));
+        return view('mobile.trade', compact(['spc_balance', 'user_id', 'trades']));
     }
 
     function walletSettingIndex()
     {
         $wallets = WalletAddress::where(['user_id' => auth()->user()->id])->orderBy('id', 'desc')->get();
-        return view('users.walletsettings', compact('wallets'));
+        return view('mobile.walletsettings', compact('wallets'));
     }
 
 
@@ -97,7 +97,7 @@ class UserController extends Controller
     {
         $usdt_balance = usdtBalance(auth()->user()->id);
         $withdrawals = Withdrawal::where(['user_id' => auth()->user()->id])->orderby('id', 'desc')->limit(25)->get();
-        return view('users.withdrwal', compact(['usdt_balance', 'withdrawals']));
+        return view('mobile.withdrwal', compact(['usdt_balance', 'withdrawals']));
     }
 
 
@@ -106,21 +106,21 @@ class UserController extends Controller
         $user_id = auth()->user()->id;
         $usdt_balance = usdtBalance($user_id);
         $transfers = Transfer::with(['receiver:id,username,wallet'])->where(['sender_id' => auth()->user()->id])->orderby('id', 'desc')->get();
-        return view('users.transfer', compact(['transfers', 'usdt_balance']));
+        return view('mobile.transfer', compact(['transfers', 'usdt_balance']));
     }
 
     function rIndex()
     {
         $user_id = auth()->user()->id;
         $received = Transfer::with(['sender:id,username,wallet'])->where(['receiver_id' => auth()->user()->id])->orderby('id', 'desc')->get();
-        return view('users.received', compact(['received']));
+        return view('mobile.received', compact(['received']));
     }
 
     function earningsIndex()
     {
         $user_id = auth()->user()->id;
         $earnings = Earning::with(['downliner:id,username,wallet'])->where(['user_id' => auth()->user()->id])->orderby('id', 'desc')->get();
-        return view('users.earnings', compact(['earnings']));
+        return view('mobile.earnings', compact(['earnings']));
     }
 
     function inviteIndex()
@@ -159,7 +159,7 @@ class UserController extends Controller
         }
 
         $total_partners = count($direct_downlines) + count($direct_downlines_2) + count($direct_downlines_3);
-        return view('users.invite', compact(['direct_downlines', 'royal_users', 'valid_users', 'total_partners', 'direct_downlines_2', 'direct_downlines_3', 'valid_2', 'valid_3']));
+        return view('mobile.invite', compact(['direct_downlines', 'royal_users', 'valid_users', 'total_partners', 'direct_downlines_2', 'direct_downlines_3', 'valid_2', 'valid_3']));
     }
 
 

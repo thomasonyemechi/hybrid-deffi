@@ -27,12 +27,17 @@ Route::get('/', function () {
     return view('index');
 });
 
-Route::view('/access', 'login')->name('login');
+
+Route::view('/access', 'mobile.login')->name('login');
 Route::view('/launch', 'signup');
 Route::get('/login', function(){
     return redirect('/access');
 });
 
+
+Route::get('/mobile', function () {
+    return view('users.mobile');
+});
 
 
 Route::get('/pick_gen', function(){
@@ -83,6 +88,8 @@ Route::get('/ren_has', [UserController::class, 'updateRef']);
 Route::get('/wallet', [UserController::class, 'walletSettingIndex'])->middleware('auth');
 Route::post('/wallet_update', [UserController::class, 'updateWallet'])->middleware('auth');
 
+
+
 Route::group(['middleware' => ['auth', 'wallet']], function () {
     // Route::get('/appointment/all', [AdminController::class, 'allAppointment']);
     Route::view('/copy', 'users.copy');
@@ -116,7 +123,9 @@ Route::group(['middleware' => ['auth', 'wallet']], function () {
 
     
     Route::group(['prefix' => 'zone/' ], function () {
+        Route::get('/landing2', [SlotController::class, 'zoneIndex2']);
         Route::get('/landing', [SlotController::class, 'zoneIndex']);
+        Route::get('/transactions', [SlotController::class, 'zoneTransactions']);
         Route::post('/landing', [SlotController::class, 'zoneIndex']);
         Route::get('/purchase_slot/{id}', [SlotController::class, 'purchaseSlot']);
         Route::post('/set_cur', [SlotController::class, 'SetCollectCurrency']);
@@ -139,6 +148,7 @@ Route::group(['prefix' => 'admin/', 'as' => 'admin.' ,'middleware' => ['auth','a
     Route::post('/debit', [AdminController::class, 'debitUser']);
     Route::get('/debit', [AdminController::class, 'debit']);
     Route::get('/users', [AdminController::class, 'usersIndex']);
+    Route::get('/user/{wallet}', [AdminController::class, 'userIndex']);
     Route::get('/users/royalty', [AdminController::class, 'royalusersIndex']);
 
     Route::get('/set_price', [SettingsController::class, 'setPriceIndex']);

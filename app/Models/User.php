@@ -33,7 +33,8 @@ class User extends Authenticatable
         'sponsor_11',
         'sponsor_12',
         'wallet',
-        'ref'
+        'ref',
+        'last_login'
     ];
 
     /**

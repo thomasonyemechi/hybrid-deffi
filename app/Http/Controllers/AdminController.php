@@ -74,6 +74,37 @@ class AdminController extends Controller
     }
 
 
+
+    function userIndex($wallet)
+    {   
+        $user = User::where(['wallet' => $wallet])->first();
+        if(!$user)
+        {
+            abort('404');
+        }
+
+        
+
+        $user_id = $user->id;
+        $pc_balance = pcBalance($user_id);
+
+        $rate = PriceChange::latest()->first()->price;
+        $pc_total =  $pc_balance / $rate;
+
+        $usdt_balance = usdtBalance($user_id);
+
+        $spc_balance = spcBalance($user_id);
+
+        $total = $pc_total + $usdt_balance + $spc_balance;
+
+
+        
+        $transactions = Wallet::where(['user_id' => $user->id])->orderby('id', 'desc')->limit(10)->get();
+        $wallet_transactions = Wallet::where(['user_id' => $user->id])->orderby('id', 'desc')->limit(10)->get();
+        return view('admin.user', compact(['transactions', 'pc_balance', 'user_id', 'rate', 'pc_total', 'total', 'usdt_balance', 'spc_balance', 'user', 'wallet_transactions']));
+    }   
+
+
     function royalusersIndex(Request $request)
     {
         $users = User::with(['spon:id,username'])->get();

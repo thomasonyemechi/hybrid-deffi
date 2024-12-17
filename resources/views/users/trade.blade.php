@@ -36,7 +36,7 @@
                             <div class="form-group">
                                 <label for="text"> Amount to Trade </label>
                                 <input type="number" name="amount" class="form-control" max="{{ $spc_balance }}" value="{{ old('amount') }}">
-                                @error('wallet')
+                                @error('amount')
                                     <i class="text-danger ">{{ $message }} </i>
                                 @enderror
                             </div>

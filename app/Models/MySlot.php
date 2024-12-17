@@ -17,4 +17,10 @@ class MySlot extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+
+    function slot()
+    {
+        return $this->belongsTo(Zone::class, 'zone_id');
+    }
 }

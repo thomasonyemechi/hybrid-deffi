@@ -272,6 +272,33 @@ function zoneHbcBalance($user_id)
 }
 
 
+function directDD($user_id, $slot_id)
+{
+    $users = User::where(['sponsor' => $user_id])->get(['id']); $count = 0;
+    foreach ($users as $user)
+    {
+        $check = MySlot::where(['user_id' => $user->id, 'zone_id' => $slot_id])->count();
+        if($check > 0){ $count += 1; }
+    }
+    
+    return $count;
+}
+
+
+function otherDD($user_id, $slot_id)
+{
+    $users = User::where(['sponsor' => $user_id])->orwhere(['sponsor_2' => $user_id])->orwhere(['sponsor_3' => $user_id])->orwhere(['sponsor_4' => $user_id])->get(['id']);
+    $count = 0;
+    foreach ($users as $user)
+    {
+        $check = MySlot::where(['user_id' => $user->id, 'zone_id' => $slot_id])->count();
+        if($check > 0){ $count += 1; }
+    }
+    
+    return $count;
+}
+
+
 
 function myEnergy($user_id)
 {
@@ -527,3 +554,11 @@ function shareComission($user, $slot, $main_amount) {
 
     return;
 }
+
+
+
+function formatDate($date)
+{
+    return date('j M Y , h:i: a', strtotime($date));
+}
+
