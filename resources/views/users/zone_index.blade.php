@@ -525,7 +525,10 @@
                 </div>
 
                 <div class="modal-footer">
-                    <button class="btn btn-outline-primary">Deny</button>
+      
+
+
+                    <a href="#" class=" text-center text-button fw-6 p-10 text-secondary btn-hide-modal" data-bs-dismiss="modal">Deny</a>
                     <a href="" class="btn do_dd btn-primary">Allow</a>
                 </div>
 
@@ -788,6 +791,8 @@
             $('body').on('click', '.activate_slot', function() {
                 id = $(this).data('id');
                 modal = $('#q_order')
+                console.log('dddd');
+                
                 modal.modal('show');
                 modal.find(`.do_dd`).attr('href', `/zone/purchase_slot/${id}`);
             })

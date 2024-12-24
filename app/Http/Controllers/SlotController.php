@@ -31,15 +31,16 @@ class SlotController extends Controller
         $user = Auth::user();
         $rate = PriceChange::latest()->first()->price;
         $usdt_balance = usdtBalance($user->id);
+        $transactions = Zwallet::where(['user_id' => auth()->user()->id])->orderby('id', 'desc')->limit(15)->get();
 
-        return view('mobile.zone_index', compact(['slots', 'user', 'rate', 'usdt_balance']));
+        return view('mobile.zone_index', compact(['slots', 'user', 'rate', 'usdt_balance', 'transactions']));
     }
 
 
     function zoneTransactions()
     {
-        $transactions = Zwallet::where(['user_id' => auth()->user()->id])->orderby('id', 'desc')->paginate(15); 
-        return view('users.zone_transactions', compact(['transactions']));
+        $transactions = Zwallet::where(['user_id' => auth()->user()->id])->orderby('id', 'desc')->paginate(40); 
+        return view('mobile.zone_transactions', compact(['transactions']));
     }
     
     
