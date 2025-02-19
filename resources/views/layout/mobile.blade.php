@@ -20,11 +20,11 @@
     @endphp
 
 
-<style>
-    .box-noti::after {
-        content: " {{ count($announcement) }} ";
-    }
-</style>
+    <style>
+        .box-noti::after {
+            content: " {{ count($announcement) }} ";
+        }
+    </style>
 
 
     {{-- <div class="preload preload-container">
@@ -162,9 +162,7 @@
                                         <h5>
                                             {{ substr(auth()->user()->wallet, 0, 6) . '...' . substr(auth()->user()->wallet, -6) }}
                                         </h5>
-                                        <p class="text-small text-secondary mt-8 mb-8">Last Seen:
-                                            {{ formatDate(auth()->user()->last_login) }} </p>
-                                        <span class="tag-xs style-2 round-2 red">Unverified</span>
+
                                     </div>
                                 </div>
                                 <span class="arr-right"><i class="icon-arr-right"></i></span>
@@ -223,7 +221,7 @@
                                         </a>
                                     </li>
                                     <li>
-                                        <a href="#"
+                                        <a href="/invite"
                                             class="tf-list-item d-flex flex-column gap-8 align-items-center text-break text-center">
                                             <i class="icon icon-graph"></i>
                                             Invite Others
@@ -277,6 +275,19 @@
                                         </a>
                                     </li>
 
+
+                                    @if (in_array(auth()->user()->id, admins()))
+                                    
+                                        <li>
+                                            <a href="/admin/dashboard"
+                                                class="tf-list-item d-flex flex-column gap-8 align-items-center text-break text-center">
+                                                <img src="{{ asset('assets/images/coins/00.png') }}" style="width: 30px;"
+                                                class="img-fluid">
+                                                Other Settings
+                                            </a>
+                                        </li>
+                                    @endif
+                                      
                                 </ul>
                             </div>
                         </div>
