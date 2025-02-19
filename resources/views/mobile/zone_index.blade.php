@@ -69,7 +69,7 @@
 
         <div class="bg-menuDark tf-container">
             <div class="pt-12 pb-12 mt-4">
-                <h5>Purchase Hybrid Zone</h5>
+                <h5 class="mb-3">Purchase Hybrid Zone</h5>
 
                 <div class="row">
 
