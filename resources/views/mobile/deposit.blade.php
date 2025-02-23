@@ -30,9 +30,6 @@
                         <p class="mt-4">
                             Funds will be lost if sent from any wallet different from the wallet address you launched with
                             <br>
-                            <span class="badge bg-success"> {{ auth()->user()->wallet }} </span>
-                            <br>
-
                         </p>
 
                         <a href="#" class="text-xs mt-10">Recommended wallet is Trust Wallet</a>
@@ -92,13 +89,9 @@
                     <div class="tab-pane fade show active" id="cryptocurrency" role="tabpanel">
                         <ul>
                             @foreach ($deposits as $dep)
-                      
-
-
                                 <li class="mt-16">
-                                    <a href="javascript:;"  class="coin-item style-2 gap-12">                                        
-                                        <img src="{{ asset('assets/images/coins/01.png') }}"
-                                            class="img" alt="">
+                                    <a href="javascript:;" class="coin-item style-2 gap-12">
+                                        <img src="{{ asset('assets/images/coins/01.png') }}" class="img" alt="">
 
                                         <div class="content">
                                             <div class="title">
@@ -136,10 +129,20 @@
     <script>
         const input_field = document.getElementById('input_field')
 
-        function yourFunction() {
-            input_field.select(); // select the input field
-            input_field.setSelectionRange(0, 99999); // For mobile devices
-            navigator.clipboard.writeText(input_field.value)
+        function copyFunc(string) {
+            // input_field.select();
+            // input_field.setSelectionRange(0, 99999); 
+            // navigator.clipboard.writeText(input_field.value)
+
+            if (string) {
+                navigator.clipboard.writeText(string)
+                    .then(() => console.log("Copied: " + string))
+                    .catch(err => console.error("Failed to copy text: ", err));
+            } else {
+                console.warn("Input element not found.");
+            }
+
+
 
         }
 
@@ -210,12 +213,12 @@
             wallet_loader.hide();
 
             wallet_copy = $(wallet_area).find('.wallet_copy');
-            wallet_copy.html(`
+            wallet_copy.html(`invite
             
                     <div class="d-flex  mb-0 mt-3 justify-content-between">
                                 <span class="badge mb-2 bg-danger"> ${old_wallet} </span>
 
-                                <span onclick="yourFunction()">copy</span>
+                                <span class="bg-primary  mb-2 badge" onclick="copyFunc('${old_wallet}')">copy</span>
                     </div>
                 `)
         }

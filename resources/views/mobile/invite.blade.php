@@ -14,13 +14,24 @@
 
         <div class="tf-container">
 
+            @php
+                $string = 'https://hybriddefi.com/launch?ref=' . auth()->user()->ref;
+            @endphp
+
 
 
             <h5 class="mt-20">Invite Others</h5>
 
 
+            <div class="mb-0 mt-3 justify-content-between">
+                {{-- <span class="badge mb-2 bg-danger"> {{ $string }} </span> --}}
+
+                <input type="text" value="{{ $string }}">
 
 
+                <button class="w-auto mt-3 btn-sm" onclick="copyFunc('{{ $string }}')">Copy Link</button>
+
+            </div>
 
 
             <div class="mt-20 ">
@@ -170,14 +181,15 @@
 
                                 <div class="swiper-slide">
                                     <a href="javascript:;" class="coin-box d-block">
-                                    
+
                                         <div class="mt-8 mb-8 coin-chart">
                                             <div id="line-chart-4"></div>
                                         </div>
-                 
+
                                         <div class="coin-price d-flex justify-content-between">
                                             <span> Royalty Strength </span>
-                                            <span class="text-primary d-flex align-items-center gap-2"><i class="icon-select-up"></i>{{ number_format(1, 2) }}</span>
+                                            <span class="text-primary d-flex align-items-center gap-2"><i
+                                                    class="icon-select-up"></i>{{ number_format(1, 2) }}</span>
                                         </div>
 
 
@@ -212,12 +224,16 @@
 
 @push('scripts')
     <script>
-        const input_field = document.getElementById('input_field')
+        function copyFunc(string) {
+            if (string) {
+                navigator.clipboard.writeText(string)
+                    .then(() => console.log("Copied: " + string))
+                    .catch(err => console.error("Failed to copy text: ", err));
+            } else {
+                console.warn("Input element not found.");
+            }
 
-        function yourFunction() {
-            input_field.select(); // select the input field
-            input_field.setSelectionRange(0, 99999); // For mobile devices
-            navigator.clipboard.writeText(input_field.value)
+
 
         }
     </script>
