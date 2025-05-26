@@ -17,6 +17,9 @@
                                     <h4 class="mb-2">THREE ARMS OF EARNING</h4>
                                 </small>
                                 <p>
+
+
+                                    {{-- def sd defin3e here -n --}}
                                     For now, there are three major ways of staying profitable in our ecosystem,
                                     you can decide to participate in one of more of the three.
                                 </p>
@@ -43,7 +46,7 @@
                                     SHC (Stable Hybrid Commission) to USDT and withdraw.
 
                                     A pool has been reserved for this purpose; rewarding community members who
-                                    spread the good news.
+                                    spread the good news.
                                 </p>
                             </div>
                             <hr>

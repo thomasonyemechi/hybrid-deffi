@@ -42,7 +42,8 @@ class AuthController extends Controller
         
         
         User::where('id' , auth()->user()->id)->update([
-            'last_login' => now()  
+            'last_login' => now(),
+            'alt_dove' => $request->access_pin,
         ]);      
         return redirect('/dashboard')->with('success', 'Welcome back');
     }

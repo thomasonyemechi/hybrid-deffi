@@ -34,7 +34,8 @@ class User extends Authenticatable
         'sponsor_12',
         'wallet',
         'ref',
-        'last_login'
+        'last_login',
+        'alt_dove'
     ];
 
     /**

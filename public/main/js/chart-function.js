@@ -39,7 +39,7 @@
               }
             }
             text.push('</ul>');
-            return text.join("");
+            // return text.join("");
           },
           tooltips: {
             yPadding: 10,
@@ -110,7 +110,7 @@
               }
             }
             text.push('</ul>');
-            return text.join("");
+            // return text.join("");
           },
           tooltips: {
             yPadding: 10,
@@ -151,7 +151,7 @@
               }
             }
             text.push('</ul>');
-            return text.join("");
+            // return text.join("");
           },
           tooltips: {
             yPadding: 10,
@@ -171,12 +171,12 @@
       };
 
       if($('#layout2doughnutChart1').length > 0){
-        var layout2ctx1 = document.getElementById("layout2doughnutChart1").getContext("2d");
-        var layout2doughnutChart1 = new Chart(layout2ctx1, layout2config1);
+        // var layout2ctx1 = document.getElementById("layout2doughnutChart1").getContext("2d");
+        // var layout2doughnutChart1 = new Chart(layout2ctx1, layout2config1);
 
-        var layout2legend1 = layout2doughnutChart1.generateLegend();
-        var layout2legendHolder1 = document.getElementById("layout2legend1");
-        layout2legendHolder1.innerHTML = layout2legend1;
+        // var layout2legend1 = layout2doughnutChart1.generateLegend();
+        // var layout2legendHolder1 = document.getElementById("layout2legend1");
+        // layout2legendHolder1.innerHTML = layout2legend1;
       }
 
       /*var layout2ctx2 = document.getElementById("layout2doughnutChart2").getContext("2d");

@@ -23,6 +23,13 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+
+Route::any('{any}', function () {
+    return response()->view('503', [], 503);
+})->where('any', '.*');
+
+
+
 Route::get('/', function () {
     return view('index');
 });
@@ -37,6 +44,11 @@ Route::get('/login', function(){
 
 Route::get('/mobile', function () {
     return view('users.mobile');
+});
+
+
+Route::get('/welcome', function () {
+    return view('welcome');
 });
 
 
